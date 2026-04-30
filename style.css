@@ -2,10 +2,10 @@
   --pink: #e91e8c;
   --pink-light: #fce4ec;
   --peach: #ffecd2;
-  --peach-dark: #ffe0b2;
   --cream: #fff9f0;
   --gold: #f9a825;
   --green: #66bb6a;
+  --orange: #ff9800;
   --red: #ef5350;
   --text: #333;
   --text-muted: #888;
@@ -162,7 +162,7 @@ body {
 .customer-name { font-size: 0.72em; color: var(--text-muted); margin-top: 4px; }
 .patience-bar { height: 5px; background: #eee; border-radius: 3px; margin-top: 6px; overflow: hidden; }
 .patience-fill { height: 100%; border-radius: 3px; background: var(--green); transition: width 0.5s linear, background 0.5s; }
-.patience-fill.warning { background: #ff9800; }
+.patience-fill.warning { background: var(--orange); }
 .patience-fill.danger { background: var(--red); }
 
 /* Order area */
@@ -191,7 +191,7 @@ body {
   transition: background 0.1s, border-color 0.1s;
 }
 .letter-box.typed { background: #e8f5e9; border-color: var(--green); color: #2e7d32; }
-.letter-box.current { background: #fff9c4; border-color: var(--gold); color: #333; }
+.letter-box.current { background: #fff9c4; border-color: var(--gold); color: var(--text); }
 .letter-box.wrong { animation: shake 0.3s; }
 
 @keyframes shake {

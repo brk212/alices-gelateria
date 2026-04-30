@@ -26,6 +26,11 @@ var Gameplay = (function () {
     return total === 0 ? 0 : correct / total;
   }
 
+  function calculateWPM(ordersCompleted, elapsedMs) {
+    if (elapsedMs < 1000) return 0;
+    return Math.round(ordersCompleted / (elapsedMs / 60000));
+  }
+
   // ── Session config ───────────────────────────────────────────────────
 
   var TIER_CONFIG = {
@@ -84,7 +89,8 @@ var Gameplay = (function () {
       customerQueue: [],
       wordPool: wordPool,
       streak: 0,
-      callbacks: callbacks
+      callbacks: callbacks,
+      shiftStartTime: Date.now()
     };
 
     session.customerQueue = buildCustomerQueue(config.ordersToWin + 5, CUSTOMERS);
@@ -181,6 +187,7 @@ var Gameplay = (function () {
         ordersCompleted: session.ordersCompleted,
         ordersToWin: session.ordersToWin,
         accuracy: calculateAccuracy(session.totalCorrect, session.totalWrong),
+        wpm: calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime),
         customersLost: session.customersLost,
         coinsEarned: session.coinsEarnedThisShift,
         phase: session.phase,
@@ -226,6 +233,8 @@ var Gameplay = (function () {
   // ── DOM rendering ─────────────────────────────────────────────────────
 
   function renderGameStats() {
+    var wpmEl = document.getElementById('game-wpm');
+    if (wpmEl) wpmEl.textContent = '⌨️ ' + calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime) + ' wpm';
     var coinsEl = document.getElementById('game-coins');
     if (coinsEl) coinsEl.textContent = '🪙 ' + (session.coins + session.coinsEarnedThisShift);
     var streakEl = document.getElementById('game-streak');

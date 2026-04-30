@@ -30,7 +30,7 @@
     var state = State.loadState();
     Gameplay.startShift(state, {
       onShiftEnd: function (result) {
-        Progress.recordSession(result.accuracy);
+        Progress.recordSession(result.accuracy, result.wpm);
         var freshState = State.loadState();
         State.updateState({
           totalWords: freshState.totalWords + result.ordersCompleted,

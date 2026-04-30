@@ -53,6 +53,7 @@ var Screens = (function () {
 
     var pct = Math.round(result.accuracy * 100);
     stats.innerHTML = '<p>Words served: <strong>' + result.ordersCompleted + '</strong></p>'
+      + '<p>Speed: <strong>' + result.wpm + ' wpm</strong></p>'
       + '<p>Accuracy: <strong>' + pct + '%</strong></p>'
       + '<p>Customers lost: <strong>' + result.customersLost + '</strong></p>'
       + '<p>Coins earned: <strong>🪙 ' + result.coinsEarned + '</strong></p>'

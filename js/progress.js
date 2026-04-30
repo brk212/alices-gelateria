@@ -1,6 +1,6 @@
 var Progress = (function () {
 
-  function recordSession(accuracy) {
+  function recordSession(accuracy, wpm) {
     var state = State.loadState();
     var today = new Date().toISOString().slice(0, 10);
 
@@ -11,7 +11,7 @@ var Progress = (function () {
       : (streak.lastPlayedDate === yesterday ? streak.count + 1 : 1);
     var newStreak = { lastPlayedDate: today, count: newCount };
 
-    var history = state.accuracyHistory.concat([{ date: today, accuracy: accuracy }]);
+    var history = state.accuracyHistory.concat([{ date: today, accuracy: accuracy, wpm: wpm || 0 }]);
     if (history.length > 30) history = history.slice(history.length - 30);
 
     State.updateState({ accuracyHistory: history, streak: newStreak });
@@ -25,11 +25,20 @@ var Progress = (function () {
     var tier = state.tier || 'easy';
     var tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
 
+    var wpmEntries = state.accuracyHistory.filter(function (e) { return e.wpm > 0; });
+    var bestWPM = wpmEntries.length > 0 ? Math.max.apply(null, wpmEntries.map(function (e) { return e.wpm; })) : 0;
+    var avgWPM = wpmEntries.length > 0
+      ? Math.round(wpmEntries.reduce(function (s, e) { return s + e.wpm; }, 0) / wpmEntries.length)
+      : 0;
+
     var html = '<div class="progress-section">'
       + '<h3>Current Level</h3>'
       + '<p>Phase ' + state.phase + ' — ' + (phaseNames[state.phase] || '') + ' &nbsp;|&nbsp; ' + tierLabel + '</p>'
       + '<p>Total words typed: <strong>' + state.totalWords + '</strong></p>'
       + '<p>🔥 Streak: <strong>' + state.streak.count + ' day' + (state.streak.count !== 1 ? 's' : '') + '</strong></p>'
+      + (wpmEntries.length > 0
+        ? '<p>⌨️ Best speed: <strong>' + bestWPM + ' wpm</strong> &nbsp;|&nbsp; Avg: <strong>' + avgWPM + ' wpm</strong></p>'
+        : '')
       + '</div>';
 
     if (state.accuracyHistory.length > 0) {

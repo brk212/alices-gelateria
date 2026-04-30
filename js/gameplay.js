@@ -14,6 +14,7 @@ var Gameplay = (function () {
   function handleKeypress(wordState, key) {
     if (wordState.complete) return wordState;
     var expected = wordState.word[wordState.index];
+    // Case-insensitive so Caps Lock doesn't break the game for a young learner
     if (key.toLowerCase() === expected.toLowerCase()) {
       var newIndex = wordState.index + 1;
       return Object.assign({}, wordState, {

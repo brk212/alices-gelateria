@@ -36,5 +36,30 @@ var Screens = (function () {
     document.getElementById('home-tier').textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
   }
 
-  return { showScreen, initSetup, renderHome };
+  function renderSummary(result) {
+    var title = document.getElementById('summary-title');
+    var stats = document.getElementById('summary-stats');
+    if (!title || !stats) return { cleared: false };
+
+    var cleared = isTierCleared(result.accuracy, result.customersLost);
+
+    if (result.won && cleared) {
+      title.textContent = '🎉 Shift Complete!';
+    } else if (result.won) {
+      title.textContent = '✅ Shift Done!';
+    } else {
+      title.textContent = '😔 Try Again!';
+    }
+
+    var pct = Math.round(result.accuracy * 100);
+    stats.innerHTML = '<p>Words served: <strong>' + result.ordersCompleted + '</strong></p>'
+      + '<p>Accuracy: <strong>' + pct + '%</strong></p>'
+      + '<p>Customers lost: <strong>' + result.customersLost + '</strong></p>'
+      + '<p>Coins earned: <strong>🪙 ' + result.coinsEarned + '</strong></p>'
+      + (cleared ? '<p style="color:#43a047;font-weight:700;margin-top:12px">⭐ Tier cleared! Next level unlocked.</p>' : '');
+
+    return { cleared: cleared };
+  }
+
+  return { showScreen, initSetup, renderHome, renderSummary };
 })();

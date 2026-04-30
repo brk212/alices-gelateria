@@ -121,9 +121,9 @@ var Gameplay = (function () {
 
     if (newWS.complete) {
       _completeOrder(order);
+    } else {
+      renderOrderArea();
     }
-
-    renderOrderArea();
   }
 
   function _completeOrder(order) {
@@ -187,6 +187,7 @@ var Gameplay = (function () {
         tier: session.tier
       });
     }
+    session = null;
   }
 
   // ── Active order management ───────────────────────────────────────────

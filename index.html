@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alice's Gelateria!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="screen-setup" class="screen">
+    <div class="setup-box">
+      <h1>🍦 Alice's Gelateria!</h1>
+      <p>What's your name?</p>
+      <input id="setup-name" type="text" placeholder="Your name" maxlength="20" autocomplete="off">
+      <button id="setup-start" class="btn-primary">Let's go!</button>
+    </div>
+  </div>
+
+  <div id="screen-home" class="screen hidden">
+    <div class="home-header">
+      <h1>🍦 Alice's Gelateria!</h1>
+      <p id="home-greeting"></p>
+    </div>
+    <div class="home-stats">
+      <span id="home-coins">🪙 0</span>
+      <span id="home-phase">Phase 1 — Home Row</span>
+      <span id="home-tier">Easy</span>
+    </div>
+    <button id="home-open" class="btn-primary">Open the Shop!</button>
+    <div class="home-nav">
+      <button id="nav-upgrades" class="btn-secondary">🛒 Upgrades</button>
+      <button id="nav-progress" class="btn-secondary">📊 Progress</button>
+    </div>
+  </div>
+
+  <div id="screen-game" class="screen hidden">
+    <div id="game-topbar">
+      <span class="shop-title">🍦 Alice's Gelateria!</span>
+      <div class="game-stats">
+        <span id="game-coins">🪙 0</span>
+        <span id="game-streak">⭐ 0</span>
+        <span id="game-lives"></span>
+      </div>
+    </div>
+    <div id="game-scene">
+      <div id="customer-queue"></div>
+      <div id="order-area"></div>
+    </div>
+    <div id="keyboard-hint"></div>
+  </div>
+
+  <div id="screen-summary" class="screen hidden">
+    <div class="summary-box">
+      <h2 id="summary-title"></h2>
+      <div id="summary-stats"></div>
+      <div class="summary-actions">
+        <button id="summary-retry" class="btn-secondary">Try Again</button>
+        <button id="summary-home" class="btn-primary">Back to Shop</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-upgrades" class="screen hidden">
+    <div class="screen-header">
+      <button id="upgrades-back" class="btn-back">← Back</button>
+      <h2>🛒 Upgrade Your Shop</h2>
+      <span id="upgrades-coins">🪙 0</span>
+    </div>
+    <div id="upgrades-list"></div>
+  </div>
+
+  <div id="screen-progress" class="screen hidden">
+    <div class="screen-header">
+      <button id="progress-back" class="btn-back">← Back</button>
+      <h2>📊 Your Progress</h2>
+    </div>
+    <div id="progress-content"></div>
+  </div>
+
+  <script src="data/words.js"></script>
+  <script src="data/customers.js"></script>
+  <script src="data/upgrades.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/progression.js"></script>
+  <script src="js/screens.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script src="js/gameplay.js"></script>
+  <script src="js/shop.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

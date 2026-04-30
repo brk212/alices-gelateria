@@ -26,7 +26,7 @@ var Keyboard = (function () {
   var ROWS = [
     ['q','w','e','r','t','y','u','i','o','p'],
     ['a','s','d','f','g','h','j','k','l',';'],
-    ['z','x','c','v','b','n','m',',','.']
+    ['z','x','c','v','b','n','m',',','.','/']
   ];
 
   var currentPhase = 1;
@@ -83,6 +83,7 @@ var Keyboard = (function () {
   }
 
   function getFingerForKey(key) {
+    if (!key) return null;
     return KEY_FINGER[key.toLowerCase()] || null;
   }
 

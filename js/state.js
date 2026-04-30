@@ -30,6 +30,9 @@ function saveState(state) {
 function updateState(partial) {
   var current = loadState();
   var next = Object.assign({}, current, partial);
+  if (partial.streak) {
+    next.streak = Object.assign({}, current.streak, partial.streak);
+  }
   saveState(next);
   return next;
 }

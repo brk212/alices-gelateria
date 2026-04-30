@@ -32,8 +32,10 @@
       onShiftEnd: function (result) {
         Progress.recordSession(result.accuracy);
         var freshState = State.loadState();
-        State.updateState({ totalWords: freshState.totalWords + result.ordersCompleted });
-        State.updateState({ coins: State.loadState().coins + result.coinsEarned });
+        State.updateState({
+          totalWords: freshState.totalWords + result.ordersCompleted,
+          coins: freshState.coins + result.coinsEarned
+        });
 
         var cleared = isTierCleared(result.accuracy, result.customersLost);
         if (cleared) {

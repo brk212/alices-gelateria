@@ -32,23 +32,23 @@ var Progress = (function () {
       : 0;
 
     var html = '<div class="prog-card">'
-      + '<div class="prog-card-title">Il livello attuale</div>'
+      + '<div class="prog-card-title">Current Level</div>'
       + '<div class="prog-stat-row">'
-      + _statBox('Fase', state.phase, '')
-      + _statBox('Chiavi', phaseNames[state.phase] || '', 'mint')
-      + _statBox('Livello', tierLabel, 'yellow')
+      + _statBox('Phase', state.phase, '')
+      + _statBox('Keys', phaseNames[state.phase] || '', 'mint')
+      + _statBox('Level', tierLabel, 'yellow')
       + '</div>'
       + '<div class="prog-stat-row">'
-      + _statBox('Parole totali', state.totalWords, '')
-      + _statBox('Streak 🔥', state.streak.count + ' ' + (state.streak.count !== 1 ? 'giorni' : 'giorno'), 'mint')
-      + (wpmEntries.length > 0 ? _statBox('Velocità max', bestWPM + ' wpm', 'yellow') : '')
+      + _statBox('Total Words', state.totalWords, '')
+      + _statBox('Streak 🔥', state.streak.count + ' ' + (state.streak.count !== 1 ? 'days' : 'day'), 'mint')
+      + (wpmEntries.length > 0 ? _statBox('Best Speed', bestWPM + ' wpm', 'yellow') : '')
       + '</div>'
-      + (wpmEntries.length > 0 ? '<div class="prog-stat-row">' + _statBox('Velocità media', avgWPM + ' wpm', '') + '</div>' : '')
+      + (wpmEntries.length > 0 ? '<div class="prog-stat-row">' + _statBox('Avg Speed', avgWPM + ' wpm', '') + '</div>' : '')
       + '</div>';
 
     if (state.accuracyHistory.length > 0) {
       html += '<div class="prog-card">'
-        + '<div class="prog-card-title">Accuratezza recente</div>'
+        + '<div class="prog-card-title">Recent Accuracy</div>'
         + '<div class="accuracy-bars">';
       var last = state.accuracyHistory.slice(-20);
       last.forEach(function (entry) {
@@ -68,7 +68,7 @@ var Progress = (function () {
     var unlocked = Keyboard.PHASE_KEYS[state.phase] || [];
 
     html += '<div class="prog-card">'
-      + '<div class="prog-card-title">Chiavi sbloccate</div>'
+      + '<div class="prog-card-title">Keys Unlocked</div>'
       + '<div class="prog-keyboard">';
 
     ROWS.forEach(function (row, ri) {

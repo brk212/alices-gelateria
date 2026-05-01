@@ -42,7 +42,7 @@ var Keyboard = (function () {
 
     var html = '<div class="counter">'
       + '<div class="counter-head">'
-      + '<div class="counter-title">Il banco · keyboard</div>'
+      + '<div class="counter-title">Keyboard</div>'
       + '<div class="counter-hint" id="kb-next-hint"></div>'
       + '</div>'
       + '<div class="kb">';

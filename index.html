@@ -16,13 +16,13 @@
     <div class="door-card">
       <div class="door-awning"></div>
       <div class="door-sign">
-        <div class="door-kicker">benvenuta · welcome</div>
+        <div class="door-kicker">Alice's Gelateria</div>
         <div class="door-name"><span class="a">Alice's</span> <span class="g">Gelateria</span></div>
       </div>
       <div class="door-body">
-        <div class="door-prompt">Chi sei? What's your name?</div>
+        <div class="door-prompt">What's your name?</div>
         <label for="setup-name" style="position:absolute;opacity:0;width:1px;height:1px;overflow:hidden;">Your name</label>
-        <input id="setup-name" type="text" placeholder="Il tuo nome…" maxlength="20" autocomplete="off">
+        <input id="setup-name" type="text" placeholder="Your name…" maxlength="20" autocomplete="off">
         <button id="setup-start" class="btn btn-primary" style="width:100%;font-size:22px;padding:16px;">Apriamo! Let's go →</button>
       </div>
     </div>
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="home-body">
-        <div class="home-greet-day">buongiorno · good morning</div>
+        <div class="home-greet-day">buongiorno · Good morning!</div>
         <div class="home-greet-name" id="home-greeting">Alice</div>
         <div class="home-grid">
           <!-- Open card -->
@@ -47,15 +47,15 @@
             <div class="open-card-body">
               <div class="neon-aperto">APERTO</div>
               <div class="neon-sub">La gelateria è aperta!<br>The shop is open!</div>
-              <button id="home-open" class="open-cta">Iniziamo! →</button>
+              <button id="home-open" class="open-cta">Iniziamo! Open the Shop →</button>
             </div>
           </div>
           <!-- Shop windows -->
           <div class="shop-windows">
             <div class="shop-window">
               <div class="sw-head">
-                <div class="sw-title">Il livello</div>
-                <div class="sw-count" id="home-phase">Fase 1</div>
+                <div class="sw-title">Your Level</div>
+                <div class="sw-count" id="home-phase">Phase 1</div>
               </div>
               <div class="phase-card">
                 <div class="phase-row">
@@ -69,22 +69,22 @@
             </div>
             <div class="shop-window">
               <div class="sw-head">
-                <div class="sw-title">Navigazione</div>
+                <div class="sw-title">Navigate</div>
               </div>
               <div class="home-nav-pills">
-                <button id="nav-upgrades" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">🛒 Il Negozio</button>
-                <button id="nav-progress" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">📊 Progressi</button>
+                <button id="nav-upgrades" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">🛒 Shop</button>
+                <button id="nav-progress" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">📊 Progress</button>
               </div>
             </div>
           </div>
           <!-- Side stats -->
           <div class="home-side">
             <div class="side-card yellow">
-              <div class="side-label">Monete</div>
+              <div class="side-label">Coins</div>
               <div class="side-stat" id="home-coins-stat">0</div>
             </div>
             <div class="side-card dark">
-              <div class="side-label">Parole totali</div>
+              <div class="side-label">Total Words</div>
               <div class="side-stat" id="home-words">0</div>
             </div>
             <div class="side-card mint">
@@ -139,7 +139,7 @@
         <div class="gelato-case">
           <div class="case-wall">
             <div class="case-head">
-              <div class="case-title">Il banco — i gusti di oggi</div>
+              <div class="case-title">Today's Flavors</div>
               <div class="case-sub" id="case-subtitle">flavors available</div>
             </div>
             <div class="tubs" id="gelato-tubs">
@@ -167,11 +167,11 @@
               <div class="panel-stat" id="reg-streak">×0<span class="unit">in a row</span></div>
             </div>
             <div class="panel mint">
-              <div class="panel-label">Ordini completati</div>
+              <div class="panel-label">Orders</div>
               <div class="panel-stat" id="reg-orders">0<span class="unit">/ ?</span></div>
             </div>
             <div class="panel dark">
-              <div class="panel-label">Vite rimaste</div>
+              <div class="panel-label">Lives</div>
               <div class="panel-stat" id="reg-lives">3<span class="unit">lives</span></div>
             </div>
           </div>
@@ -180,8 +180,11 @@
 
       <!-- Ribbon -->
       <div class="ribbon">
-        <div id="game-phase-info">Fase 1 · home row</div>
-        <div><span class="kbd">Esc</span> pausa</div>
+        <div id="game-phase-info">Phase 1 · Home Row</div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span><span class="kbd">Esc</span> pause</span>
+          <button id="game-quit" class="btn-back" style="border-color:var(--ink);color:var(--ink);">← Quit to Home</button>
+        </div>
       </div>
     </div>
   </div>
@@ -196,8 +199,8 @@
       <div class="summary-body">
         <div id="summary-stats"></div>
         <div class="summary-actions">
-          <button id="summary-retry" class="btn btn-secondary">Ancora! Try Again</button>
-          <button id="summary-home" class="btn btn-primary">Torna a casa →</button>
+          <button id="summary-retry" class="btn btn-secondary">Try Again</button>
+          <button id="summary-home" class="btn btn-primary">Back to Home →</button>
         </div>
       </div>
     </div>
@@ -208,12 +211,12 @@
     <div class="up-frame">
       <div class="up-header">
         <div>
-          <div class="up-kicker">il negozio</div>
-          <div class="up-title">Upgrade il tuo shop</div>
+          <div class="up-kicker">il negozio · the shop</div>
+          <div class="up-title">Upgrade Your Shop</div>
         </div>
         <div style="display:flex;gap:12px;align-items:center;">
           <div class="up-coins" id="upgrades-coins">🪙 0</div>
-          <button id="upgrades-back" class="btn-back">← Torna</button>
+          <button id="upgrades-back" class="btn-back">← Back</button>
         </div>
       </div>
       <div class="up-grid" id="upgrades-list"></div>
@@ -224,8 +227,8 @@
   <div id="screen-progress" class="screen hidden">
     <div class="prog-frame">
       <div class="prog-header">
-        <div class="prog-title">I tuoi progressi</div>
-        <button id="progress-back" class="btn-back">← Torna</button>
+        <div class="prog-title">Your Progress</div>
+        <button id="progress-back" class="btn-back">← Back</button>
       </div>
       <div class="prog-body" id="progress-content"></div>
     </div>

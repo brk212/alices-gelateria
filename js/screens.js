@@ -50,7 +50,7 @@ var Screens = (function () {
     if (streakEl) streakEl.textContent = state.streak.count;
 
     var phaseEl = document.getElementById('home-phase');
-    if (phaseEl) phaseEl.textContent = 'Fase ' + state.phase;
+    if (phaseEl) phaseEl.textContent = 'Phase ' + state.phase;
 
     var phaseNumEl = document.getElementById('home-phase-num');
     if (phaseNumEl) phaseNumEl.textContent = state.phase;
@@ -70,22 +70,22 @@ var Screens = (function () {
     var cleared = isTierCleared(result.accuracy, result.customersLost);
 
     if (result.won && cleared) {
-      title.textContent = 'Bravissima! ⭐';
+      title.textContent = 'Bravissima! Level cleared! ⭐';
     } else if (result.won) {
-      title.textContent = 'Turno finito!';
+      title.textContent = 'Shift done!';
     } else {
-      title.textContent = 'Ancora! Try again!';
+      title.textContent = 'Try again!';
     }
 
     var pct = Math.round(result.accuracy * 100);
 
     stats.innerHTML = ''
-      + _statRow('Ordini serviti', result.ordersCompleted)
-      + _statRow('Velocità', result.wpm + ' wpm')
-      + _statRow('Accuratezza', pct + '%')
-      + _statRow('Clienti persi', result.customersLost)
-      + _statRow('Monete guadagnate', '🪙 ' + result.coinsEarned)
-      + (cleared ? '<div class="summary-cleared">⭐ Livello superato! Prossimo livello sbloccato.</div>' : '');
+      + _statRow('Orders Served', result.ordersCompleted)
+      + _statRow('Speed', result.wpm + ' wpm')
+      + _statRow('Accuracy', pct + '%')
+      + _statRow('Customers Lost', result.customersLost)
+      + _statRow('Coins Earned', '🪙 ' + result.coinsEarned)
+      + (cleared ? '<div class="summary-cleared">⭐ Next level unlocked!</div>' : '');
   }
 
   function _statRow(label, value) {

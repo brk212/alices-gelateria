@@ -27,6 +27,13 @@
 
   function startShift() {
     Screens.showScreen('game');
+
+    var quitBtn = document.getElementById('game-quit');
+    if (quitBtn) quitBtn.onclick = function () {
+      Gameplay.abortShift();
+      goHome();
+    };
+
     var state = State.loadState();
     Gameplay.startShift(state, {
       onShiftEnd: function (result) {

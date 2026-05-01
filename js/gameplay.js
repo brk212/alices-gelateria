@@ -261,7 +261,7 @@ var Gameplay = (function () {
     var ribbonEl = document.getElementById('game-phase-info');
     if (ribbonEl) {
       var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
-      ribbonEl.textContent = 'Fase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' ordini';
+      ribbonEl.textContent = 'Phase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' orders';
     }
   }
 
@@ -301,7 +301,7 @@ var Gameplay = (function () {
     if (!container) return;
 
     if (session.activeOrders.length === 0) {
-      container.innerHTML = '<div style="font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink-faint);padding:20px;text-align:center;">Un momento… just a moment…</div>';
+      container.innerHTML = '<div style="font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink-faint);padding:20px;text-align:center;">One moment…</div>';
       return;
     }
 
@@ -365,9 +365,17 @@ var Gameplay = (function () {
     }
   }
 
+  function abortShift() {
+    if (!session) return;
+    document.removeEventListener('keydown', _onKey);
+    Object.keys(patienceIntervals).forEach(function (id) { clearInterval(patienceIntervals[id]); });
+    patienceIntervals = {};
+    session = null;
+  }
+
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { createWordState, handleKeypress, calculateAccuracy };
   }
 
-  return { startShift, getSession, createWordState, handleKeypress, calculateAccuracy };
+  return { startShift, abortShift, getSession, createWordState, handleKeypress, calculateAccuracy };
 })();

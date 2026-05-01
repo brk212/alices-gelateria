@@ -4,79 +4,231 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alice's Gelateria!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div id="screen-setup" class="screen">
-    <div class="setup-box">
-      <h1>🍦 Alice's Gelateria!</h1>
-      <label for="setup-name">What's your name?</label>
-      <input id="setup-name" type="text" placeholder="Your name" maxlength="20" autocomplete="off">
-      <button id="setup-start" class="btn-primary">Let's go!</button>
+  <!-- ── Setup Screen ───────────────────────────────── -->
+  <div id="screen-setup" class="screen" style="display:flex;align-items:center;justify-content:center;min-height:80vh;">
+    <div class="door-card">
+      <div class="door-awning"></div>
+      <div class="door-sign">
+        <div class="door-kicker">benvenuta · welcome</div>
+        <div class="door-name"><span class="a">Alice's</span> <span class="g">Gelateria</span></div>
+      </div>
+      <div class="door-body">
+        <div class="door-prompt">Chi sei? What's your name?</div>
+        <label for="setup-name" style="position:absolute;opacity:0;width:1px;height:1px;overflow:hidden;">Your name</label>
+        <input id="setup-name" type="text" placeholder="Il tuo nome…" maxlength="20" autocomplete="off">
+        <button id="setup-start" class="btn btn-primary" style="width:100%;font-size:22px;padding:16px;">Apriamo! Let's go →</button>
+      </div>
     </div>
   </div>
 
+  <!-- ── Home Screen ────────────────────────────────── -->
   <div id="screen-home" class="screen hidden">
-    <div class="home-header">
-      <h1>🍦 Alice's Gelateria!</h1>
-      <p id="home-greeting"></p>
-    </div>
-    <div class="home-stats">
-      <span id="home-coins">🪙 0</span>
-      <span id="home-phase">Phase 1 — Home Row</span>
-      <span id="home-tier">Easy</span>
-    </div>
-    <button id="home-open" class="btn-primary">Open the Shop!</button>
-    <div class="home-nav">
-      <button id="nav-upgrades" class="btn-secondary">🛒 Upgrades</button>
-      <button id="nav-progress" class="btn-secondary">📊 Progress</button>
+    <div class="home-frame">
+      <div class="home-header">
+        <div class="home-brand"><span class="a">Alice's</span> <span class="g">Gelateria</span></div>
+        <div class="home-hud">
+          <div class="hud-pill coins" id="home-coins">🪙 0</div>
+        </div>
+      </div>
+      <div class="home-body">
+        <div class="home-greet-day">buongiorno · good morning</div>
+        <div class="home-greet-name" id="home-greeting">Alice</div>
+        <div class="home-grid">
+          <!-- Open card -->
+          <div class="open-card">
+            <div class="open-awning"></div>
+            <div class="open-card-body">
+              <div class="neon-aperto">APERTO</div>
+              <div class="neon-sub">La gelateria è aperta!<br>The shop is open!</div>
+              <button id="home-open" class="open-cta">Iniziamo! →</button>
+            </div>
+          </div>
+          <!-- Shop windows -->
+          <div class="shop-windows">
+            <div class="shop-window">
+              <div class="sw-head">
+                <div class="sw-title">Il livello</div>
+                <div class="sw-count" id="home-phase">Fase 1</div>
+              </div>
+              <div class="phase-card">
+                <div class="phase-row">
+                  <div class="phase-num" id="home-phase-num">1</div>
+                  <div>
+                    <div class="phase-title" id="home-phase-name">Home Row</div>
+                    <div class="phase-tier" id="home-tier">Easy</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="shop-window">
+              <div class="sw-head">
+                <div class="sw-title">Navigazione</div>
+              </div>
+              <div class="home-nav-pills">
+                <button id="nav-upgrades" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">🛒 Il Negozio</button>
+                <button id="nav-progress" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">📊 Progressi</button>
+              </div>
+            </div>
+          </div>
+          <!-- Side stats -->
+          <div class="home-side">
+            <div class="side-card yellow">
+              <div class="side-label">Monete</div>
+              <div class="side-stat" id="home-coins-stat">0</div>
+            </div>
+            <div class="side-card dark">
+              <div class="side-label">Parole totali</div>
+              <div class="side-stat" id="home-words">0</div>
+            </div>
+            <div class="side-card mint">
+              <div class="side-label">Streak 🔥</div>
+              <div class="side-stat" id="home-streak">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- ── Game Screen ────────────────────────────────── -->
   <div id="screen-game" class="screen hidden">
-    <div id="game-topbar">
-      <span class="shop-title">🍦 Alice's Gelateria!</span>
-      <div class="game-stats">
-        <span id="game-wpm">⌨️ 0 wpm</span>
-        <span id="game-coins">🪙 0</span>
-        <span id="game-streak">⭐ 0</span>
-        <span id="game-lives"></span>
+    <div class="game-frame">
+
+      <!-- Ceiling -->
+      <div class="ceiling">
+        <div class="dome" style="left:6%"></div>
+        <div class="dome" style="left:20%"></div>
+        <div class="dome" style="left:36%"></div>
+        <div class="dome" style="left:52%"></div>
+        <div class="dome" style="left:68%"></div>
+        <div class="dome" style="left:84%"></div>
+        <div class="bunting">
+          <div class="pennant" style="left:12%;background:#ffd23a"></div>
+          <div class="pennant" style="left:28%;background:#9be0c8"></div>
+          <div class="pennant" style="left:44%;background:#e91e63"></div>
+          <div class="pennant" style="left:60%;background:#ffd23a"></div>
+          <div class="pennant" style="left:76%;background:#9be0c8"></div>
+        </div>
+      </div>
+
+      <!-- Sign bar + HUD -->
+      <div class="signbar">
+        <div class="brand"><span class="a">Alice's</span><span class="heart">🍦</span><span class="g">Gelateria</span></div>
+        <div class="hud">
+          <div class="hud-pill wpm" id="game-wpm">⌨ 0 wpm</div>
+          <div class="hud-pill coins" id="game-coins">🪙 0</div>
+          <div class="hud-pill streak" id="game-streak">★ ×0</div>
+          <div class="hud-pill lives" id="game-lives">💖💖💖</div>
+        </div>
+      </div>
+
+      <!-- Awning -->
+      <div class="awning"></div>
+
+      <!-- Shop interior -->
+      <div class="shop">
+
+        <!-- Gelato case (decorative) -->
+        <div class="gelato-case">
+          <div class="case-wall">
+            <div class="case-head">
+              <div class="case-title">Il banco — i gusti di oggi</div>
+              <div class="case-sub" id="case-subtitle">flavors available</div>
+            </div>
+            <div class="tubs" id="gelato-tubs">
+              <div class="tub"><div class="tub-vessel" style="background:#fff0d4"></div><div class="tub-label">fior di latte</div></div>
+              <div class="tub"><div class="tub-vessel" style="background:#ff8fc4"></div><div class="tub-label">fragola</div></div>
+              <div class="tub"><div class="tub-vessel" style="background:#9be0c8"></div><div class="tub-label">menta chip</div></div>
+              <div class="tub"><div class="tub-vessel" style="background:#ffd23a"></div><div class="tub-label">limone</div></div>
+              <div class="tub"><div class="tub-vessel" style="background:#6b4226"></div><div class="tub-label">cioccolato</div></div>
+              <div class="tub locked"><div class="tub-vessel locked"></div><div class="tub-label">caramello?</div></div>
+            </div>
+          </div>
+          <div class="case-counter"></div>
+        </div>
+
+        <!-- Play row -->
+        <div class="play-row">
+          <div id="customer-queue" class="queue"></div>
+          <div class="stage">
+            <div id="order-area"></div>
+            <div id="keyboard-hint"></div>
+          </div>
+          <div class="register" id="game-register">
+            <div class="panel yellow">
+              <div class="panel-label">Streak</div>
+              <div class="panel-stat" id="reg-streak">×0<span class="unit">in a row</span></div>
+            </div>
+            <div class="panel mint">
+              <div class="panel-label">Ordini completati</div>
+              <div class="panel-stat" id="reg-orders">0<span class="unit">/ ?</span></div>
+            </div>
+            <div class="panel dark">
+              <div class="panel-label">Vite rimaste</div>
+              <div class="panel-stat" id="reg-lives">3<span class="unit">lives</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ribbon -->
+      <div class="ribbon">
+        <div id="game-phase-info">Fase 1 · home row</div>
+        <div><span class="kbd">Esc</span> pausa</div>
       </div>
     </div>
-    <div id="game-scene">
-      <div id="customer-queue"></div>
-      <div id="order-area"></div>
-    </div>
-    <div id="keyboard-hint"></div>
   </div>
 
-  <div id="screen-summary" class="screen hidden">
-    <div class="summary-box">
-      <h2 id="summary-title"></h2>
-      <div id="summary-stats"></div>
-      <div class="summary-actions">
-        <button id="summary-retry" class="btn-secondary">Try Again</button>
-        <button id="summary-home" class="btn-primary">Back to Shop</button>
+  <!-- ── Summary Screen ─────────────────────────────── -->
+  <div id="screen-summary" class="screen hidden" style="display:flex;align-items:center;justify-content:center;min-height:80vh;">
+    <div class="summary-frame">
+      <div class="summary-awning"></div>
+      <div class="summary-head">
+        <div class="summary-title-text" id="summary-title">Turno finito!</div>
+      </div>
+      <div class="summary-body">
+        <div id="summary-stats"></div>
+        <div class="summary-actions">
+          <button id="summary-retry" class="btn btn-secondary">Ancora! Try Again</button>
+          <button id="summary-home" class="btn btn-primary">Torna a casa →</button>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- ── Upgrades Screen ────────────────────────────── -->
   <div id="screen-upgrades" class="screen hidden">
-    <div class="screen-header">
-      <button id="upgrades-back" class="btn-back">← Back</button>
-      <h2>🛒 Upgrade Your Shop</h2>
-      <span id="upgrades-coins">🪙 0</span>
+    <div class="up-frame">
+      <div class="up-header">
+        <div>
+          <div class="up-kicker">il negozio</div>
+          <div class="up-title">Upgrade il tuo shop</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div class="up-coins" id="upgrades-coins">🪙 0</div>
+          <button id="upgrades-back" class="btn-back">← Torna</button>
+        </div>
+      </div>
+      <div class="up-grid" id="upgrades-list"></div>
     </div>
-    <div id="upgrades-list"></div>
   </div>
 
+  <!-- ── Progress Screen ───────────────────────────── -->
   <div id="screen-progress" class="screen hidden">
-    <div class="screen-header">
-      <button id="progress-back" class="btn-back">← Back</button>
-      <h2>📊 Your Progress</h2>
+    <div class="prog-frame">
+      <div class="prog-header">
+        <div class="prog-title">I tuoi progressi</div>
+        <button id="progress-back" class="btn-back">← Torna</button>
+      </div>
+      <div class="prog-body" id="progress-content"></div>
     </div>
-    <div id="progress-content"></div>
   </div>
 
   <script src="data/words.js"></script>

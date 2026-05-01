@@ -11,19 +11,25 @@ var Shop = (function () {
     UPGRADE_CATALOG.forEach(function (upgrade) {
       var owned = state.unlocks.indexOf(upgrade.id) !== -1;
       var canAfford = state.coins >= upgrade.cost;
-      html += '<div class="upgrade-card' + (owned ? ' owned' : '') + '">'
-        + '<div style="font-size:1.8em;margin-bottom:8px">' + _iconFor(upgrade.type) + '</div>'
-        + '<h3>' + upgrade.name + '</h3>'
-        + '<p>' + upgrade.description + '</p>'
-        + '<div class="upgrade-cost">🪙 ' + upgrade.cost + '</div>';
+      var cardCls = 'up-card' + (owned ? ' owned' : '') + (!canAfford && !owned ? ' locked' : '');
+
+      html += '<div class="' + cardCls + '">'
+        + '<div class="up-art-frame">' + _iconFor(upgrade.type) + '</div>'
+        + '<div class="up-name">' + upgrade.name + '</div>'
+        + '<div class="up-type">' + upgrade.type + '</div>'
+        + '<div class="up-desc">' + upgrade.description + '</div>'
+        + '<div class="up-buy">'
+        + '<div class="up-price">🪙 ' + upgrade.cost + '</div>';
+
       if (owned) {
-        html += '<div style="color:#43a047;font-weight:700">✓ Owned</div>';
+        html += '<button class="up-buy-btn owned-tag" disabled>✓ Owned</button>';
       } else {
-        html += '<button class="btn-primary" data-id="' + upgrade.id + '" '
-          + (canAfford ? '' : 'disabled style="opacity:0.5"') + '>Buy</button>';
+        html += '<button class="up-buy-btn' + (!canAfford ? '" disabled' : '"') + ' data-id="' + upgrade.id + '">Compra!</button>';
       }
-      html += '</div>';
+
+      html += '</div></div>';
     });
+
     list.innerHTML = html;
 
     list.querySelectorAll('button[data-id]').forEach(function (btn) {

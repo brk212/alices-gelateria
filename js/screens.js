@@ -29,37 +29,70 @@ var Screens = (function () {
   }
 
   function renderHome(state) {
-    document.getElementById('home-greeting').textContent = 'Welcome back, ' + state.name + '!';
-    document.getElementById('home-coins').textContent = '🪙 ' + state.coins;
-    document.getElementById('home-phase').textContent = 'Phase ' + state.phase + ' — ' + (PHASE_NAMES[state.phase] || '');
+    var name = state.name || 'Chef';
     var tier = state.tier || 'easy';
-    document.getElementById('home-tier').textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+    var tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
+    var phaseName = PHASE_NAMES[state.phase] || '';
+
+    var greetEl = document.getElementById('home-greeting');
+    if (greetEl) greetEl.textContent = name + '!';
+
+    var coinsEl = document.getElementById('home-coins');
+    if (coinsEl) coinsEl.textContent = '🪙 ' + state.coins;
+
+    var coinsStat = document.getElementById('home-coins-stat');
+    if (coinsStat) coinsStat.textContent = state.coins;
+
+    var wordsEl = document.getElementById('home-words');
+    if (wordsEl) wordsEl.textContent = state.totalWords;
+
+    var streakEl = document.getElementById('home-streak');
+    if (streakEl) streakEl.textContent = state.streak.count;
+
+    var phaseEl = document.getElementById('home-phase');
+    if (phaseEl) phaseEl.textContent = 'Fase ' + state.phase;
+
+    var phaseNumEl = document.getElementById('home-phase-num');
+    if (phaseNumEl) phaseNumEl.textContent = state.phase;
+
+    var phaseNameEl = document.getElementById('home-phase-name');
+    if (phaseNameEl) phaseNameEl.textContent = phaseName;
+
+    var tierEl = document.getElementById('home-tier');
+    if (tierEl) tierEl.textContent = tierLabel;
   }
 
   function renderSummary(result) {
     var title = document.getElementById('summary-title');
     var stats = document.getElementById('summary-stats');
-    if (!title || !stats) return { cleared: false };
+    if (!title || !stats) return;
 
     var cleared = isTierCleared(result.accuracy, result.customersLost);
 
     if (result.won && cleared) {
-      title.textContent = '🎉 Shift Complete!';
+      title.textContent = 'Bravissima! ⭐';
     } else if (result.won) {
-      title.textContent = '✅ Shift Done!';
+      title.textContent = 'Turno finito!';
     } else {
-      title.textContent = '😔 Try Again!';
+      title.textContent = 'Ancora! Try again!';
     }
 
     var pct = Math.round(result.accuracy * 100);
-    stats.innerHTML = '<p>Words served: <strong>' + result.ordersCompleted + '</strong></p>'
-      + '<p>Speed: <strong>' + result.wpm + ' wpm</strong></p>'
-      + '<p>Accuracy: <strong>' + pct + '%</strong></p>'
-      + '<p>Customers lost: <strong>' + result.customersLost + '</strong></p>'
-      + '<p>Coins earned: <strong>🪙 ' + result.coinsEarned + '</strong></p>'
-      + (cleared ? '<p style="color:#43a047;font-weight:700;margin-top:12px">⭐ Tier cleared! Next level unlocked.</p>' : '');
 
-    return { cleared: cleared };
+    stats.innerHTML = ''
+      + _statRow('Ordini serviti', result.ordersCompleted)
+      + _statRow('Velocità', result.wpm + ' wpm')
+      + _statRow('Accuratezza', pct + '%')
+      + _statRow('Clienti persi', result.customersLost)
+      + _statRow('Monete guadagnate', '🪙 ' + result.coinsEarned)
+      + (cleared ? '<div class="summary-cleared">⭐ Livello superato! Prossimo livello sbloccato.</div>' : '');
+  }
+
+  function _statRow(label, value) {
+    return '<div class="summary-stat-row">'
+      + '<span class="stat-label">' + label + '</span>'
+      + '<span class="stat-value">' + value + '</span>'
+      + '</div>';
   }
 
   return { showScreen, initSetup, renderHome, renderSummary };

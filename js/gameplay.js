@@ -233,69 +233,118 @@ var Gameplay = (function () {
   // ── DOM rendering ─────────────────────────────────────────────────────
 
   function renderGameStats() {
+    var wpm = calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime);
+    var coins = session.coins + session.coinsEarnedThisShift;
+
     var wpmEl = document.getElementById('game-wpm');
-    if (wpmEl) wpmEl.textContent = '⌨️ ' + calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime) + ' wpm';
+    if (wpmEl) wpmEl.textContent = '⌨ ' + wpm + ' wpm';
     var coinsEl = document.getElementById('game-coins');
-    if (coinsEl) coinsEl.textContent = '🪙 ' + (session.coins + session.coinsEarnedThisShift);
+    if (coinsEl) coinsEl.textContent = '🪙 ' + coins;
     var streakEl = document.getElementById('game-streak');
-    if (streakEl) streakEl.textContent = '⭐ ' + session.streak;
+    if (streakEl) streakEl.textContent = '★ ×' + session.streak;
     var livesEl = document.getElementById('game-lives');
-    if (livesEl) livesEl.textContent = '❤️'.repeat(session.lives);
+    if (livesEl) {
+      var hearts = '';
+      for (var i = 0; i < 3; i++) {
+        hearts += (i < session.lives) ? '💖' : '🤍';
+      }
+      livesEl.textContent = hearts;
+    }
+
+    var regStreak = document.getElementById('reg-streak');
+    if (regStreak) regStreak.innerHTML = '×' + session.streak + '<span class="unit">in a row</span>';
+    var regOrders = document.getElementById('reg-orders');
+    if (regOrders) regOrders.innerHTML = session.ordersCompleted + '<span class="unit">/ ' + session.ordersToWin + '</span>';
+    var regLives = document.getElementById('reg-lives');
+    if (regLives) regLives.innerHTML = session.lives + '<span class="unit">lives</span>';
+
+    var ribbonEl = document.getElementById('game-phase-info');
+    if (ribbonEl) {
+      var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
+      ribbonEl.textContent = 'Fase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' ordini';
+    }
   }
 
   function renderCustomerQueue() {
     var container = document.getElementById('customer-queue');
     if (!container) return;
 
-    var html = '<div style="font-size:0.72em;color:#aaa;text-transform:uppercase;font-weight:600;letter-spacing:1px;margin-bottom:6px">Queue</div>';
+    var html = '<div class="queue-label">la fila — up next</div>';
     session.activeOrders.forEach(function (order) {
-      html += '<div class="customer-card active" id="cust-' + order.customerId + '">'
-        + '<div class="customer-emoji">' + order.customer.emoji + '</div>'
-        + '<div class="customer-name">' + order.customer.name + '</div>'
-        + '<div class="patience-bar"><div class="patience-fill" id="patience-' + order.customerId + '" style="width:' + order.patience + '%"></div></div>'
-        + '</div>';
+      html += '<div class="cust-card active" id="cust-' + order.customerId + '">'
+        + '<div class="cust-portrait">' + order.customer.emoji + '</div>'
+        + '<div class="cust-meta">'
+        + '<div class="cust-name">' + order.customer.name + '</div>'
+        + '<div class="cust-want">→ ' + order.wordState.word + '</div>'
+        + '<div class="patience-track"><div class="patience-fill" id="patience-' + order.customerId + '" style="width:' + order.patience + '%"></div></div>'
+        + '</div></div>';
     });
 
-    var nextInLine = session.customerQueue.slice(session.activeOrders.length, session.activeOrders.length + 2);
+    var nextInLine = session.customerQueue.slice(session.activeOrders.length, session.activeOrders.length + 3);
     nextInLine.forEach(function (c) {
-      html += '<div class="customer-card" style="opacity:0.4">'
-        + '<div class="customer-emoji">' + c.emoji + '</div>'
-        + '<div class="customer-name">' + c.name + '</div>'
+      html += '<div class="cust-card dim">'
+        + '<div class="cust-portrait">' + c.emoji + '</div>'
+        + '<div class="cust-meta"><div class="cust-name">' + c.name + '</div></div>'
         + '</div>';
     });
 
     container.innerHTML = html;
   }
 
+  var ITALIAN_QUOTES = [
+    'Vorrei un cono di', 'Per favore, posso avere', 'Buongiorno! Vorrei',
+    'Un gelato di', 'Mi dà un', 'Vorrei assaggiare il'
+  ];
+
   function renderOrderArea() {
     var container = document.getElementById('order-area');
     if (!container) return;
 
     if (session.activeOrders.length === 0) {
-      container.innerHTML = '<div style="color:#aaa;padding:20px">Loading next customer...</div>';
+      container.innerHTML = '<div style="font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink-faint);padding:20px;text-align:center;">Un momento… just a moment…</div>';
       return;
     }
 
-    var html = '';
-    session.activeOrders.forEach(function (order, i) {
-      var ws = order.wordState;
-      var isPrimary = (i === 0);
-      html += '<div class="order-ticket' + (isPrimary ? '' : ' pending') + '">'
-        + '<div class="ticket-label">' + order.customer.name + ' wants:</div>'
-        + '<div class="letter-boxes">';
-      ws.word.split('').forEach(function (letter, li) {
+    var order = session.activeOrders[0];
+    var ws = order.wordState;
+    var quote = ITALIAN_QUOTES[Math.floor(ws.word.charCodeAt(0) % ITALIAN_QUOTES.length)];
+
+    var html = '<div class="order-card">'
+      + '<div class="order-header">'
+      + '<div class="order-portrait">' + order.customer.emoji + '</div>'
+      + '<div><div class="order-cust-name">' + order.customer.name + '</div>'
+      + '<div class="ticket-quote">"' + quote + ' <span class="word">' + ws.word + '</span>, per favore!"</div>'
+      + '</div></div>'
+      + '<div class="letter-row">';
+
+    ws.word.split('').forEach(function (letter, li) {
+      var cls = 'letter-box';
+      if (li < ws.index) cls += ' typed';
+      else if (li === ws.index) cls += ' current' + (ws.lastWrong ? ' wrong' : '');
+      html += '<div class="' + cls + '">' + letter.toUpperCase() + '</div>';
+    });
+
+    html += '</div></div>';
+
+    if (session.activeOrders.length > 1) {
+      var order2 = session.activeOrders[1];
+      var ws2 = order2.wordState;
+      html += '<div class="order-card" style="opacity:0.5;margin-top:10px;">'
+        + '<div class="order-header"><div class="order-portrait">' + order2.customer.emoji + '</div>'
+        + '<div><div class="order-cust-name">' + order2.customer.name + '</div></div></div>'
+        + '<div class="letter-row">';
+      ws2.word.split('').forEach(function (letter, li) {
         var cls = 'letter-box';
-        if (li < ws.index) cls += ' typed';
-        else if (li === ws.index && isPrimary) cls += ' current' + (ws.lastWrong ? ' wrong' : '');
-        html += '<div class="' + cls + '">' + letter + '</div>';
+        if (li < ws2.index) cls += ' typed';
+        html += '<div class="' + cls + '">' + letter.toUpperCase() + '</div>';
       });
       html += '</div></div>';
-    });
+    }
 
     container.innerHTML = html;
 
-    if (!session.activeOrders[0].wordState.complete) {
-      Keyboard.highlightKey(session.activeOrders[0].wordState.word[session.activeOrders[0].wordState.index]);
+    if (!ws.complete) {
+      Keyboard.highlightKey(ws.word[ws.index]);
     }
   }
 
@@ -304,15 +353,15 @@ var Gameplay = (function () {
     if (!bar) return;
     bar.style.width = order.patience + '%';
     if (order.patience < 25) bar.className = 'patience-fill danger';
-    else if (order.patience < 55) bar.className = 'patience-fill warning';
+    else if (order.patience < 55) bar.className = 'patience-fill warn';
     else bar.className = 'patience-fill';
   }
 
   function animateWrongKey() {
-    var ticket = document.querySelector('.order-ticket .letter-box.current');
-    if (ticket) {
-      ticket.classList.add('wrong');
-      setTimeout(function () { ticket.classList.remove('wrong'); }, 350);
+    var box = document.querySelector('.letter-box.current');
+    if (box) {
+      box.classList.add('wrong');
+      setTimeout(function () { box.classList.remove('wrong'); }, 350);
     }
   }
 

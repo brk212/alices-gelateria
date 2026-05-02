@@ -1,6 +1,7 @@
 var CUSTOMERS = [
-  { name: 'Dad',           emoji: '🧔🏻',   img: 'assets/customers/rick.png' },
+  { name: 'Dad',           emoji: '🧔🏻' },
   { name: 'Mom',           emoji: '👩🏻' },
+  { name: 'Rick',          emoji: '👨🏻',   img: 'assets/customers/rick.png' },
   { name: 'Zoe',           emoji: '🤓',    img: 'assets/customers/zoe.png' },
   { name: 'Mira',          emoji: '👧🏽' },
   { name: 'Hazel',         emoji: '👧🏻',   img: 'assets/customers/hazel.png' },

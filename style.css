@@ -659,6 +659,16 @@ body {
   font-size: 24px;
   flex-shrink: 0;
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  display: block;
 }
 
 .cust-meta { flex: 1; min-width: 0; }
@@ -735,6 +745,7 @@ body {
   font-size: 28px;
   flex-shrink: 0;
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .order-cust-name {

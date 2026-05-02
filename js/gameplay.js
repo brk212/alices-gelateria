@@ -272,7 +272,7 @@ var Gameplay = (function () {
     var html = '<div class="queue-label">la fila — up next</div>';
     session.activeOrders.forEach(function (order) {
       html += '<div class="cust-card active" id="cust-' + order.customerId + '">'
-        + '<div class="cust-portrait">' + order.customer.emoji + '</div>'
+        + '<div class="cust-portrait">' + _portrait(order.customer) + '</div>'
         + '<div class="cust-meta">'
         + '<div class="cust-name">' + order.customer.name + '</div>'
         + '<div class="cust-want">→ ' + order.wordState.word + '</div>'
@@ -283,12 +283,19 @@ var Gameplay = (function () {
     var nextInLine = session.customerQueue.slice(session.activeOrders.length, session.activeOrders.length + 3);
     nextInLine.forEach(function (c) {
       html += '<div class="cust-card dim">'
-        + '<div class="cust-portrait">' + c.emoji + '</div>'
+        + '<div class="cust-portrait">' + _portrait(c) + '</div>'
         + '<div class="cust-meta"><div class="cust-name">' + c.name + '</div></div>'
         + '</div>';
     });
 
     container.innerHTML = html;
+  }
+
+  function _portrait(customer) {
+    if (customer.img) {
+      return '<img src="' + customer.img + '" alt="' + customer.name + '" class="portrait-img">';
+    }
+    return customer.emoji;
   }
 
   var ITALIAN_QUOTES = [
@@ -311,7 +318,7 @@ var Gameplay = (function () {
 
     var html = '<div class="order-card">'
       + '<div class="order-header">'
-      + '<div class="order-portrait">' + order.customer.emoji + '</div>'
+      + '<div class="order-portrait">' + _portrait(order.customer) + '</div>'
       + '<div><div class="order-cust-name">' + order.customer.name + '</div>'
       + '<div class="ticket-quote">"' + quote + ' <span class="word">' + ws.word + '</span>, per favore!"</div>'
       + '</div></div>'
@@ -330,7 +337,7 @@ var Gameplay = (function () {
       var order2 = session.activeOrders[1];
       var ws2 = order2.wordState;
       html += '<div class="order-card" style="opacity:0.5;margin-top:10px;">'
-        + '<div class="order-header"><div class="order-portrait">' + order2.customer.emoji + '</div>'
+        + '<div class="order-header"><div class="order-portrait">' + _portrait(order2.customer) + '</div>'
         + '<div><div class="order-cust-name">' + order2.customer.name + '</div></div></div>'
         + '<div class="letter-row">';
       ws2.word.split('').forEach(function (letter, li) {

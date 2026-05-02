@@ -46,23 +46,22 @@ var Progress = (function () {
       + (wpmEntries.length > 0 ? '<div class="prog-stat-row">' + _statBox('Avg Speed', avgWPM + ' wpm', '') + '</div>' : '')
       + '</div>';
 
-    if (state.accuracyHistory.length > 0) {
-      var last = state.accuracyHistory.slice(-20);
-      var maxWpm = Math.max.apply(null, last.map(function (e) { return e.wpm || 0; }));
+    var lastWpm = state.accuracyHistory.slice(-20).filter(function (e) { return e.wpm > 0; });
+    if (lastWpm.length > 0) {
+      var maxWpm = Math.max.apply(null, lastWpm.map(function (e) { return e.wpm; }));
       html += '<div class="prog-card">'
         + '<div class="prog-card-title">Recent Speed (WPM)</div>'
         + '<div class="accuracy-bars">';
-      last.forEach(function (entry) {
-        var wpm = entry.wpm || 0;
-        var h = maxWpm > 0 ? Math.round((wpm / maxWpm) * 76) : 4;
-        var bg = (maxWpm > 0 && wpm >= maxWpm * 0.9) ? '#ffd23a'
-               : (maxWpm > 0 && wpm >= maxWpm * 0.5) ? 'var(--mint-deep)'
+      lastWpm.forEach(function (entry) {
+        var h = Math.round((entry.wpm / maxWpm) * 76);
+        var bg = entry.wpm >= maxWpm * 0.9 ? 'var(--yellow)'
+               : entry.wpm >= maxWpm * 0.5 ? 'var(--mint-deep)'
                : 'var(--ink-faint)';
-        var label = wpm + ' wpm' + (maxWpm > 0 && wpm === maxWpm ? ' ★ best' : '');
+        var label = entry.wpm + ' wpm' + (entry.wpm === maxWpm ? ' ★ best' : '');
         html += '<div class="acc-bar" style="height:' + h + 'px;background:' + bg + '" title="' + label + '"></div>';
       });
       html += '</div>'
-        + (maxWpm > 0 ? '<div class="prog-wpm-best">★ ' + maxWpm + ' wpm personal best</div>' : '')
+        + '<div class="prog-wpm-best">★ ' + maxWpm + ' wpm personal best</div>'
         + '</div>';
     }
 

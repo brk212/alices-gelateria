@@ -72,6 +72,7 @@
                 <div class="sw-title">Navigate</div>
               </div>
               <div class="home-nav-pills">
+                <button id="nav-levelselect" class="btn btn-primary" style="font-size:14px;padding:8px 18px;">🎯 Choose Level</button>
                 <button id="nav-upgrades" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">🛒 Shop</button>
                 <button id="nav-progress" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">📊 Progress</button>
               </div>
@@ -200,7 +201,8 @@
         <div id="summary-stats"></div>
         <div class="summary-actions">
           <button id="summary-retry" class="btn btn-secondary">Try Again</button>
-          <button id="summary-home" class="btn btn-primary">Back to Home →</button>
+          <button id="summary-home" class="btn btn-secondary">Home</button>
+          <button id="summary-next" class="btn btn-primary" style="display:none;">Next Level →</button>
         </div>
       </div>
     </div>
@@ -220,6 +222,17 @@
         </div>
       </div>
       <div class="up-grid" id="upgrades-list"></div>
+    </div>
+  </div>
+
+  <!-- ── Level Select Screen ──────────────────────── -->
+  <div id="screen-levelselect" class="screen hidden">
+    <div class="prog-frame">
+      <div class="prog-header">
+        <div class="prog-title">Choose a Level</div>
+        <button id="levelselect-back" class="btn-back">← Back</button>
+      </div>
+      <div class="ls-body" id="levelselect-content"></div>
     </div>
   </div>
 

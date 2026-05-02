@@ -1328,3 +1328,123 @@ body {
   font-weight: 700;
   box-shadow: 1px 1px 0 var(--ink);
 }
+
+/* ── Level Select Screen ─────────────────────────────────────────── */
+.ls-body {
+  padding: 24px 28px 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  background: radial-gradient(circle at 20% 80%, rgba(255,210,58,0.18) 0 90px, transparent 110px),
+              radial-gradient(circle at 80% 20%, rgba(155,224,200,0.2) 0 90px, transparent 110px),
+              var(--pink);
+}
+
+.ls-card {
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ls-card.ls-locked {
+  background: rgba(255,255,255,0.4);
+  opacity: 0.6;
+}
+
+.ls-phase-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ls-phase-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--yellow);
+  border: 2.5px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 16px;
+  color: var(--ink);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.ls-card.ls-locked .ls-phase-num {
+  background: var(--ink-faint);
+  color: var(--cream);
+}
+
+.ls-phase-name {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.ls-current-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--pink-deep);
+  margin-top: 2px;
+}
+
+.ls-tiers {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.ls-tier-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 4px;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 13px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform 0.1s, box-shadow 0.1s;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.ls-tier-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.ls-tier-btn.ls-active {
+  background: var(--pink-deep);
+  color: var(--cream);
+}
+
+.ls-locked-msg {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  padding: 6px 0;
+}

@@ -1,5 +1,5 @@
 var Screens = (function () {
-  var SCREEN_IDS = ['setup', 'home', 'game', 'summary', 'upgrades', 'progress'];
+  var SCREEN_IDS = ['setup', 'home', 'game', 'summary', 'upgrades', 'progress', 'levelselect'];
   var PHASE_NAMES = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
 
   function showScreen(name) {
@@ -62,12 +62,10 @@ var Screens = (function () {
     if (tierEl) tierEl.textContent = tierLabel;
   }
 
-  function renderSummary(result) {
+  function renderSummary(result, cleared) {
     var title = document.getElementById('summary-title');
     var stats = document.getElementById('summary-stats');
     if (!title || !stats) return;
-
-    var cleared = isTierCleared(result.accuracy, result.customersLost);
 
     if (result.won && cleared) {
       title.textContent = 'Bravissima! Level cleared! ⭐';
@@ -86,6 +84,51 @@ var Screens = (function () {
       + _statRow('Customers Lost', result.customersLost)
       + _statRow('Coins Earned', '🪙 ' + result.coinsEarned)
       + (cleared ? '<div class="summary-cleared">⭐ Next level unlocked!</div>' : '');
+
+    // Show/hide next-level button
+    var nextBtn = document.getElementById('summary-next');
+    if (nextBtn) nextBtn.style.display = cleared ? '' : 'none';
+  }
+
+  function renderLevelSelect(state) {
+    var container = document.getElementById('levelselect-content');
+    if (!container) return;
+
+    var tiers = ['easy', 'medium', 'hard'];
+    var html = '';
+
+    for (var p = 1; p <= 8; p++) {
+      var locked = p > state.phase;
+      var isCurrent = (p === state.phase);
+      html += '<div class="ls-card' + (locked ? ' ls-locked' : '') + '">'
+        + '<div class="ls-phase-header">'
+        + '<div class="ls-phase-num">' + p + '</div>'
+        + '<div>'
+        + '<div class="ls-phase-name">' + PHASE_NAMES[p] + '</div>'
+        + (isCurrent ? '<div class="ls-current-badge">Your level</div>' : '')
+        + '</div>'
+        + '</div>';
+
+      if (locked) {
+        html += '<div class="ls-locked-msg">Keep playing to unlock</div>';
+      } else {
+        html += '<div class="ls-tiers">';
+        tiers.forEach(function (tier) {
+          var label = tier.charAt(0).toUpperCase() + tier.slice(1);
+          var isActiveTier = isCurrent && tier === state.tier;
+          html += '<button class="ls-tier-btn' + (isActiveTier ? ' ls-active' : '') + '" '
+            + 'data-phase="' + p + '" data-tier="' + tier + '">'
+            + label
+            + (isActiveTier ? ' ★' : '')
+            + '</button>';
+        });
+        html += '</div>';
+      }
+
+      html += '</div>';
+    }
+
+    container.innerHTML = html;
   }
 
   function _statRow(label, value) {
@@ -95,5 +138,5 @@ var Screens = (function () {
       + '</div>';
   }
 
-  return { showScreen, initSetup, renderHome, renderSummary };
+  return { showScreen, initSetup, renderHome, renderSummary, renderLevelSelect };
 })();

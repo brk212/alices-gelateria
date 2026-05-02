@@ -46,6 +46,7 @@ var Gameplay = (function () {
   var session = null;
   var patienceIntervals = {};
   var onShiftEnd = null;
+  var paused = false;
 
   function getSession() { return session; }
 
@@ -61,7 +62,7 @@ var Gameplay = (function () {
     var queue = [];
     for (var i = 0; i < count; i++) {
       var c = pickRandom(allCustomers);
-      queue.push({ name: c.name, emoji: c.emoji, id: 'cust_' + i });
+      queue.push({ name: c.name, emoji: c.emoji, img: c.img || null, id: 'cust_' + i });
     }
     return queue;
   }
@@ -102,12 +103,40 @@ var Gameplay = (function () {
 
     Keyboard.render(state.phase, true);
 
+    paused = false;
     document.removeEventListener('keydown', _onKey);
     document.addEventListener('keydown', _onKey);
   }
 
+  function _pause() {
+    if (!session || paused) return;
+    paused = true;
+    Object.keys(patienceIntervals).forEach(function (id) { clearInterval(patienceIntervals[id]); });
+    patienceIntervals = {};
+    session.pausedAt = Date.now();
+    var overlay = document.createElement('div');
+    overlay.id = 'pause-overlay';
+    overlay.innerHTML = '<div class="pause-box"><div class="pause-title">Paused</div><button class="btn btn-primary" id="pause-resume">Resume →</button></div>';
+    document.getElementById('screen-game').appendChild(overlay);
+    document.getElementById('pause-resume').addEventListener('click', _resume);
+  }
+
+  function _resume() {
+    if (!session || !paused) return;
+    paused = false;
+    if (session.pausedAt) {
+      session.shiftStartTime += Date.now() - session.pausedAt;
+      session.pausedAt = null;
+    }
+    session.activeOrders.forEach(function (order) { startPatienceTimer(order); });
+    var overlay = document.getElementById('pause-overlay');
+    if (overlay) overlay.remove();
+  }
+
   function _onKey(e) {
     if (!session || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'Escape') { paused ? _resume() : _pause(); return; }
+    if (paused) return;
     if (e.key.length !== 1) return;
     e.preventDefault();
 
@@ -180,6 +209,9 @@ var Gameplay = (function () {
     document.removeEventListener('keydown', _onKey);
     Object.keys(patienceIntervals).forEach(function (id) { clearInterval(patienceIntervals[id]); });
     patienceIntervals = {};
+    paused = false;
+    var overlay = document.getElementById('pause-overlay');
+    if (overlay) overlay.remove();
 
     if (onShiftEnd) {
       onShiftEnd({
@@ -377,6 +409,9 @@ var Gameplay = (function () {
     document.removeEventListener('keydown', _onKey);
     Object.keys(patienceIntervals).forEach(function (id) { clearInterval(patienceIntervals[id]); });
     patienceIntervals = {};
+    paused = false;
+    var overlay = document.getElementById('pause-overlay');
+    if (overlay) overlay.remove();
     session = null;
   }
 

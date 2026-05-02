@@ -325,14 +325,15 @@ var Gameplay = (function () {
 
   function _portrait(customer) {
     if (customer.img) {
-      return '<img src="' + customer.img + '" alt="' + customer.name + '" class="portrait-img">';
+      return '<img src="' + customer.img + '" alt="' + customer.name + '" class="portrait-img"'
+        + ' onerror="this.parentNode.innerHTML=\'' + customer.emoji + '\'">';
     }
     return customer.emoji;
   }
 
-  var ITALIAN_QUOTES = [
-    'Vorrei un cono di', 'Per favore, posso avere', 'Buongiorno! Vorrei',
-    'Un gelato di', 'Mi dà un', 'Vorrei assaggiare il'
+  var ORDER_QUOTES = [
+    "I'd love a scoop of", "Can I get a", "Could I please have",
+    "Ooh, I'll take a", "May I have a", "I'd like a"
   ];
 
   function renderOrderArea() {
@@ -346,13 +347,13 @@ var Gameplay = (function () {
 
     var order = session.activeOrders[0];
     var ws = order.wordState;
-    var quote = ITALIAN_QUOTES[Math.floor(ws.word.charCodeAt(0) % ITALIAN_QUOTES.length)];
+    var quote = ORDER_QUOTES[Math.floor(ws.word.charCodeAt(0) % ORDER_QUOTES.length)];
 
     var html = '<div class="order-card">'
       + '<div class="order-header">'
       + '<div class="order-portrait">' + _portrait(order.customer) + '</div>'
       + '<div><div class="order-cust-name">' + order.customer.name + '</div>'
-      + '<div class="ticket-quote">"' + quote + ' <span class="word">' + ws.word + '</span>, per favore!"</div>'
+      + '<div class="ticket-quote">"' + quote + ' <span class="word">' + ws.word + '</span>!"</div>'
       + '</div></div>'
       + '<div class="letter-row">';
 

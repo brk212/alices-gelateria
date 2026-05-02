@@ -5,7 +5,7 @@ var CUSTOMERS = [
   { name: 'Zoe',           emoji: '🤓',    img: 'assets/customers/zoe.png' },
   { name: 'Mira',          emoji: '👧🏽' },
   { name: 'Hazel',         emoji: '👧🏻',   img: 'assets/customers/hazel.png' },
-  { name: 'Ivy',           emoji: '👧🏼',   img: 'assets/customers/ivy.PNG' },
+  { name: 'Ivy',           emoji: '👧🏼',   img: 'assets/customers/ivy.png' },
   { name: 'Liv',           emoji: '👧🏻',  img: 'assets/customers/liv.PNG' },
   { name: 'Lily',          emoji: '🧒🏻',  img: 'assets/customers/lily.png' },
   { name: 'Sloan',         emoji: '👧' },

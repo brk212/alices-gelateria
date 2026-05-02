@@ -1182,16 +1182,6 @@ body {
   margin-bottom: 3px;
 }
 
-.up-type {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--pink-deep);
-  margin-bottom: 6px;
-}
-
 .up-desc {
   font-family: var(--mono);
   font-size: 11px;

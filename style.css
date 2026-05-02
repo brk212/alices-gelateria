@@ -1342,6 +1342,14 @@ body {
   transition: height 0.4s;
 }
 
+.prog-wpm-best {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-align: right;
+  margin-top: 4px;
+}
+
 .prog-keyboard {
   display: flex;
   flex-direction: column;

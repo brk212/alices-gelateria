@@ -47,16 +47,23 @@ var Progress = (function () {
       + '</div>';
 
     if (state.accuracyHistory.length > 0) {
-      html += '<div class="prog-card">'
-        + '<div class="prog-card-title">Recent Accuracy</div>'
-        + '<div class="accuracy-bars">';
       var last = state.accuracyHistory.slice(-20);
+      var maxWpm = Math.max.apply(null, last.map(function (e) { return e.wpm || 0; }));
+      html += '<div class="prog-card">'
+        + '<div class="prog-card-title">Recent Speed (WPM)</div>'
+        + '<div class="accuracy-bars">';
       last.forEach(function (entry) {
-        var h = Math.round(entry.accuracy * 76);
-        var bg = entry.accuracy >= 0.85 ? 'var(--mint-deep)' : entry.accuracy >= 0.7 ? 'var(--yellow-deep)' : 'var(--pink-deep)';
-        html += '<div class="acc-bar" style="height:' + h + 'px;background:' + bg + '" title="' + Math.round(entry.accuracy * 100) + '%"></div>';
+        var wpm = entry.wpm || 0;
+        var h = maxWpm > 0 ? Math.round((wpm / maxWpm) * 76) : 4;
+        var bg = (maxWpm > 0 && wpm >= maxWpm * 0.9) ? '#ffd23a'
+               : (maxWpm > 0 && wpm >= maxWpm * 0.5) ? 'var(--mint-deep)'
+               : 'var(--ink-faint)';
+        var label = wpm + ' wpm' + (maxWpm > 0 && wpm === maxWpm ? ' ★ best' : '');
+        html += '<div class="acc-bar" style="height:' + h + 'px;background:' + bg + '" title="' + label + '"></div>';
       });
-      html += '</div></div>';
+      html += '</div>'
+        + (maxWpm > 0 ? '<div class="prog-wpm-best">★ ' + maxWpm + ' wpm personal best</div>' : '')
+        + '</div>';
     }
 
     var ROWS = [

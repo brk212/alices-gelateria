@@ -1,16 +1,19 @@
 var UPGRADE_CATALOG = [
-  { id: 'sign_pink',    name: 'Pink Sign',       cost: 50,  type: 'decor',   description: 'A cheerful pink shop sign.' },
-  { id: 'sign_rainbow', name: 'Rainbow Sign',    cost: 120, type: 'decor',   description: 'Every color of the rainbow!' },
-  { id: 'counter_marble', name: 'Marble Counter', cost: 80, type: 'decor',  description: 'A fancy marble countertop.' },
-  { id: 'flavor_choc',  name: 'Chocolate',       cost: 40,  type: 'flavor',  description: 'Unlock chocolate ice cream.' },
-  { id: 'flavor_mint',  name: 'Mint Chip',       cost: 60,  type: 'flavor',  description: 'Cool and refreshing!' },
-  { id: 'flavor_straw', name: 'Strawberry',      cost: 40,  type: 'flavor',  description: 'Classic summer flavor.' },
-  { id: 'flavor_lemon', name: 'Lemon Sorbet',    cost: 70,  type: 'flavor',  description: 'Tangy and sweet.' },
-  { id: 'flavor_caramel', name: 'Salted Caramel', cost: 90, type: 'flavor', description: 'Rich and buttery.' },
-  { id: 'customer_cat', name: 'Cat Customer',    cost: 100, type: 'customer', description: 'A very particular cat shows up sometimes.' },
-  { id: 'customer_dog', name: 'Dog Customer',    cost: 100, type: 'customer', description: 'Loves any flavor with "bone" in the name.' },
-  { id: 'wallpaper_stars', name: 'Star Wallpaper', cost: 75, type: 'decor', description: 'Sparkly star wallpaper for the shop.' },
-  { id: 'wallpaper_ice',  name: 'Ice Crystal Walls', cost: 150, type: 'decor', description: 'Frosty crystal-blue walls.' }
+  // Flavors
+  { id: 'flavor-fragola',       name: 'Fragola',              cost: 80,  type: 'flavor',   description: 'Fresh strawberry, bright and summery.' },
+  { id: 'flavor-limone',        name: 'Limone Sfusato',       cost: 90,  type: 'flavor',   description: 'Tart Amalfi lemon sorbet, no cream.' },
+  { id: 'flavor-caramello',     name: 'Caramello Salato',     cost: 120, type: 'flavor',   description: 'Sea-salt caramel — sweet and salty perfection.' },
+  { id: 'flavor-stracciatella', name: 'Stracciatella',        cost: 140, type: 'flavor',   description: 'Creamy fior di latte with dark chocolate shards.' },
+  { id: 'flavor-pistacchio',    name: 'Pistacchio di Bronte', cost: 180, type: 'flavor',   description: 'Rich Sicilian pistachio, slightly sweet.' },
+  // Decor
+  { id: 'decor-bell',           name: "Campanella d'Ottone",  cost: 90,  type: 'decor',    description: 'A brass door bell — ding!' },
+  { id: 'decor-sign',           name: 'Insegna Rosa',         cost: 110, type: 'decor',    description: 'Pastel pink hand-painted shop sign.' },
+  { id: 'decor-counter',        name: 'Carrara Counter',      cost: 180, type: 'decor',    description: 'Marble counter — cool white with grey veins.' },
+  { id: 'decor-wallpaper',      name: 'Notte Stellata',       cost: 200, type: 'decor',    description: 'Deep blue starry-night wall tiles.' },
+  // Customers
+  { id: 'cust-cat',             name: 'Macchia the Cat',      cost: 110, type: 'customer', description: 'A tuxedo cat who always orders two scoops.' },
+  { id: 'cust-nonna',           name: 'Nonna Concetta',       cost: 130, type: 'customer', description: 'Local legend, has opinions about gelato.' },
+  { id: 'cust-dog',             name: 'Bruno il Cane',        cost: 160, type: 'customer', description: 'A golden retriever, always cheerful.' }
 ];
 
 if (typeof module !== 'undefined' && module.exports) {

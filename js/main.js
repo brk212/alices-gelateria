@@ -98,22 +98,23 @@
   }
 
   function showConversationPhasePicker(onSelect) {
+    // Modal HTML is static (index.html); letter sets are defined in PHASE_LETTER_LABELS in gameplay.js
     var modal = document.getElementById('conversation-phase-modal');
     if (modal.style.display === 'flex') return;  // already open
     var state = State.loadState();
     var lastPhase = state.conversationPhase || 'full';
 
     // Highlight last-used phase
-    modal.querySelectorAll('.phase-card').forEach(function (card) {
+    modal.querySelectorAll('.picker-card').forEach(function (card) {
       var phase = card.getAttribute('data-phase');
       var phaseVal = phase === 'full' ? 'full' : parseInt(phase, 10);
-      card.classList.toggle('phase-card--active', phaseVal === lastPhase);
+      card.classList.toggle('picker-card--active', phaseVal === lastPhase);
     });
 
     modal.style.display = 'flex';
 
     function handleCardClick(e) {
-      var card = e.target.closest('.phase-card');
+      var card = e.target.closest('.picker-card');
       if (!card) return;
       var raw = card.getAttribute('data-phase');
       var phase = raw === 'full' ? 'full' : parseInt(raw, 10);

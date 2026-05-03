@@ -1628,7 +1628,7 @@ body {
   margin-bottom: 12px;
 }
 
-.phase-card {
+.picker-card {
   background: #1e1e3f;
   border: 1px solid #3a3a6a;
   border-radius: 10px;
@@ -1641,43 +1641,43 @@ body {
   transition: border-color 0.15s;
 }
 
-.phase-card:hover {
+.picker-card:hover {
   border-color: #7c3aed;
 }
 
-.phase-card--active {
+.picker-card--active {
   border-color: #a78bfa;
   background: #261e4a;
 }
 
-.phase-card--full {
+.picker-card--full {
   background: #1a0f2e;
   border-color: #5a3a7a;
 }
 
-.phase-card--full:hover {
+.picker-card--full:hover {
   border-color: #9333ea;
 }
 
-.phase-card__num {
+.picker-card__num {
   font-family: monospace;
   font-size: 0.75rem;
   font-weight: bold;
   color: #a78bfa;
 }
 
-.phase-card--full .phase-card__num {
+.picker-card--full .picker-card__num {
   color: #c084fc;
 }
 
-.phase-card__letters {
+.picker-card__letters {
   font-family: monospace;
   font-size: 0.7rem;
   color: #aaa;
   letter-spacing: 1px;
 }
 
-.phase-card__label {
+.picker-card__label {
   font-size: 0.65rem;
   color: #666;
 }

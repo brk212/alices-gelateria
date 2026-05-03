@@ -394,7 +394,10 @@ var Gameplay = (function () {
     var ribbonEl = document.getElementById('game-phase-info');
     if (ribbonEl) {
       if (session.mode === 'conversation') {
-        ribbonEl.textContent = 'Conversation Mode  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' sentences';
+        var phaseLabel = session.conversationPhase === 'full'
+          ? 'Full Keyboard'
+          : 'Phase ' + session.conversationPhase;
+        ribbonEl.textContent = 'Conversation Mode  ·  ' + phaseLabel + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' sentences';
       } else {
         var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
         ribbonEl.textContent = 'Phase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' orders';

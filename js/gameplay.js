@@ -129,7 +129,8 @@ var Gameplay = (function () {
       streak: 0,
       callbacks: callbacks,
       shiftStartTime: Date.now(),
-      mode: state.mode || 'word'
+      mode: state.mode || 'word',
+      conversationPhase: state.conversationPhase || 'full'
     };
 
     session.customerQueue = buildCustomerQueue(config.ordersToWin + 5, CUSTOMERS);
@@ -321,10 +322,13 @@ var Gameplay = (function () {
       if (!customer) break;
       var order;
       if (session.mode === 'conversation') {
+        var sentence = session.conversationPhase !== 'full'
+          ? generatePhrase(session.conversationPhase)
+          : pickRandom(session.wordPool);
         order = {
           customerId: customer.id,
           customer: customer,
-          sentence: pickRandom(session.wordPool),
+          sentence: sentence,
           typedValue: '',
           patience: 100
         };

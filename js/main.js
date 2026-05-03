@@ -24,10 +24,12 @@
     document.getElementById('nav-upgrades').onclick = goUpgrades;
     document.getElementById('nav-progress').onclick = goProgress;
     document.getElementById('nav-levelselect').onclick = goLevelSelect;
+    var convBtn = document.getElementById('nav-conversation');
+    if (convBtn) convBtn.onclick = startConversationShift;
   }
 
   // phase and tier are optional — if omitted, uses current state values
-  function startShift(phase, tier) {
+  function startShift(phase, tier, mode) {
     Screens.showScreen('game');
 
     var quitBtn = document.getElementById('game-quit');
@@ -37,53 +39,60 @@
     };
 
     var state = State.loadState();
-    var playPhase = phase || state.phase;
-    var playTier  = tier  || state.tier;
-    var playState = Object.assign({}, state, { phase: playPhase, tier: playTier });
+    var playPhase = (mode === 'conversation') ? state.phase : (phase || state.phase);
+    var playTier  = (mode === 'conversation') ? 'medium'    : (tier  || state.tier);
+    var playState = Object.assign({}, state, { phase: playPhase, tier: playTier, mode: mode || 'word' });
 
     Gameplay.startShift(playState, {
       onShiftEnd: function (result) {
-        Progress.recordSession(result.accuracy, result.wpm);
         var freshState = State.loadState();
-        State.updateState({
-          totalWords: freshState.totalWords + result.ordersCompleted,
-          coins:      freshState.coins + result.coinsEarned
-        });
-        // NOTE: state.phase / state.tier are NOT advanced here.
-        // Advancement only happens when the user clicks "Next Level".
 
-        var cleared = isTierCleared(result.accuracy, result.customersLost);
-
-        Screens.showScreen('summary');
-        Screens.renderSummary(result, cleared);
-
-        // Try Again → replay the exact level just played
-        document.getElementById('summary-retry').onclick = function () {
-          startShift(result.phase, result.tier);
-        };
-        document.getElementById('summary-home').onclick = goHome;
-
-        // Next Level → advance main progress (only if at current level), start next level
-        var nextBtn = document.getElementById('summary-next');
-        if (nextBtn) {
-          if (cleared) {
-            var next = nextTierOrPhase(result.phase, result.tier);
-            nextBtn.style.display = '';
-            nextBtn.onclick = function () {
-              var cs = State.loadState();
-              var TIER_ORDER = { easy: 0, medium: 1, hard: 2 };
-              // Advance if player cleared their current phase at their current tier or higher
-              if (result.phase === cs.phase && TIER_ORDER[result.tier] >= TIER_ORDER[cs.tier]) {
-                State.updateState({ phase: next.phase, tier: next.tier });
-              }
-              startShift(next.phase, next.tier);
-            };
-          } else {
-            nextBtn.style.display = 'none';
+        if (result.mode === 'conversation') {
+          Progress.recordConversationSession(result);
+          State.updateState({ coins: freshState.coins + result.coinsEarned });
+          Screens.showScreen('summary');
+          Screens.renderSummary(result, false);
+          document.getElementById('summary-retry').onclick = startConversationShift;
+          document.getElementById('summary-home').onclick = goHome;
+          var nextBtn = document.getElementById('summary-next');
+          if (nextBtn) nextBtn.style.display = 'none';
+        } else {
+          Progress.recordSession(result.accuracy, result.wpm);
+          State.updateState({
+            totalWords: freshState.totalWords + result.ordersCompleted,
+            coins:      freshState.coins + result.coinsEarned
+          });
+          var cleared = isTierCleared(result.accuracy, result.customersLost);
+          Screens.showScreen('summary');
+          Screens.renderSummary(result, cleared);
+          document.getElementById('summary-retry').onclick = function () {
+            startShift(result.phase, result.tier);
+          };
+          document.getElementById('summary-home').onclick = goHome;
+          var nextBtn = document.getElementById('summary-next');
+          if (nextBtn) {
+            if (cleared) {
+              var next = nextTierOrPhase(result.phase, result.tier);
+              nextBtn.style.display = '';
+              nextBtn.onclick = function () {
+                var cs = State.loadState();
+                var TIER_ORDER = { easy: 0, medium: 1, hard: 2 };
+                if (result.phase === cs.phase && TIER_ORDER[result.tier] >= TIER_ORDER[cs.tier]) {
+                  State.updateState({ phase: next.phase, tier: next.tier });
+                }
+                startShift(next.phase, next.tier);
+              };
+            } else {
+              nextBtn.style.display = 'none';
+            }
           }
         }
       }
     });
+  }
+
+  function startConversationShift() {
+    startShift(null, null, 'conversation');
   }
 
   function goLevelSelect() {

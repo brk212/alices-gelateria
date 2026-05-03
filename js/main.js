@@ -20,7 +20,7 @@
     Screens.renderHome(state);
     Screens.showScreen('home');
 
-    document.getElementById('home-open').onclick = startShift;
+    document.getElementById('home-open').onclick = function () { startShift(); };
     document.getElementById('nav-upgrades').onclick = goUpgrades;
     document.getElementById('nav-progress').onclick = goProgress;
     document.getElementById('nav-levelselect').onclick = goLevelSelect;
@@ -70,9 +70,10 @@
             var next = nextTierOrPhase(result.phase, result.tier);
             nextBtn.style.display = '';
             nextBtn.onclick = function () {
-              // Advance main progress only when the player cleared their actual current level
               var cs = State.loadState();
-              if (result.phase === cs.phase && result.tier === cs.tier) {
+              var TIER_ORDER = { easy: 0, medium: 1, hard: 2 };
+              // Advance if player cleared their current phase at their current tier or higher
+              if (result.phase === cs.phase && TIER_ORDER[result.tier] >= TIER_ORDER[cs.tier]) {
                 State.updateState({ phase: next.phase, tier: next.tier });
               }
               startShift(next.phase, next.tier);

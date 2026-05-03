@@ -93,6 +93,7 @@ var Gameplay = (function () {
       lives: MAX_LIVES,
       coins: state.coins,
       coinsEarnedThisShift: 0,
+      wordsTyped: 0,
       ordersCompleted: 0,
       customersLost: 0,
       totalCorrect: 0,
@@ -220,6 +221,9 @@ var Gameplay = (function () {
     session.ordersCompleted++;
     session.coinsEarnedThisShift += COINS_PER_WORD;
     session.streak++;
+    if (session.mode === 'conversation') {
+      session.wordsTyped += order.sentence.trim().split(/\s+/).length;
+    }
 
     session.activeOrders = session.activeOrders.filter(function (o) { return o.customerId !== order.customerId; });
     session.customerQueue = session.customerQueue.filter(function (c) { return c.id !== order.customerId; });
@@ -272,7 +276,9 @@ var Gameplay = (function () {
         ordersCompleted: session.ordersCompleted,
         ordersToWin: session.ordersToWin,
         accuracy: calculateAccuracy(session.totalCorrect, session.totalWrong),
-        wpm: calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime),
+        wpm: session.mode === 'conversation'
+          ? calculateWPM(session.wordsTyped, Date.now() - session.shiftStartTime)
+          : calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime),
         customersLost: session.customersLost,
         coinsEarned: session.coinsEarnedThisShift,
         phase: session.phase,
@@ -329,7 +335,10 @@ var Gameplay = (function () {
   // ── DOM rendering ─────────────────────────────────────────────────────
 
   function renderGameStats() {
-    var wpm = calculateWPM(session.ordersCompleted, Date.now() - session.shiftStartTime);
+    var elapsed = Date.now() - session.shiftStartTime;
+    var wpm = session.mode === 'conversation'
+      ? calculateWPM(session.wordsTyped, elapsed)
+      : calculateWPM(session.ordersCompleted, elapsed);
     var coins = session.coins + session.coinsEarnedThisShift;
 
     var wpmEl = document.getElementById('game-wpm');

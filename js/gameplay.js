@@ -48,6 +48,7 @@ var Gameplay = (function () {
     medium: { ordersToWin: 20, maxConcurrent: 2, patienceMs: 40000 },
     hard:   { ordersToWin: 25, maxConcurrent: 3, patienceMs: 25000 }
   };
+  var CONVERSATION_CONFIG = { ordersToWin: 10, maxConcurrent: 2, patienceMs: 40000 };
   var COINS_PER_WORD = 10;
   var MAX_LIVES = 3;
 
@@ -81,7 +82,7 @@ var Gameplay = (function () {
 
   function startShift(state, callbacks) {
     onShiftEnd = callbacks.onShiftEnd;
-    var config = TIER_CONFIG[state.tier] || TIER_CONFIG.easy;
+    var config = state.mode === 'conversation' ? CONVERSATION_CONFIG : (TIER_CONFIG[state.tier] || TIER_CONFIG.easy);
     var wordPool = state.mode === 'conversation'
       ? CONVERSATION_SENTENCES
       : getWordPool(state.phase);

@@ -31,6 +31,15 @@ var Gameplay = (function () {
     return Math.round(ordersCompleted / (elapsedMs / 60000));
   }
 
+  function isSentenceComplete(typed, sentence) {
+    if (typed.length < sentence.length) return false;
+    var correct = 0;
+    for (var i = 0; i < sentence.length; i++) {
+      if (typed[i] === sentence[i]) correct++;
+    }
+    return correct / sentence.length >= 0.9;
+  }
+
   // ── Session config ───────────────────────────────────────────────────
 
   var TIER_CONFIG = {
@@ -417,8 +426,8 @@ var Gameplay = (function () {
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { createWordState, handleKeypress, calculateAccuracy };
+    module.exports = { createWordState, handleKeypress, calculateAccuracy, isSentenceComplete };
   }
 
-  return { startShift, abortShift, getSession, createWordState, handleKeypress, calculateAccuracy };
+  return { startShift, abortShift, getSession, createWordState, handleKeypress, calculateAccuracy, isSentenceComplete };
 })();

@@ -43,3 +43,24 @@ test('calculateAccuracy returns 0.8 for 2 wrong out of 10 total', () => {
 test('calculateAccuracy returns 0 when no keypresses', () => {
   expect(calculateAccuracy(0, 0)).toBe(0);
 });
+
+const { isSentenceComplete } = require('../js/gameplay');
+
+test('isSentenceComplete returns false when typed is shorter than sentence', () => {
+  expect(isSentenceComplete('hello', 'hello world')).toBe(false);
+});
+
+test('isSentenceComplete returns true when typed matches sentence perfectly', () => {
+  expect(isSentenceComplete('hello world', 'hello world')).toBe(true);
+});
+
+test('isSentenceComplete returns true at exactly 90% accuracy', () => {
+  // 10 of 11 chars correct = 90.9%
+  expect(isSentenceComplete('hellX_worl', 'hello_world')).toBe(false); // shorter — only 10 chars, sentence is 11
+  expect(isSentenceComplete('hellX_worldX', 'hello_worldX')).toBe(true); // 11/12 typed, 11 chars match = 91.6%
+});
+
+test('isSentenceComplete returns false when accuracy is below 90%', () => {
+  // 7 of 10 chars correct = 70%
+  expect(isSentenceComplete('hXllX_wXrld', 'hello_world')).toBe(false);
+});

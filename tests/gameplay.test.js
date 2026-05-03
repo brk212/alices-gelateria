@@ -82,13 +82,23 @@ test('generatePhrase words all come from the phase pool', () => {
   words.forEach(w => expect(pool).toContain(w));
 });
 
-test('generatePhrase produces no adjacent duplicate words (phase 1 pool is large enough)', () => {
-  for (let i = 0; i < 20; i++) {
-    const words = generatePhrase(1).split(' ');
-    for (let j = 0; j < words.length - 1; j++) {
-      expect(words[j]).not.toBe(words[j + 1]);
+test('generatePhrase produces no adjacent duplicate words', () => {
+  [1, 5, 6].forEach(phase => {
+    for (let i = 0; i < 20; i++) {
+      const words = generatePhrase(phase).split(' ');
+      for (let j = 0; j < words.length - 1; j++) {
+        expect(words[j]).not.toBe(words[j + 1]);
+      }
     }
-  }
+  });
+});
+
+test('no phase word pool contains duplicate words', () => {
+  [1, 2, 3, 4, 5, 6, 7].forEach(p => {
+    const pool = PHASE_WORDS[p];
+    const unique = new Set(pool);
+    expect(unique.size).toBe(pool.length);
+  });
 });
 
 test('PHASE_LETTER_LABELS has entries for phases 1 through 7', () => {

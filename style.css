@@ -1534,3 +1534,53 @@ body {
   text-align: center;
   padding: 6px 0;
 }
+
+/* ── Conversation Mode ──────────────────────────────────────────── */
+
+.order-card.conversation {
+  min-height: 140px;
+}
+
+.sentence-display {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin: 12px 0 10px;
+  flex-wrap: wrap;
+  word-break: break-word;
+}
+
+.sentence-char {
+  color: var(--ink-faint);
+  transition: color 0.06s;
+}
+
+.sentence-char.correct {
+  color: var(--mint-deep);
+}
+
+.sentence-char.wrong {
+  color: var(--pink-deep);
+  text-decoration: underline wavy;
+}
+
+.conv-input {
+  font-family: var(--mono);
+  font-size: 15px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 2.5px solid var(--ink);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  outline: none;
+  margin-top: 4px;
+}
+
+.conv-input:focus {
+  border-color: var(--pink-deep);
+  box-shadow: 3px 3px 0 var(--pink-deep);
+}

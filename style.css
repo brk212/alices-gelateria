@@ -1584,3 +1584,116 @@ body {
   border-color: var(--pink-deep);
   box-shadow: 3px 3px 0 var(--pink-deep);
 }
+
+/* ── Conversation Phase Picker Modal ─────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-box {
+  background: #1a1a2e;
+  border: 1px solid #3a3a6a;
+  border-radius: 16px;
+  padding: 24px;
+  width: min(360px, 92vw);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #e0e0ff;
+  margin-bottom: 4px;
+}
+
+.modal-subtitle {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.phase-picker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.phase-card {
+  background: #1e1e3f;
+  border: 1px solid #3a3a6a;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: border-color 0.15s;
+}
+
+.phase-card:hover {
+  border-color: #7c3aed;
+}
+
+.phase-card--active {
+  border-color: #a78bfa;
+  background: #261e4a;
+}
+
+.phase-card--full {
+  background: #1a0f2e;
+  border-color: #5a3a7a;
+}
+
+.phase-card--full:hover {
+  border-color: #9333ea;
+}
+
+.phase-card__num {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #a78bfa;
+}
+
+.phase-card--full .phase-card__num {
+  color: #c084fc;
+}
+
+.phase-card__letters {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+.phase-card__label {
+  font-size: 0.65rem;
+  color: #666;
+}
+
+.modal-cancel {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 6px;
+  text-align: center;
+}
+
+.modal-cancel:hover {
+  color: #aaa;
+}

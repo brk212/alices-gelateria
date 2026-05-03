@@ -77,8 +77,9 @@ var Screens = (function () {
 
     var pct = Math.round(result.accuracy * 100);
 
+    var ordersLabel = result.mode === 'conversation' ? 'Sentences Served' : 'Orders Served';
     stats.innerHTML = ''
-      + _statRow('Orders Served', result.ordersCompleted)
+      + _statRow(ordersLabel, result.ordersCompleted)
       + _statRow('Speed', result.wpm + ' wpm')
       + _statRow('Accuracy', pct + '%')
       + _statRow('Customers Lost', result.customersLost)

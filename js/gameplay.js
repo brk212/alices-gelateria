@@ -82,7 +82,9 @@ var Gameplay = (function () {
   function startShift(state, callbacks) {
     onShiftEnd = callbacks.onShiftEnd;
     var config = TIER_CONFIG[state.tier] || TIER_CONFIG.easy;
-    var wordPool = getWordPool(state.phase);
+    var wordPool = state.mode === 'conversation'
+      ? CONVERSATION_SENTENCES
+      : getWordPool(state.phase);
 
     session = {
       phase: state.phase,
@@ -101,7 +103,8 @@ var Gameplay = (function () {
       wordPool: wordPool,
       streak: 0,
       callbacks: callbacks,
-      shiftStartTime: Date.now()
+      shiftStartTime: Date.now(),
+      mode: state.mode || 'word'
     };
 
     session.customerQueue = buildCustomerQueue(config.ordersToWin + 5, CUSTOMERS);
@@ -111,7 +114,12 @@ var Gameplay = (function () {
     renderCustomerQueue();
     renderOrderArea();
 
-    Keyboard.render(state.phase, true);
+    if (session.mode !== 'conversation') {
+      Keyboard.render(state.phase, true);
+    } else {
+      var kbEl = document.getElementById('keyboard-hint');
+      if (kbEl) kbEl.innerHTML = '';
+    }
 
     paused = false;
     document.removeEventListener('keydown', _onKey);
@@ -147,6 +155,7 @@ var Gameplay = (function () {
     if (!session || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === 'Escape') { paused ? _resume() : _pause(); return; }
     if (paused) return;
+    if (session.mode === 'conversation') return;
     if (e.key.length !== 1) return;
     e.preventDefault();
 
@@ -168,6 +177,39 @@ var Gameplay = (function () {
       _completeOrder(order);
     } else {
       renderOrderArea();
+    }
+  }
+
+  function _updateSentenceDisplay(typed, sentence) {
+    sentence.split('').forEach(function (ch, i) {
+      var span = document.getElementById('sc-' + i);
+      if (!span) return;
+      if (i >= typed.length) {
+        span.className = 'sentence-char';
+      } else if (typed[i].toLowerCase() === ch.toLowerCase()) {
+        span.className = 'sentence-char correct';
+      } else {
+        span.className = 'sentence-char wrong';
+      }
+    });
+  }
+
+  function _onConvInput() {
+    if (!session || session.activeOrders.length === 0) return;
+    var order = session.activeOrders[0];
+    var inputEl = document.getElementById('conv-input');
+    if (!inputEl) return;
+    var typed = inputEl.value;
+    order.typedValue = typed;
+    _updateSentenceDisplay(typed, order.sentence);
+    if (isSentenceComplete(typed, order.sentence)) {
+      var correct = 0;
+      for (var i = 0; i < order.sentence.length; i++) {
+        if (typed[i].toLowerCase() === order.sentence[i].toLowerCase()) correct++;
+      }
+      session.totalCorrect += correct;
+      session.totalWrong += (order.sentence.length - correct);
+      _completeOrder(order);
     }
   }
 
@@ -226,6 +268,7 @@ var Gameplay = (function () {
     if (onShiftEnd) {
       onShiftEnd({
         won: won,
+        mode: session.mode,
         ordersCompleted: session.ordersCompleted,
         ordersToWin: session.ordersToWin,
         accuracy: calculateAccuracy(session.totalCorrect, session.totalWrong),
@@ -246,13 +289,24 @@ var Gameplay = (function () {
     while (session.activeOrders.length < config.maxConcurrent && session.customerQueue.length > session.activeOrders.length) {
       var customer = session.customerQueue[session.activeOrders.length];
       if (!customer) break;
-      var word = pickRandom(session.wordPool);
-      var order = {
-        customerId: customer.id,
-        customer: customer,
-        wordState: createWordState(word),
-        patience: 100
-      };
+      var order;
+      if (session.mode === 'conversation') {
+        order = {
+          customerId: customer.id,
+          customer: customer,
+          sentence: pickRandom(session.wordPool),
+          typedValue: '',
+          patience: 100
+        };
+      } else {
+        var word = pickRandom(session.wordPool);
+        order = {
+          customerId: customer.id,
+          customer: customer,
+          wordState: createWordState(word),
+          patience: 100
+        };
+      }
       session.activeOrders.push(order);
       startPatienceTimer(order);
     }
@@ -302,8 +356,12 @@ var Gameplay = (function () {
 
     var ribbonEl = document.getElementById('game-phase-info');
     if (ribbonEl) {
-      var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
-      ribbonEl.textContent = 'Phase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' orders';
+      if (session.mode === 'conversation') {
+        ribbonEl.textContent = 'Conversation Mode  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' sentences';
+      } else {
+        var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
+        ribbonEl.textContent = 'Phase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' orders';
+      }
     }
   }
 
@@ -317,7 +375,10 @@ var Gameplay = (function () {
         + '<div class="cust-portrait">' + _portrait(order.customer) + '</div>'
         + '<div class="cust-meta">'
         + '<div class="cust-name">' + order.customer.name + '</div>'
-        + '<div class="cust-want">→ ' + order.wordState.word + '</div>'
+        + '<div class="cust-want">→ ' + (session.mode === 'conversation'
+            ? order.sentence.slice(0, 22) + '…'
+            : order.wordState.word)
+        + '</div>'
         + '<div class="patience-track"><div class="patience-fill" id="patience-' + order.customerId + '" style="width:' + order.patience + '%"></div></div>'
         + '</div></div>';
     });
@@ -347,6 +408,11 @@ var Gameplay = (function () {
   ];
 
   function renderOrderArea() {
+    if (session && session.mode === 'conversation') {
+      renderConversationOrderArea();
+      return;
+    }
+
     var container = document.getElementById('order-area');
     if (!container) return;
 
@@ -395,6 +461,47 @@ var Gameplay = (function () {
 
     if (!ws.complete) {
       Keyboard.highlightKey(ws.word[ws.index]);
+    }
+  }
+
+  function renderConversationOrderArea() {
+    var container = document.getElementById('order-area');
+    if (!container) return;
+
+    if (session.activeOrders.length === 0) {
+      container.innerHTML = '<div style="font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink-faint);padding:20px;text-align:center;">One moment…</div>';
+      return;
+    }
+
+    var order = session.activeOrders[0];
+    var typed = order.typedValue || '';
+
+    var spansHtml = order.sentence.split('').map(function (ch, i) {
+      var cls = 'sentence-char';
+      if (i < typed.length) {
+        cls += typed[i].toLowerCase() === ch.toLowerCase() ? ' correct' : ' wrong';
+      }
+      var display = ch === ' ' ? '&nbsp;' : ch;
+      return '<span class="' + cls + '" id="sc-' + i + '">' + display + '</span>';
+    }).join('');
+
+    var html = '<div class="order-card conversation">'
+      + '<div class="order-header">'
+      + '<div class="order-portrait">' + _portrait(order.customer) + '</div>'
+      + '<div class="order-cust-name">' + order.customer.name + '</div>'
+      + '</div>'
+      + '<div class="sentence-display">' + spansHtml + '</div>'
+      + '<input type="text" id="conv-input" class="conv-input" autocomplete="off" spellcheck="false">'
+      + '</div>';
+
+    container.innerHTML = html;
+
+    var inputEl = document.getElementById('conv-input');
+    if (inputEl) {
+      inputEl.value = typed;
+      inputEl.focus();
+      inputEl.setSelectionRange(typed.length, typed.length);
+      inputEl.addEventListener('input', _onConvInput);
     }
   }
 

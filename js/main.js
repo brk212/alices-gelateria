@@ -28,8 +28,8 @@
     if (convBtn) convBtn.onclick = startConversationShift;
   }
 
-  // phase and tier are optional — if omitted, uses current state values
-  function startShift(phase, tier, mode) {
+  // phase, tier, and mode are optional — if omitted, uses current state values
+  function startShift(phase, tier, mode, conversationPhase) {
     Screens.showScreen('game');
 
     var quitBtn = document.getElementById('game-quit');
@@ -41,7 +41,13 @@
     var state = State.loadState();
     var playPhase = (mode === 'conversation') ? state.phase : (phase || state.phase);
     var playTier  = (mode === 'conversation') ? 'medium'    : (tier  || state.tier);
-    var playState = Object.assign({}, state, { phase: playPhase, tier: playTier, mode: mode || 'word' });
+    var playConvPhase = conversationPhase !== undefined ? conversationPhase : (state.conversationPhase || 'full');
+    var playState = Object.assign({}, state, {
+      phase: playPhase,
+      tier: playTier,
+      mode: mode || 'word',
+      conversationPhase: playConvPhase
+    });
 
     Gameplay.startShift(playState, {
       onShiftEnd: function (result) {
@@ -91,8 +97,45 @@
     });
   }
 
+  function showConversationPhasePicker(onSelect) {
+    var modal = document.getElementById('conversation-phase-modal');
+    if (modal.style.display === 'flex') return;  // already open
+    var state = State.loadState();
+    var lastPhase = state.conversationPhase || 'full';
+
+    // Highlight last-used phase
+    modal.querySelectorAll('.phase-card').forEach(function (card) {
+      var phase = card.getAttribute('data-phase');
+      var phaseVal = phase === 'full' ? 'full' : parseInt(phase, 10);
+      card.classList.toggle('phase-card--active', phaseVal === lastPhase);
+    });
+
+    modal.style.display = 'flex';
+
+    function handleCardClick(e) {
+      var card = e.target.closest('.phase-card');
+      if (!card) return;
+      var raw = card.getAttribute('data-phase');
+      var phase = raw === 'full' ? 'full' : parseInt(raw, 10);
+      cleanup();
+      onSelect(phase);
+    }
+
+    function cleanup() {
+      modal.style.display = 'none';
+      modal.querySelector('.phase-picker-grid').removeEventListener('click', handleCardClick);
+      document.getElementById('conversation-phase-cancel').removeEventListener('click', cleanup);
+    }
+
+    modal.querySelector('.phase-picker-grid').addEventListener('click', handleCardClick);
+    document.getElementById('conversation-phase-cancel').addEventListener('click', cleanup);
+  }
+
   function startConversationShift() {
-    startShift(null, null, 'conversation');
+    showConversationPhasePicker(function (conversationPhase) {
+      State.updateState({ conversationPhase: conversationPhase });
+      startShift(null, null, 'conversation', conversationPhase);
+    });
   }
 
   function goLevelSelect() {

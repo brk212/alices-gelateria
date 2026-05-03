@@ -32,10 +32,11 @@ var Gameplay = (function () {
   }
 
   function isSentenceComplete(typed, sentence) {
+    if (!sentence || sentence.length === 0) return false;
     if (typed.length < sentence.length) return false;
     var correct = 0;
     for (var i = 0; i < sentence.length; i++) {
-      if (typed[i] === sentence[i]) correct++;
+      if (typed[i].toLowerCase() === sentence[i].toLowerCase()) correct++;
     }
     return correct / sentence.length >= 0.9;
   }

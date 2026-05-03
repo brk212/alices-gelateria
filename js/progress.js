@@ -17,6 +17,21 @@ var Progress = (function () {
     State.updateState({ accuracyHistory: history, streak: newStreak });
   }
 
+  function recordConversationSession(result) {
+    var state = State.loadState();
+    var conv = state.conversationStats;
+    var today = new Date().toISOString().slice(0, 10);
+    var history = conv.accuracyHistory.concat([{ date: today, accuracy: result.accuracy, wpm: result.wpm || 0 }]);
+    if (history.length > 30) history = history.slice(history.length - 30);
+    State.updateState({
+      conversationStats: {
+        totalSentences: conv.totalSentences + result.ordersCompleted,
+        bestWPM: Math.max(conv.bestWPM, result.wpm || 0),
+        accuracyHistory: history
+      }
+    });
+  }
+
   function render(state) {
     var container = document.getElementById('progress-content');
     if (!container) return;
@@ -90,6 +105,17 @@ var Progress = (function () {
 
     html += '</div></div>';
 
+    var conv = state.conversationStats;
+    if (conv && conv.totalSentences > 0) {
+      html += '<div class="prog-card">'
+        + '<div class="prog-card-title">Conversation Mode</div>'
+        + '<div class="prog-stat-row">'
+        + _statBox('Sentences', conv.totalSentences, '')
+        + _statBox('Best Speed', conv.bestWPM + ' wpm', 'yellow')
+        + '</div>'
+        + '</div>';
+    }
+
     container.innerHTML = html;
   }
 
@@ -100,5 +126,5 @@ var Progress = (function () {
       + '</div>';
   }
 
-  return { render, recordSession };
+  return { render, recordSession, recordConversationSession };
 })();

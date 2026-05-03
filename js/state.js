@@ -8,7 +8,8 @@ var State = (function () {
     accuracyHistory: [],
     streak: { lastPlayedDate: null, count: 0 },
     totalWords: 0,
-    conversationStats: { totalSentences: 0, bestWPM: 0, accuracyHistory: [] }
+    conversationStats: { totalSentences: 0, bestWPM: 0, accuracyHistory: [] },
+    conversationPhase: 'full'
   };
 
   var STORAGE_KEY = 'alices_gelateria_state';

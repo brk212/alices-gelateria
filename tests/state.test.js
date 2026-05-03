@@ -56,3 +56,13 @@ test('updateState deep-merges conversationStats', () => {
   expect(loaded.conversationStats.totalSentences).toBe(5);
   expect(loaded.conversationStats.bestWPM).toBe(12);
 });
+
+test('DEFAULT_STATE includes conversationPhase defaulting to full', () => {
+  expect(DEFAULT_STATE.conversationPhase).toBe('full');
+});
+
+test('updateState handles conversationPhase', () => {
+  saveState({ ...DEFAULT_STATE });
+  updateState({ conversationPhase: 3 });
+  expect(loadState().conversationPhase).toBe(3);
+});

@@ -49,6 +49,29 @@ var Gameplay = (function () {
     hard:   { ordersToWin: 25, maxConcurrent: 3, patienceMs: 25000 }
   };
   var CONVERSATION_CONFIG = { ordersToWin: 10, maxConcurrent: 2, patienceMs: 40000 };
+  var PHASE_LETTER_LABELS = {
+    1: { letters: 'a s d f j k l', label: 'home row' },
+    2: { letters: '+ g h',         label: 'left stretch' },
+    3: { letters: '+ i e',         label: 'top row vowels' },
+    4: { letters: '+ u r',         label: 'right vowel + reach' },
+    5: { letters: '+ t y',         label: 'top row center' },
+    6: { letters: '+ w o p',       label: 'outer ring' },
+    7: { letters: '+ n b m c z v', label: 'bottom row' }
+  };
+
+  function generatePhrase(phase) {
+    var pool = PHASE_WORDS[phase].slice();
+    for (var i = pool.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    var words = [];
+    for (var k = 0; k < 9; k++) {
+      words.push(pool[k % pool.length]);
+    }
+    return words.join(' ');
+  }
+
   var COINS_PER_WORD = 10;
   var MAX_LIVES = 3;
 
@@ -544,8 +567,8 @@ var Gameplay = (function () {
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { createWordState, handleKeypress, calculateAccuracy, isSentenceComplete };
+    module.exports = { createWordState, handleKeypress, calculateAccuracy, isSentenceComplete, generatePhrase, PHASE_LETTER_LABELS };
   }
 
-  return { startShift, abortShift, getSession, createWordState, handleKeypress, calculateAccuracy, isSentenceComplete };
+  return { startShift, abortShift, getSession, createWordState, handleKeypress, calculateAccuracy, isSentenceComplete, generatePhrase, PHASE_LETTER_LABELS };
 })();

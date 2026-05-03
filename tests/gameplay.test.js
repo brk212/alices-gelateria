@@ -64,3 +64,37 @@ test('isSentenceComplete returns false when accuracy is below 90%', () => {
   // 7 of 10 chars correct = 70%
   expect(isSentenceComplete('hXllX_wXrld', 'hello_world')).toBe(false);
 });
+
+const { PHASE_WORDS } = require('../data/words');
+global.PHASE_WORDS = PHASE_WORDS;
+const { generatePhrase, PHASE_LETTER_LABELS } = require('../js/gameplay');
+
+test('generatePhrase returns 9 space-separated words for phase 1', () => {
+  const phrase = generatePhrase(1);
+  const words = phrase.split(' ');
+  expect(words).toHaveLength(9);
+});
+
+test('generatePhrase words all come from the phase pool', () => {
+  const phrase = generatePhrase(1);
+  const words = phrase.split(' ');
+  const pool = PHASE_WORDS[1];
+  words.forEach(w => expect(pool).toContain(w));
+});
+
+test('generatePhrase produces no adjacent duplicate words (phase 1 pool is large enough)', () => {
+  for (let i = 0; i < 20; i++) {
+    const words = generatePhrase(1).split(' ');
+    for (let j = 0; j < words.length - 1; j++) {
+      expect(words[j]).not.toBe(words[j + 1]);
+    }
+  }
+});
+
+test('PHASE_LETTER_LABELS has entries for phases 1 through 7', () => {
+  [1, 2, 3, 4, 5, 6, 7].forEach(p => {
+    expect(PHASE_LETTER_LABELS[p]).toBeDefined();
+    expect(typeof PHASE_LETTER_LABELS[p].letters).toBe('string');
+    expect(typeof PHASE_LETTER_LABELS[p].label).toBe('string');
+  });
+});

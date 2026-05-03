@@ -40,3 +40,19 @@ test('DEFAULT_STATE has expected shape', () => {
     totalWords: 0
   });
 });
+
+test('DEFAULT_STATE includes conversationStats with expected shape', () => {
+  expect(DEFAULT_STATE.conversationStats).toEqual({
+    totalSentences: 0,
+    bestWPM: 0,
+    accuracyHistory: []
+  });
+});
+
+test('updateState deep-merges conversationStats', () => {
+  saveState({ ...DEFAULT_STATE });
+  updateState({ conversationStats: { totalSentences: 5, bestWPM: 12, accuracyHistory: [] } });
+  const loaded = loadState();
+  expect(loaded.conversationStats.totalSentences).toBe(5);
+  expect(loaded.conversationStats.bestWPM).toBe(12);
+});

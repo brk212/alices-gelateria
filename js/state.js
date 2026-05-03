@@ -7,7 +7,8 @@ var State = (function () {
     unlocks: [],
     accuracyHistory: [],
     streak: { lastPlayedDate: null, count: 0 },
-    totalWords: 0
+    totalWords: 0,
+    conversationStats: { totalSentences: 0, bestWPM: 0, accuracyHistory: [] }
   };
 
   var STORAGE_KEY = 'alices_gelateria_state';
@@ -33,6 +34,9 @@ var State = (function () {
     var next = Object.assign({}, current, partial);
     if (partial.streak) {
       next.streak = Object.assign({}, current.streak, partial.streak);
+    }
+    if (partial.conversationStats) {
+      next.conversationStats = Object.assign({}, current.conversationStats, partial.conversationStats);
     }
     saveState(next);
     return next;

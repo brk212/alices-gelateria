@@ -43,12 +43,13 @@ var Gameplay = (function () {
 
   // ── Session config ───────────────────────────────────────────────────
 
+  // patienceMultiplier: headroom above 10 WPM (50 cpm). 1.0 = must type at exactly 10 WPM.
   var TIER_CONFIG = {
-    easy:   { ordersToWin: 15, maxConcurrent: 1, patienceMs: 60000 },
-    medium: { ordersToWin: 20, maxConcurrent: 2, patienceMs: 40000 },
-    hard:   { ordersToWin: 25, maxConcurrent: 3, patienceMs: 25000 }
+    easy:   { ordersToWin: 15, maxConcurrent: 1, patienceMultiplier: 2.0 },
+    medium: { ordersToWin: 20, maxConcurrent: 2, patienceMultiplier: 1.4 },
+    hard:   { ordersToWin: 25, maxConcurrent: 3, patienceMultiplier: 1.0 }
   };
-  var CONVERSATION_CONFIG = { ordersToWin: 10, maxConcurrent: 2, patienceMs: 40000 };
+  var CONVERSATION_CONFIG = { ordersToWin: 10, maxConcurrent: 2, patienceMultiplier: 1.75 };
   var PHASE_LETTER_LABELS = {
     1: { letters: 'a s d f j k l', label: 'home row' },
     2: { letters: '+ g h',         label: 'left stretch' },
@@ -348,7 +349,8 @@ var Gameplay = (function () {
 
   function startPatienceTimer(order) {
     var tickMs = 500;
-    var decrementPerTick = (tickMs / session.config.patienceMs) * 100;
+    var patienceMs = Math.round((order.sentence.length / 50) * 60000 * session.config.patienceMultiplier);
+    var decrementPerTick = (tickMs / patienceMs) * 100;
 
     patienceIntervals[order.customerId] = setInterval(function () {
       if (!session) return;

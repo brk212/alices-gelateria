@@ -1590,7 +1590,7 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(42, 26, 46, 0.72);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1598,26 +1598,33 @@ body {
 }
 
 .modal-box {
-  background: #1a1a2e;
-  border: 1px solid #3a3a6a;
-  border-radius: 16px;
+  background: #ff8fc4;
+  border: 3px solid #2a1a2e;
+  border-radius: 18px;
   padding: 24px;
-  width: min(360px, 92vw);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  width: min(400px, 92vw);
+  box-shadow: 8px 8px 0 #2a1a2e;
+}
+
+.modal-kicker {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #6b4f6f;
+  margin-bottom: 4px;
 }
 
 .modal-title {
   text-align: center;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #e0e0ff;
-  margin-bottom: 4px;
-}
-
-.modal-subtitle {
-  text-align: center;
-  font-size: 0.8rem;
-  color: #888;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 26px;
+  color: #2a1a2e;
+  line-height: 1.1;
   margin-bottom: 16px;
 }
 
@@ -1625,61 +1632,136 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .picker-card {
-  background: #1e1e3f;
-  border: 1px solid #3a3a6a;
-  border-radius: 10px;
-  padding: 10px;
+  background: #2a1a2e;
+  border: 3px solid #2a1a2e;
+  border-radius: 14px;
+  padding: 12px;
   cursor: pointer;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  transition: border-color 0.15s;
+  gap: 6px;
+  box-shadow: 4px 4px 0 #e91e63;
+  transition: transform 0.1s, box-shadow 0.1s;
+  color: #fff5e8;
 }
 
 .picker-card:hover {
-  border-color: #7c3aed;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #e91e63;
 }
 
 .picker-card--active {
-  border-color: #a78bfa;
-  background: #261e4a;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #e91e63, 5px 5px 0 3px #2a1a2e;
 }
 
-.picker-card--full {
-  background: #1a0f2e;
-  border-color: #5a3a7a;
+.picker-card__header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
-.picker-card--full:hover {
-  border-color: #9333ea;
+.picker-card__badge {
+  background: #ffd23a;
+  color: #2a1a2e;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 14px;
+  border: 2px solid #fff5e8;
+  flex-shrink: 0;
 }
 
-.picker-card__num {
-  font-family: monospace;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #a78bfa;
+.picker-card__name {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 15px;
+  color: #fff5e8;
+  line-height: 1;
 }
 
-.picker-card--full .picker-card__num {
-  color: #c084fc;
+.picker-card__glyphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-items: center;
+  min-height: 20px;
 }
 
-.picker-card__letters {
-  font-family: monospace;
-  font-size: 0.7rem;
-  color: #aaa;
-  letter-spacing: 1px;
+.picker-card__glyphs .glyph {
+  background: #e91e63;
+  color: #fff5e8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.picker-card__glyphs .plus {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #a18ba6;
 }
 
 .picker-card__label {
-  font-size: 0.65rem;
-  color: #666;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #a18ba6;
+}
+
+/* Full keyboard card — yellow accent */
+.picker-card--full {
+  background: #ffd23a;
+  border-color: #2a1a2e;
+  box-shadow: 4px 4px 0 #2a1a2e;
+  color: #2a1a2e;
+}
+
+.picker-card--full:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #2a1a2e;
+}
+
+.picker-card--full.picker-card--active {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #2a1a2e, 5px 5px 0 3px #e91e63;
+}
+
+.picker-card--full .picker-card__badge {
+  background: #2a1a2e;
+  color: #ffd23a;
+  border-color: #2a1a2e;
+  font-size: 16px;
+}
+
+.picker-card--full .picker-card__name {
+  color: #2a1a2e;
+}
+
+.picker-card--full .picker-card__label {
+  color: #6b4f6f;
+}
+
+.picker-card--full .picker-card__glyphs .glyph {
+  background: #2a1a2e;
+  color: #ffd23a;
 }
 
 .modal-cancel {
@@ -1687,13 +1769,19 @@ body {
   width: 100%;
   background: none;
   border: none;
-  color: #666;
-  font-size: 0.8rem;
+  color: #6b4f6f;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   cursor: pointer;
   padding: 6px;
   text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .modal-cancel:hover {
-  color: #aaa;
+  color: #2a1a2e;
 }

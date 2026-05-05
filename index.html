@@ -264,47 +264,87 @@
   <!-- Conversation Phase Picker Modal -->
   <div id="conversation-phase-modal" class="modal-overlay" style="display:none;">
     <div class="modal-box">
+      <div class="modal-kicker">choose your letter set</div>
       <div class="modal-title">💬 Conversation Mode</div>
-      <div class="modal-subtitle">Choose your letter set</div>
       <div class="phase-picker-grid">
         <button class="picker-card" data-phase="1">
-          <span class="picker-card__num">Phase 1</span>
-          <span class="picker-card__letters">a s d f j k l</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">1</span>
+            <span class="picker-card__name">Phase 1</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="glyph">a</span><span class="glyph">s</span><span class="glyph">d</span><span class="glyph">f</span><span class="glyph">j</span><span class="glyph">k</span><span class="glyph">l</span>
+          </div>
           <span class="picker-card__label">home row</span>
         </button>
         <button class="picker-card" data-phase="2">
-          <span class="picker-card__num">Phase 2</span>
-          <span class="picker-card__letters">+ g h</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">2</span>
+            <span class="picker-card__name">Phase 2</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="plus">+</span><span class="glyph">g</span><span class="glyph">h</span>
+          </div>
           <span class="picker-card__label">left stretch</span>
         </button>
         <button class="picker-card" data-phase="3">
-          <span class="picker-card__num">Phase 3</span>
-          <span class="picker-card__letters">+ i e</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">3</span>
+            <span class="picker-card__name">Phase 3</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="plus">+</span><span class="glyph">i</span><span class="glyph">e</span>
+          </div>
           <span class="picker-card__label">top row vowels</span>
         </button>
         <button class="picker-card" data-phase="4">
-          <span class="picker-card__num">Phase 4</span>
-          <span class="picker-card__letters">+ u r</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">4</span>
+            <span class="picker-card__name">Phase 4</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="plus">+</span><span class="glyph">u</span><span class="glyph">r</span>
+          </div>
           <span class="picker-card__label">right vowel + reach</span>
         </button>
         <button class="picker-card" data-phase="5">
-          <span class="picker-card__num">Phase 5</span>
-          <span class="picker-card__letters">+ t y</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">5</span>
+            <span class="picker-card__name">Phase 5</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="plus">+</span><span class="glyph">t</span><span class="glyph">y</span>
+          </div>
           <span class="picker-card__label">top row center</span>
         </button>
         <button class="picker-card" data-phase="6">
-          <span class="picker-card__num">Phase 6</span>
-          <span class="picker-card__letters">+ w o p</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">6</span>
+            <span class="picker-card__name">Phase 6</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="plus">+</span><span class="glyph">w</span><span class="glyph">o</span><span class="glyph">p</span>
+          </div>
           <span class="picker-card__label">outer ring</span>
         </button>
         <button class="picker-card" data-phase="7">
-          <span class="picker-card__num">Phase 7</span>
-          <span class="picker-card__letters">+ n b m c z v</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">7</span>
+            <span class="picker-card__name">Phase 7</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="plus">+</span><span class="glyph">n</span><span class="glyph">b</span><span class="glyph">m</span><span class="glyph">c</span><span class="glyph">z</span><span class="glyph">v</span>
+          </div>
           <span class="picker-card__label">bottom row</span>
         </button>
         <button class="picker-card picker-card--full" data-phase="full">
-          <span class="picker-card__num">⌨️ Full</span>
-          <span class="picker-card__letters">all keys</span>
+          <div class="picker-card__header">
+            <span class="picker-card__badge">★</span>
+            <span class="picker-card__name">Full Keys</span>
+          </div>
+          <div class="picker-card__glyphs">
+            <span class="glyph">a–z</span>
+          </div>
           <span class="picker-card__label">real sentences</span>
         </button>
       </div>

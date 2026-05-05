@@ -349,7 +349,8 @@ var Gameplay = (function () {
 
   function startPatienceTimer(order) {
     var tickMs = 500;
-    var patienceMs = Math.round((order.sentence.length / 50) * 60000 * session.config.patienceMultiplier);
+    var text = order.sentence !== undefined ? order.sentence : order.wordState.word;
+    var patienceMs = Math.round((text.length / 50) * 60000 * session.config.patienceMultiplier);
     var decrementPerTick = (tickMs / patienceMs) * 100;
 
     patienceIntervals[order.customerId] = setInterval(function () {

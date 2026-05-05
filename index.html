@@ -41,57 +41,64 @@
         <div class="home-greet-day">buongiorno · Good morning!</div>
         <div class="home-greet-name" id="home-greeting">Alice</div>
         <div class="home-grid">
-          <!-- Open card -->
+          <!-- Col 1: Open Shop card -->
           <div class="open-card">
             <div class="open-awning"></div>
             <div class="open-card-body">
               <div class="neon-aperto">APERTO</div>
               <div class="neon-sub">La gelateria è aperta!<br>The shop is open!</div>
+            </div>
+            <div class="open-cta-wrap">
               <button id="home-open" class="open-cta">Iniziamo! Open the Shop →</button>
             </div>
           </div>
-          <!-- Shop windows -->
-          <div class="shop-windows">
-            <div class="shop-window">
+          <!-- Col 2: Level + Navigate stacked -->
+          <div class="mid-col">
+            <div class="level-card">
               <div class="sw-head">
                 <div class="sw-title">Your Level</div>
                 <div class="sw-count" id="home-phase">Phase 1</div>
               </div>
-              <div class="phase-card">
-                <div class="phase-row">
-                  <div class="phase-num" id="home-phase-num">1</div>
-                  <div>
-                    <div class="phase-title" id="home-phase-name">Home Row</div>
-                    <div class="phase-tier" id="home-tier">Easy</div>
-                  </div>
-                </div>
+              <div class="level-row">
+                <div class="level-num" id="home-phase-num">1</div>
+                <div class="level-letters" id="home-phase-name">Home Row</div>
+                <div class="level-tag" id="home-tier">Easy</div>
               </div>
             </div>
-            <div class="shop-window">
-              <div class="sw-head">
-                <div class="sw-title">Navigate</div>
+            <div class="nav-panel">
+              <div class="nav-panel-head">
+                <div class="nav-panel-title">Navigate</div>
+                <div class="nav-panel-hint">PICK A FLAVOR</div>
               </div>
-              <div class="home-nav-pills">
-                <button id="nav-levelselect" class="btn btn-primary" style="font-size:14px;padding:8px 18px;">🎯 Choose Level</button>
-                <button id="nav-upgrades" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">🛒 Shop</button>
-                <button id="nav-progress" class="btn btn-secondary" style="font-size:14px;padding:8px 18px;">📊 Progress</button>
-                <button id="nav-conversation" class="btn btn-primary" style="font-size:14px;padding:8px 18px;">💬 Conversation</button>
+              <div class="nav-list">
+                <button id="nav-levelselect" class="navbtn navbtn--pink">
+                  <span class="navbtn-glyph">L</span><span class="navbtn-label">Choose Level</span><span class="navbtn-arrow">→</span>
+                </button>
+                <button id="nav-upgrades" class="navbtn navbtn--mint">
+                  <span class="navbtn-glyph">$</span><span class="navbtn-label">Shop</span><span class="navbtn-arrow">→</span>
+                </button>
+                <button id="nav-progress" class="navbtn navbtn--yellow">
+                  <span class="navbtn-glyph">↗</span><span class="navbtn-label">Progress</span><span class="navbtn-arrow">→</span>
+                </button>
+                <button id="nav-conversation" class="navbtn navbtn--blue">
+                  <span class="navbtn-glyph">"</span><span class="navbtn-label">Conversation</span><span class="navbtn-arrow">→</span>
+                </button>
               </div>
             </div>
           </div>
-          <!-- Side stats -->
-          <div class="home-side">
-            <div class="side-card yellow">
-              <div class="side-label">Coins</div>
-              <div class="side-stat" id="home-coins-stat">0</div>
+          <!-- Col 3: Stats stack -->
+          <div class="stat-stack">
+            <div class="stat-card coins">
+              <div class="stat-card-label">COINS</div>
+              <div class="stat-card-value" id="home-coins-stat">0</div>
             </div>
-            <div class="side-card dark">
-              <div class="side-label">Total Words</div>
-              <div class="side-stat" id="home-words">0</div>
+            <div class="stat-card dark">
+              <div class="stat-card-label">TOTAL WORDS</div>
+              <div class="stat-card-value" id="home-words">0</div>
             </div>
-            <div class="side-card mint">
-              <div class="side-label">Streak 🔥</div>
-              <div class="side-stat" id="home-streak">0</div>
+            <div class="stat-card mint">
+              <div class="stat-card-label">STREAK ⚡</div>
+              <div class="stat-card-value" id="home-streak">0</div>
             </div>
           </div>
         </div>

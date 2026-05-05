@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Alice's Gelateria — Hi-Fi Screens</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="moic.css" />
+<style>
+  /* Per-screen layout helpers */
+  body { padding: 28px 28px 56px; }
+  .wrap { max-width: 1240px; }
+  .screen { margin-bottom: 56px; }
+
+  /* === SETUP B: Door of Alice's === */
+  .door-frame {
+    position: relative;
+    background: var(--pink);
+    padding: 0;
+    overflow: hidden;
+  }
+  .door-bg {
+    background:
+      radial-gradient(circle at 20% 80%, rgba(255,210,58,0.25) 0 60px, transparent 80px),
+      radial-gradient(circle at 80% 30%, rgba(155,224,200,0.3) 0 70px, transparent 90px),
+      var(--pink);
+    padding: 50px 60px 60px;
+    min-height: 620px;
+    position: relative;
+  }
+  .clouds {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .cloud {
+    position: absolute;
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .door-card {
+    position: relative;
+    max-width: 540px;
+    margin: 0 auto;
+    background: var(--cream);
+    border: 4px solid var(--ink);
+    border-radius: 22px 22px 6px 6px;
+    box-shadow: 8px 8px 0 var(--ink);
+    overflow: hidden;
+  }
+  .door-awning-row {
+    height: 36px;
+    background: repeating-linear-gradient(90deg, var(--pink-deep) 0 36px, var(--cream) 36px 72px);
+    border-bottom: 3px solid var(--ink);
+    position: relative;
+  }
+  .door-awning-row::after {
+    content: ''; position: absolute; bottom: -10px; left:0; right: 0; height: 12px;
+    background: var(--ink);
+    clip-path: polygon(0 0, 6% 100%, 12% 0, 18% 100%, 24% 0, 30% 100%, 36% 0, 42% 100%, 48% 0, 54% 100%, 60% 0, 66% 100%, 72% 0, 78% 100%, 84% 0, 90% 100%, 96% 0, 100% 100%, 100% 0);
+  }
+  .door-sign {
+    background: var(--ink);
+    padding: 22px 28px 16px;
+    text-align: center;
+    color: var(--cream);
+  }
+  .door-kicker { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.7; }
+  .door-name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 56px; line-height: 1; margin-top: 4px;
+    letter-spacing: -0.02em;
+  }
+  .door-name .a { color: var(--yellow); }
+  .door-name .g { color: var(--mint); }
+  .door-name .heart { color: var(--pink-deep); display: inline-block; margin: 0 6px; transform: translateY(-3px); }
+  .door-est { font-size: 10px; letter-spacing: 0.18em; margin-top: 8px; opacity: 0.8; }
+
+  .door-body { padding: 30px 36px 28px; text-align: center; }
+  .door-greeting {
+    font-family: var(--display); font-weight: 700;
+    font-size: 19px; color: var(--ink-soft); margin-bottom: 8px; line-height: 1.3;
+  }
+  .door-greeting .it { font-style: italic; color: var(--ink); }
+  .door-prompt {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 26px; color: var(--ink); margin-bottom: 18px;
+  }
+  .name-input {
+    width: 100%;
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-bottom-width: 6px;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 28px; color: var(--ink);
+    box-shadow: 4px 4px 0 var(--pink-deep);
+    outline: none;
+  }
+  .name-input::placeholder { color: var(--ink-faint); }
+
+  .name-suggest {
+    margin-top: 12px;
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+  }
+  .name-chip {
+    background: var(--pink-soft);
+    border: 2px solid var(--ink);
+    border-bottom-width: 3px;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px; font-weight: 700;
+    box-shadow: 1px 1px 0 var(--ink);
+    cursor: pointer;
+  }
+  .name-chip.alt { background: var(--mint); }
+  .name-chip.alt2 { background: var(--yellow); }
+
+  .door-windows {
+    margin-top: 22px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .window {
+    background: var(--pink-soft);
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 3px 3px 0 var(--ink);
+    text-align: left;
+  }
+  .window-label {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink); margin-bottom: 6px;
+  }
+  .window-tubs {
+    display: flex; gap: 4px; align-items: flex-end;
+  }
+  .mini-tub {
+    width: 22px; height: 18px;
+    border: 2px solid var(--ink);
+    border-bottom-width: 3px;
+    border-top-left-radius: 8px; border-top-right-radius: 8px;
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .mini-tub.locked {
+    background: repeating-linear-gradient(135deg, var(--cream) 0 4px, var(--pink) 4px 8px);
+    opacity: 0.55;
+  }
+  .window-cust { display: flex; gap: 6px; align-items: center; }
+  .mini-portrait {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .door-cta {
+    margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .door-cta .hint {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--cream); opacity: 0.95;
+  }
+
+  .key-loop {
+    position: absolute; bottom: 18px; right: 22px;
+    font-size: 10px; font-weight: 700; color: var(--ink); opacity: 0.5;
+  }
+
+  /* === HOME A: Block Plan === */
+  .home-frame {
+    background: var(--pink);
+    padding: 0;
+    min-height: 700px;
+    position: relative;
+    overflow: hidden;
+  }
+  .home-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, var(--pink-soft) 0%, var(--pink) 60%, var(--pink-deep) 100%);
+  }
+  .home-content { position: relative; padding: 34px 38px; }
+
+  .home-hud {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 22px;
+  }
+  .home-greet {
+    color: var(--cream);
+  }
+  .home-greet .day {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.85;
+  }
+  .home-greet .name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 44px; line-height: 1; margin-top: 4px;
+    text-shadow: 3px 3px 0 var(--pink-deep);
+  }
+  .home-greet .name .y { color: var(--yellow); }
+  .home-stats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .home-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 18px;
+    align-items: stretch;
+  }
+
+  /* big sign card */
+  .open-card {
+    background: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 6px 6px 0 var(--ink);
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .open-awning {
+    height: 22px;
+    background: repeating-linear-gradient(90deg, var(--pink-deep) 0 28px, var(--cream) 28px 56px);
+  }
+  .open-card-body {
+    padding: 32px 28px 26px;
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    background:
+      radial-gradient(circle at 50% 100%, rgba(255,210,58,0.18) 0%, transparent 60%),
+      var(--ink);
+    color: var(--cream);
+  }
+  .neon-aperto {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 88px; line-height: 0.9; margin-bottom: 10px;
+    color: var(--yellow);
+    text-shadow:
+      0 0 12px rgba(255,210,58,0.7),
+      0 0 24px rgba(255,210,58,0.4),
+      4px 4px 0 var(--pink-deep);
+    letter-spacing: -0.02em;
+  }
+  .neon-sub {
+    font-family: var(--display); font-weight: 700;
+    font-size: 18px; opacity: 0.85; margin-bottom: 22px; line-height: 1.3;
+  }
+  .open-line {
+    background: var(--pink-deep);
+    color: var(--cream);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 2px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--ink);
+    margin-bottom: 18px;
+  }
+  .open-cta {
+    background: var(--pink-deep);
+    color: var(--cream);
+    border: 3px solid var(--cream);
+    border-radius: 14px;
+    padding: 18px 36px;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 26px;
+    box-shadow: 0 0 0 3px var(--ink), 5px 5px 0 5px var(--ink);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .open-cta:hover { transform: translate(-1px,-1px); }
+  .open-cta .arrow { display: inline-block; margin-left: 8px; }
+
+  .open-line-detail {
+    margin-top: 16px;
+    display: flex; gap: 6px; justify-content: center;
+  }
+  .line-portrait {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2.5px solid var(--cream);
+    background: var(--pink-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .line-portrait.alt2 { background: var(--mint); }
+  .line-portrait.alt3 { background: var(--yellow); }
+
+  /* shop-state windows */
+  .shop-windows { display: flex; flex-direction: column; gap: 14px; }
+  .shop-window {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 4px 4px 0 var(--ink);
+    flex: 1;
+  }
+  .sw-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .sw-title {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 18px; color: var(--ink);
+  }
+  .sw-count {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--ink-soft);
+  }
+  .sw-tubs {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  }
+  .sw-tub {
+    aspect-ratio: 1.1 / 1;
+    border: 2px solid var(--ink);
+    border-bottom-width: 3px;
+    border-top-left-radius: 8px; border-top-right-radius: 8px;
+    box-shadow: 1px 1px 0 var(--ink);
+    position: relative;
+  }
+  .sw-tub.locked {
+    background: repeating-linear-gradient(135deg, var(--pink-soft) 0 5px, var(--cream) 5px 10px);
+    opacity: 0.7;
+  }
+  .sw-tub.locked::after {
+    content: '?'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    color: var(--ink-faint); font-size: 16px;
+  }
+
+  .sw-customers {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .sw-cust {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 2.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 2px 2px 0 var(--ink);
+    position: relative;
+  }
+  .sw-cust.locked {
+    background: var(--ink);
+    color: var(--ink-faint);
+    opacity: 0.6;
+  }
+
+  /* right column */
+  .home-side { display: flex; flex-direction: column; gap: 14px; }
+  .side-card {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .side-card.mint { background: var(--mint); }
+  .side-card.yellow { background: var(--yellow); }
+  .side-card.dark { background: var(--ink); color: var(--cream); }
+  .side-label {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    opacity: 0.8; margin-bottom: 8px;
+  }
+  .side-stat {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 38px; line-height: 1;
+  }
+  .side-stat .unit {
+    font-family: var(--mono); font-style: normal; font-weight: 700;
+    font-size: 11px; opacity: 0.7; margin-left: 6px;
+  }
+
+  .upgrade-pop { display: flex; gap: 10px; align-items: center; }
+  .pop-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2.5px solid var(--ink);
+    background: var(--pink-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 2px 2px 0 var(--ink);
+    flex-shrink: 0;
+  }
+  .pop-text { font-family: var(--mono); font-size: 11px; line-height: 1.4; }
+  .pop-text strong { font-size: 13px; }
+
+  .phase-card {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 14px;
+    padding: 14px;
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--pink-deep);
+  }
+  .phase-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .phase-num {
+    background: var(--yellow); color: var(--ink);
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 16px;
+    border: 2px solid var(--cream);
+  }
+  .phase-title {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 18px;
+  }
+  .phase-bar {
+    height: 10px; background: rgba(255,255,255,0.15);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .phase-bar-fill {
+    height: 100%; background: var(--mint);
+    border-right: 2px solid var(--cream);
+  }
+  .phase-keys {
+    margin-top: 10px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700; opacity: 0.8;
+  }
+  .phase-keys .glyph {
+    background: var(--pink-deep); color: var(--cream);
+    padding: 1px 6px; border-radius: 4px; margin: 0 1px;
+  }
+
+  /* === UPGRADES A: Wall of Goods === */
+  .up-frame {
+    background: var(--pink);
+    padding: 0;
+    overflow: hidden;
+  }
+  .up-header {
+    background: var(--ink); color: var(--cream);
+    padding: 18px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .up-title-block .kicker { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7; }
+  .up-title-block h2 {
+    margin: 4px 0 0;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 32px; line-height: 1;
+  }
+  .up-coins {
+    background: var(--yellow); color: var(--ink);
+    border: 3px solid var(--cream);
+    border-radius: 999px;
+    padding: 10px 22px;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 26px;
+    box-shadow: 0 0 0 3px var(--ink);
+  }
+
+  .up-tabs {
+    background: var(--cream);
+    border-bottom: 3px solid var(--ink);
+    padding: 0 28px;
+    display: flex; gap: 0;
+  }
+  .up-tab {
+    padding: 14px 22px;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 16px; color: var(--ink-faint);
+    border-bottom: 4px solid transparent;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .up-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--pink-deep);
+  }
+  .up-tab .count {
+    font-family: var(--mono); font-style: normal; font-weight: 700;
+    font-size: 11px;
+    background: var(--pink-soft); color: var(--ink);
+    padding: 2px 8px; border-radius: 999px;
+    border: 1.5px solid var(--ink);
+  }
+  .up-tab.active .count { background: var(--pink-deep); color: var(--cream); }
+
+  .up-grid {
+    padding: 26px 28px 32px;
+    background:
+      radial-gradient(circle at 12% 12%, rgba(255,210,58,0.2) 0 90px, transparent 110px),
+      radial-gradient(circle at 88% 92%, rgba(155,224,200,0.25) 0 90px, transparent 110px),
+      var(--pink);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+
+  .up-card {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 5px 5px 0 var(--ink);
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .up-card.locked {
+    background: var(--cream);
+    opacity: 0.62;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .up-card.locked .up-art-frame { filter: grayscale(0.3) saturate(0.8); }
+  .up-card.owned {
+    background: var(--mint);
+  }
+  .up-art-frame {
+    height: 110px;
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+    background: var(--pink-soft);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .up-name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 20px; line-height: 1.1; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .up-type {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--pink-deep);
+    margin-bottom: 6px;
+  }
+  .up-desc {
+    font-family: var(--mono); font-size: 11.5px; line-height: 1.5;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    flex: 1;
+  }
+  .up-buy {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 2px dashed var(--ink);
+    padding-top: 10px;
+  }
+  .up-price {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 22px; color: var(--ink);
+  }
+  .up-price .pre {
+    font-family: var(--mono); font-style: normal;
+    font-size: 11px; font-weight: 700; color: var(--ink-soft); margin-right: 4px;
+  }
+  .up-buy-btn {
+    background: var(--pink-deep); color: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 14px;
+    box-shadow: 2px 2px 0 var(--ink);
+    cursor: pointer;
+  }
+  .up-buy-btn.disabled {
+    background: var(--ink-faint); color: var(--cream); opacity: 0.7;
+    cursor: not-allowed; box-shadow: 2px 2px 0 var(--ink);
+  }
+  .up-buy-btn.owned-tag {
+    background: var(--ink); color: var(--mint);
+  }
+  .up-tag {
+    position: absolute; top: -10px; right: 12px;
+    background: var(--yellow);
+    border: 2.5px solid var(--ink);
+    padding: 3px 10px;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 999px;
+    box-shadow: 2px 2px 0 var(--ink);
+    transform: rotate(-3deg);
+  }
+  .up-tag.new { background: var(--pink-deep); color: var(--cream); }
+  .up-tag.owned-tag { background: var(--mint-deep); color: var(--cream); }
+
+  /* upgrade illustrations */
+  .ill-tub-set {
+    display: flex; gap: 6px; align-items: flex-end; padding: 8px;
+  }
+  .ill-tub {
+    width: 38px; height: 32px;
+    border: 2px solid var(--ink);
+    border-bottom-width: 3px;
+    border-top-left-radius: 16px; border-top-right-radius: 16px;
+    box-shadow: 1px 1px 0 var(--ink);
+    position: relative;
+  }
+  .ill-tub::after {
+    content:''; position: absolute; inset: 2px 4px auto 4px; height: 6px;
+    background: rgba(255,255,255,0.5); border-radius: 50%; filter: blur(1px);
+  }
+  .ill-marble {
+    background:
+      linear-gradient(115deg, var(--cream) 0%, var(--cream) 30%, var(--ink-faint) 32%, var(--ink-faint) 34%, var(--cream) 36%, var(--cream) 50%, var(--ink-soft) 52%, var(--ink-soft) 53%, var(--cream) 55%, var(--cream) 70%, var(--ink-faint) 72%, var(--ink-faint) 74%, var(--cream) 76%);
+  }
+  .ill-stars {
+    background: var(--ink); position: relative; overflow: hidden;
+  }
+  .ill-stars::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 25%, var(--yellow) 1.5px, transparent 2.5px),
+      radial-gradient(circle at 50% 60%, var(--yellow) 2px, transparent 3px),
+      radial-gradient(circle at 80% 35%, var(--yellow) 1.5px, transparent 2.5px),
+      radial-gradient(circle at 30% 80%, var(--yellow) 1.5px, transparent 2.5px),
+      radial-gradient(circle at 70% 75%, var(--yellow) 1.5px, transparent 2.5px),
+      radial-gradient(circle at 90% 15%, var(--yellow) 2px, transparent 3px),
+      radial-gradient(circle at 10% 60%, var(--yellow) 1.5px, transparent 2.5px),
+      radial-gradient(circle at 60% 20%, var(--yellow) 1.5px, transparent 2.5px);
+  }
+  .ill-stars-glyph {
+    color: var(--cream); font-size: 36px;
+    position: relative; font-family: var(--display); font-style: italic; font-weight: 900;
+  }
+  .ill-bell {
+    font-size: 60px; line-height: 1;
+  }
+  .ill-pet { font-size: 50px; line-height: 1; }
+  .ill-pet .small { font-size: 22px; position: absolute; top: 14px; right: 22px; transform: rotate(8deg); }
+  .ill-toppings {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 8px;
+  }
+  .topping-jar {
+    height: 28px; border: 2px solid var(--ink); border-radius: 4px;
+    box-shadow: 1px 1px 0 var(--ink);
+    position: relative;
+  }
+  .topping-jar::after {
+    content: ''; position: absolute; top: -3px; left: 4px; right: 4px; height: 5px;
+    background: var(--ink); border-radius: 2px;
+  }
+  .ill-cone {
+    width: 40px; height: 70px;
+    position: relative;
+  }
+  .ill-cone .scoop2 {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 36px; height: 26px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--pink-deep);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .ill-cone .cone2 {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 36px solid var(--yellow-deep);
+    filter: drop-shadow(1px 1px 0 var(--ink));
+  }
+  .ill-cone-double { display: flex; gap: 6px; }
+  .ill-cone-double .ill-cone .scoop2 { background: var(--mint-deep); }
+  .ill-cone-double .ill-cone:nth-child(2) .scoop2 { background: var(--yellow); }
+  .ill-cone-double .ill-cone:nth-child(2)::before {
+    content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--pink-deep);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .ill-recipe {
+    background: var(--cream);
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 14px, var(--ink-faint) 14px 14.5px);
+    padding: 14px;
+    font-family: var(--display); font-style: italic; font-weight: 700;
+    color: var(--ink-soft);
+    font-size: 11px; line-height: 16px;
+  }
+  .ill-cherry { font-size: 50px; line-height: 1; }
+
+  /* === SUMMARY B: Storybook === */
+  .sum-frame {
+    background: var(--pink);
+    padding: 0;
+    min-height: 700px;
+    overflow: hidden;
+    position: relative;
+  }
+  .sum-bg {
+    background:
+      radial-gradient(circle at 80% 20%, rgba(255,210,58,0.25) 0 90px, transparent 110px),
+      radial-gradient(circle at 18% 90%, rgba(155,224,200,0.3) 0 80px, transparent 100px),
+      linear-gradient(180deg, var(--pink-soft) 0%, var(--pink) 100%);
+    padding: 36px 40px;
+  }
+
+  .sum-page {
+    background: var(--cream);
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+    box-shadow: 8px 8px 0 var(--ink);
+    overflow: hidden;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .sum-page-head {
+    background: var(--ink); color: var(--cream);
+    padding: 18px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sum-page-head .day { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7; }
+  .sum-page-head .closed {
+    background: var(--pink-deep); color: var(--cream);
+    border: 2px solid var(--cream);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+
+  .sum-hero {
+    padding: 38px 40px 24px;
+    text-align: center;
+    background: var(--cream);
+    border-bottom: 3px dashed var(--ink);
+  }
+  .sum-hero .lead {
+    font-family: var(--display); font-style: italic; font-weight: 700;
+    font-size: 18px; color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .sum-hero h2 {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 56px; line-height: 1;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .sum-hero h2 .num { color: var(--pink-deep); }
+  .sum-stats-row {
+    margin-top: 22px;
+    display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
+  }
+  .sum-chip {
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 12px;
+    padding: 10px 18px;
+    box-shadow: 3px 3px 0 var(--ink);
+    text-align: center;
+  }
+  .sum-chip.mint { background: var(--mint); }
+  .sum-chip.yellow { background: var(--yellow); }
+  .sum-chip.pink { background: var(--pink-soft); }
+  .sum-chip .num {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 28px; line-height: 1; color: var(--ink);
+  }
+  .sum-chip .lab {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft); margin-top: 4px;
+  }
+
+  .sum-story {
+    padding: 28px 40px;
+    background: var(--cream);
+  }
+  .sum-story-title {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 20px; color: var(--ink);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .moments {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+  }
+  .moment {
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 3px 3px 0 var(--ink);
+    position: relative;
+  }
+  .moment.tape::before {
+    content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+    width: 50px; height: 14px;
+    background: rgba(255,210,58,0.85);
+    border: 1.5px solid var(--ink);
+  }
+  .moment-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .moment .cust-portrait { width: 42px; height: 42px; font-size: 22px; }
+  .moment-name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 16px; color: var(--ink);
+  }
+  .moment-tag {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--pink-deep); letter-spacing: 0.06em;
+  }
+  .moment-quote {
+    font-family: var(--display); font-style: italic; font-weight: 700;
+    font-size: 13px; color: var(--ink-soft); line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .moment-stat {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    color: var(--ink); padding-top: 6px;
+    border-top: 1.5px dashed var(--ink-faint);
+  }
+  .moment-stat .good { color: var(--mint-deep); }
+  .moment-stat .bad { color: var(--pink-deep); }
+
+  .sum-footer {
+    background: var(--mint);
+    border-top: 3px solid var(--ink);
+    padding: 22px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sum-payout {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 28px; color: var(--ink);
+  }
+  .sum-payout .num { color: var(--pink-deep); }
+  .sum-actions { display: flex; gap: 10px; }
+
+  /* === PROGRESS A: Diary spread === */
+  .diary-frame {
+    background: var(--pink);
+    padding: 0;
+    overflow: hidden;
+  }
+  .diary-bg {
+    padding: 36px 40px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(255,210,58,0.2) 0 80px, transparent 110px),
+      radial-gradient(circle at 90% 90%, rgba(155,224,200,0.25) 0 90px, transparent 110px),
+      var(--pink);
+  }
+  .diary-book {
+    background: var(--cream);
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+    box-shadow: 8px 8px 0 var(--ink);
+    overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 620px;
+    position: relative;
+  }
+  .diary-book::before {
+    content: ''; position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 3px;
+    background: var(--ink);
+    box-shadow: 2px 0 0 rgba(0,0,0,0.1);
+  }
+  .diary-page {
+    padding: 28px 28px;
+    background: var(--cream);
+    background-image: repeating-linear-gradient(0deg, transparent 0 28px, rgba(155,224,200,0.4) 28px 28.5px);
+    position: relative;
+  }
+  .diary-page.right { background-color: #fffaf0; }
+  .diary-page-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2.5px solid var(--ink);
+  }
+  .diary-pn {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .diary-page-title {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 26px; color: var(--ink); line-height: 1;
+  }
+  .diary-section { margin-bottom: 18px; }
+  .diary-section-label {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+  }
+
+  .phase-list { display: flex; flex-direction: column; gap: 10px; }
+  .phase-item {
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: 3px 3px 0 var(--ink);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .phase-item.done { background: var(--mint); }
+  .phase-item.active {
+    background: var(--yellow);
+    box-shadow: 4px 4px 0 var(--pink-deep);
+  }
+  .phase-item.locked { opacity: 0.55; }
+  .phase-item .num {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 22px; color: var(--ink);
+    min-width: 28px;
+  }
+  .phase-item .body { flex: 1; }
+  .phase-item .name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 16px; color: var(--ink); line-height: 1;
+  }
+  .phase-item .keys {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--ink-soft); letter-spacing: 0.06em; margin-top: 3px;
+  }
+  .phase-item .pct {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--ink);
+  }
+  .phase-item .check { color: var(--mint-deep); font-size: 18px; }
+
+  .speed-card {
+    background: var(--ink); color: var(--cream);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 3px 3px 0 var(--pink-deep);
+    margin-bottom: 14px;
+  }
+  .speed-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .speed-num {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 36px; line-height: 1;
+    color: var(--yellow);
+  }
+  .speed-num .unit {
+    font-family: var(--mono); font-style: normal; font-weight: 700;
+    font-size: 11px; color: var(--cream); margin-left: 4px;
+  }
+  .speed-spark {
+    width: 90px; height: 36px;
+  }
+
+  .cust-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  }
+  .cust-cell {
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .cust-cell.locked {
+    background: var(--ink);
+    color: var(--ink-faint);
+    opacity: 0.55;
+  }
+  .cust-cell .face {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    margin: 0 auto 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    background: var(--pink-soft);
+  }
+  .cust-cell.locked .face {
+    background: var(--ink-soft);
+    color: var(--ink);
+  }
+  .cust-cell .nm {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+    color: var(--ink); line-height: 1.1;
+  }
+  .cust-cell .served {
+    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
+    color: var(--mint-deep); margin-top: 2px;
+  }
+
+  /* === PROGRESS B: Map === */
+  .map-frame {
+    background: var(--ink);
+    padding: 0;
+    overflow: hidden;
+    color: var(--cream);
+  }
+  .map-bg {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(233,30,99,0.3) 0%, transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(255,210,58,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(155,224,200,0.18) 0%, transparent 40%),
+      var(--ink);
+    padding: 32px 40px 40px;
+    position: relative;
+    min-height: 720px;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1.5px);
+    background-size: 24px 24px;
+    background-position: 0 0;
+  }
+  .map-head {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 32px;
+  }
+  .map-head h2 {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 36px; line-height: 1;
+    color: var(--cream);
+    margin: 4px 0 0;
+  }
+  .map-head .pos {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--yellow);
+  }
+
+  .map-track {
+    position: relative;
+    padding: 70px 0 80px;
+  }
+  .map-line {
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 4px;
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-50%);
+  }
+  .map-line-done {
+    position: absolute;
+    top: 50%; left: 0;
+    height: 4px;
+    width: 38%;
+    background: var(--yellow);
+    transform: translateY(-50%);
+    box-shadow: 0 0 12px var(--yellow);
+  }
+  .map-stops {
+    display: grid; grid-template-columns: repeat(8, 1fr); position: relative;
+  }
+  .stop {
+    text-align: center;
+    position: relative;
+  }
+  .stop-dot {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 3px solid var(--cream);
+    background: var(--ink);
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 22px;
+    color: var(--cream);
+    position: relative;
+    z-index: 2;
+  }
+  .stop.done .stop-dot {
+    background: var(--mint);
+    color: var(--ink);
+    border-color: var(--mint);
+  }
+  .stop.active .stop-dot {
+    background: var(--pink-deep);
+    color: var(--cream);
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 3px var(--ink), 0 0 24px var(--pink-deep);
+    transform: scale(1.15);
+  }
+  .stop-label {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--cream);
+    margin-top: 12px;
+    line-height: 1.3;
+  }
+  .stop.locked .stop-dot { opacity: 0.4; }
+  .stop.locked .stop-label { opacity: 0.4; }
+  .stop-pop {
+    position: absolute;
+    bottom: -56px;
+    left: 50%; transform: translateX(-50%);
+    background: var(--cream);
+    color: var(--ink);
+    border: 2.5px solid var(--cream);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--pink-deep);
+  }
+  .stop-pop::before {
+    content: ''; position: absolute;
+    top: -8px; left: 50%; transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid var(--cream);
+  }
+
+  .map-detail-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    margin-top: 18px;
+  }
+  .map-card {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+  }
+  .map-card.bright {
+    background: var(--cream); color: var(--ink);
+    border-color: var(--cream);
+    box-shadow: 0 0 0 3px var(--pink-deep);
+  }
+  .map-card-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 8px;
+  }
+  .map-card.bright .map-card-label { color: var(--pink-deep); }
+  .map-card-stat {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 28px; line-height: 1;
+  }
+  .map-card-sub {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    margin-top: 6px; opacity: 0.85; line-height: 1.4;
+  }
+  .key-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .key-tile {
+    width: 24px; height: 24px;
+    border-radius: 5px;
+    border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* gap fixers */
+  .annotations { margin-top: 14px; }
+  /* keyboard helper for setup */
+  .door-card .door-body .name-input { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ========================= SETUP B ========================= -->
+  <section class="screen" id="setup">
+    <div class="topnote">
+      <div>
+        <div class="kicker">01 · setup · hi-fi · museum-of-ice-cream pass</div>
+        <h1>The Door of Alice's</h1>
+      </div>
+    </div>
+    <div class="frame door-frame">
+      <div class="door-bg">
+        <div class="clouds">
+          <div class="cloud" style="top: 30px; left: 10%; width: 90px; height: 32px;"></div>
+          <div class="cloud" style="top: 60px; left: 78%; width: 70px; height: 26px;"></div>
+          <div class="cloud" style="top: 14px; left: 60%; width: 50px; height: 22px;"></div>
+        </div>
+
+        <div class="door-card">
+          <div class="door-awning-row"></div>
+          <div class="door-sign">
+            <div class="door-kicker">benvenuti a</div>
+            <div class="door-name"><span class="a">Alice's</span><span class="heart">♥</span><span class="g">Gelateria</span></div>
+            <div class="door-est">est. 2026 · roma</div>
+          </div>
+          <div class="door-body">
+            <div class="door-greeting">Buongiorno! <span class="it">The shop is yours.</span></div>
+            <div class="door-prompt">What's your name, gelataio?</div>
+            <input class="name-input" placeholder="type your name…" value="Alice" />
+            <div class="name-suggest">
+              <div class="name-chip">Sofia</div>
+              <div class="name-chip alt">Marco</div>
+              <div class="name-chip alt2">Giulia</div>
+              <div class="name-chip">Luca</div>
+              <div class="name-chip alt">Chiara</div>
+              <div class="name-chip alt2">Surprise me</div>
+            </div>
+
+            <div class="door-windows">
+              <div class="window">
+                <div class="window-label">your case · 4 / 12</div>
+                <div class="window-tubs">
+                  <div class="mini-tub" style="background: #fff0d4"></div>
+                  <div class="mini-tub" style="background: #ff8fc4"></div>
+                  <div class="mini-tub" style="background: #6b4226"></div>
+                  <div class="mini-tub" style="background: #ffd23a"></div>
+                  <div class="mini-tub locked"></div>
+                  <div class="mini-tub locked"></div>
+                  <div class="mini-tub locked"></div>
+                  <div class="mini-tub locked"></div>
+                </div>
+                <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-soft); margin-top: 6px;">
+                  fior · fragola · cioccolato · limone
+                </div>
+              </div>
+              <div class="window">
+                <div class="window-label">first customers</div>
+                <div class="window-cust">
+                  <div class="mini-portrait" style="background: #ffc6dd">🤓</div>
+                  <div class="mini-portrait" style="background: #9be0c8">👴🏻</div>
+                  <div class="mini-portrait" style="background: #ffd23a">👧🏽</div>
+                  <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-soft);">+ 22 more</div>
+                </div>
+                <div style="font-family: var(--mono); font-size: 10px; color: var(--ink-soft); margin-top: 6px;">
+                  zoe · papa greg · mira
+                </div>
+              </div>
+            </div>
+
+            <div class="door-cta">
+              <button class="btn btn-primary">🔔 Ring the Bell &nbsp; ↵</button>
+              <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-soft); font-weight: 700;">
+                press <span class="kbd">Enter</span> when ready
+              </div>
+            </div>
+          </div>
+          <div class="key-loop">v0.4 · home row → typing wizard</div>
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="anno"><strong>Diegetic intro →</strong> Door of the shop. Awning, sign, hand-painted name. The "form" is just a doorframe with the prompt under the sign.</div>
+      <div class="anno"><strong>Live shop preview →</strong> Two windows show what's inside: the case (locked tubs hint at growth) and the line of customers waiting.</div>
+      <div class="anno"><strong>Suggestions, not gates →</strong> Name chips offer ideas; "Surprise me" gives a random Italian name. Enter rings the bell.</div>
+    </div>
+  </section>
+
+  <!-- ========================= HOME A ========================= -->
+  <section class="screen" id="home">
+    <div class="topnote">
+      <div>
+        <div class="kicker">02 · home · hi-fi · museum-of-ice-cream pass</div>
+        <h1>The Block Plan</h1>
+      </div>
+    </div>
+    <div class="frame home-frame">
+      <div class="home-bg"></div>
+      <div class="home-content">
+        <div class="home-hud">
+          <div class="home-greet">
+            <div class="day">shift no. 14 · martedì</div>
+            <div class="name">Buongiorno, <span class="y">Alice</span>!</div>
+          </div>
+          <div class="home-stats">
+            <div class="hud-pill coins">🪙 <span class="num">240</span></div>
+            <div class="hud-pill streak">★ best <span class="num">×12</span></div>
+            <div class="hud-pill wpm">⌨ <span class="num">32</span> wpm</div>
+          </div>
+        </div>
+
+        <div class="home-grid">
+
+          <!-- Open the shop -->
+          <div class="open-card">
+            <div class="open-awning"></div>
+            <div class="open-card-body">
+              <div class="open-line">⏰ 3 customers in line</div>
+              <div class="neon-aperto">APERTO</div>
+              <div class="neon-sub">Time to get behind the counter.<br/>Today's phase: home row.</div>
+              <button class="open-cta">Open the Shop <span class="arrow">→</span></button>
+              <div class="open-line-detail">
+                <div class="line-portrait">🤓</div>
+                <div class="line-portrait alt2">👴🏻</div>
+                <div class="line-portrait alt3">👧🏽</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shop state windows -->
+          <div class="shop-windows">
+            <div class="shop-window">
+              <div class="sw-head">
+                <div class="sw-title">Il Banco</div>
+                <div class="sw-count">5 / 12</div>
+              </div>
+              <div class="sw-tubs">
+                <div class="sw-tub" style="background: #fff0d4"></div>
+                <div class="sw-tub" style="background: #ff8fc4"></div>
+                <div class="sw-tub" style="background: #6b4226"></div>
+                <div class="sw-tub" style="background: #9be0c8"></div>
+                <div class="sw-tub" style="background: #ffd23a"></div>
+                <div class="sw-tub locked"></div>
+                <div class="sw-tub locked"></div>
+                <div class="sw-tub locked"></div>
+                <div class="sw-tub locked"></div>
+                <div class="sw-tub locked"></div>
+                <div class="sw-tub locked"></div>
+                <div class="sw-tub locked"></div>
+              </div>
+            </div>
+            <div class="shop-window">
+              <div class="sw-head">
+                <div class="sw-title">Familiar Faces</div>
+                <div class="sw-count">8 / 25 met</div>
+              </div>
+              <div class="sw-customers">
+                <div class="sw-cust" style="background: var(--pink-soft)">🤓</div>
+                <div class="sw-cust" style="background: var(--mint)">👴🏻</div>
+                <div class="sw-cust" style="background: var(--yellow)">👧🏽</div>
+                <div class="sw-cust" style="background: var(--pink-soft)">🧒🏼</div>
+                <div class="sw-cust" style="background: var(--mint)">👵🏼</div>
+                <div class="sw-cust" style="background: var(--yellow)">👨🏿‍🦱</div>
+                <div class="sw-cust" style="background: var(--pink-soft)">🧑🏻‍🦰</div>
+                <div class="sw-cust" style="background: var(--mint)">👩🏽</div>
+                <div class="sw-cust locked">?</div>
+                <div class="sw-cust locked">?</div>
+                <div class="sw-cust locked">?</div>
+                <div class="sw-cust locked">?</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right rail -->
+          <div class="home-side">
+
+            <div class="phase-card">
+              <div class="phase-row">
+                <div class="phase-num">1</div>
+                <div class="phase-title">Home Row</div>
+              </div>
+              <div class="phase-bar"><div class="phase-bar-fill" style="width: 62%"></div></div>
+              <div class="phase-keys">
+                <span class="glyph">A</span><span class="glyph">S</span><span class="glyph">D</span><span class="glyph">F</span> · <span class="glyph">J</span><span class="glyph">K</span><span class="glyph">L</span> · 18 / 30 customers
+              </div>
+            </div>
+
+            <div class="side-card yellow">
+              <div class="side-label">tip jar</div>
+              <div class="side-stat">240 <span class="unit">lire</span></div>
+              <div style="font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: var(--ink-soft); margin-top: 6px;">+18 from yesterday</div>
+            </div>
+
+            <div class="side-card mint">
+              <div class="side-label">new in shop</div>
+              <div class="upgrade-pop">
+                <div class="pop-icon">★</div>
+                <div class="pop-text">
+                  <strong>Notte Stellata</strong> <span style="color: var(--pink-deep);">unlocked!</span><br/>
+                  <span style="color: var(--ink-soft);">starry wallpaper · +1 patience</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary" style="flex: 1; padding: 10px 16px; font-size: 14px;">Upgrades</button>
+              <button class="btn btn-yellow" style="flex: 1; padding: 10px 16px; font-size: 14px;">Diary</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="anno"><strong>Big neon APERTO →</strong> impossible to miss the play button. Wrapped in shop chrome (awning + neon glow) so the CTA IS the gelateria opening.</div>
+      <div class="anno"><strong>Shop state visible →</strong> cases and faces aren't summary tiles — they're actual previews of growth/collection that nudge you toward the next session.</div>
+      <div class="anno"><strong>Phase as story →</strong> right rail shows current phase + progress bar; tells you what you're learning today, not just stats.</div>
+    </div>
+  </section>
+
+  <!-- ========================= UPGRADES A ========================= -->
+  <section class="screen" id="upgrades">
+    <div class="topnote">
+      <div>
+        <div class="kicker">04 · upgrades · hi-fi · accurate items</div>
+        <h1>Wall of Goods</h1>
+      </div>
+    </div>
+    <div class="frame up-frame">
+      <div class="up-header">
+        <div class="up-title-block">
+          <div class="kicker">il magazzino · est. 2026</div>
+          <h2>Upgrades & Toppings</h2>
+        </div>
+        <div class="up-coins">🪙 240</div>
+      </div>
+      <div class="up-tabs">
+        <div class="up-tab active">All <span class="count">12</span></div>
+        <div class="up-tab">Flavors <span class="count">4</span></div>
+        <div class="up-tab">Shop Decor <span class="count">3</span></div>
+        <div class="up-tab">Customers <span class="count">3</span></div>
+        <div class="up-tab">Boosts <span class="count">2</span></div>
+      </div>
+      <div class="up-grid">
+
+        <!-- 1. Caramello flavor -->
+        <div class="up-card">
+          <div class="up-tag new">new!</div>
+          <div class="up-art-frame" style="background: linear-gradient(180deg, #fff0d4 0%, #f5b800 100%);">
+            <div class="ill-tub-set">
+              <div class="ill-tub" style="background: #d4a23a;"></div>
+              <div class="ill-tub" style="background: #b8771f;"></div>
+              <div class="ill-tub" style="background: #f5b800;"></div>
+            </div>
+          </div>
+          <div class="up-type">★ flavor unlock</div>
+          <div class="up-name">Caramello Salato</div>
+          <div class="up-desc">Burnt-sugar swirl with a fleur de sel finish. Adds <strong>caramello</strong> to the case and to customer orders from Phase 2 onward.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>120</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 2. Stracciatella -->
+        <div class="up-card">
+          <div class="up-art-frame" style="background: var(--cream);">
+            <div class="ill-tub" style="width: 64px; height: 50px; background:
+              radial-gradient(circle at 30% 40%, #2a1a2e 3px, transparent 4px),
+              radial-gradient(circle at 60% 30%, #2a1a2e 2px, transparent 3px),
+              radial-gradient(circle at 70% 70%, #2a1a2e 3px, transparent 4px),
+              radial-gradient(circle at 20% 75%, #2a1a2e 2px, transparent 3px),
+              radial-gradient(circle at 50% 60%, #2a1a2e 2px, transparent 3px),
+              #fff5e8;"></div>
+          </div>
+          <div class="up-type">★ flavor unlock</div>
+          <div class="up-name">Stracciatella</div>
+          <div class="up-desc">Cream base shattered with bittersweet chocolate flakes. The classic Roman streetside scoop.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>140</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 3. Marble counter -->
+        <div class="up-card owned">
+          <div class="up-tag owned-tag">installed</div>
+          <div class="up-art-frame ill-marble">
+          </div>
+          <div class="up-type">⌂ shop upgrade</div>
+          <div class="up-name">Carrara Counter</div>
+          <div class="up-desc">Replaces the wood counter with veined Italian marble. <strong>+2 sec</strong> patience for every customer who walks in.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>180</div>
+            <button class="up-buy-btn owned-tag">✓ Owned</button>
+          </div>
+        </div>
+
+        <!-- 4. Notte Stellata wallpaper -->
+        <div class="up-card">
+          <div class="up-tag">popular</div>
+          <div class="up-art-frame ill-stars">
+            <div class="ill-stars-glyph">notte</div>
+          </div>
+          <div class="up-type">⌂ shop upgrade</div>
+          <div class="up-name">Notte Stellata</div>
+          <div class="up-desc">Hand-painted starry-night wallpaper. Customers wait <strong>+1 sec</strong> longer; the night sky is mesmerizing.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>200</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 5. Brass bell -->
+        <div class="up-card">
+          <div class="up-art-frame" style="background: linear-gradient(180deg, #ffd23a 0%, #b8771f 100%);">
+            <div class="ill-bell">🔔</div>
+          </div>
+          <div class="up-type">⌂ shop upgrade</div>
+          <div class="up-name">Campanella d'Ottone</div>
+          <div class="up-desc">Brass doorbell. Earn <strong>+5 lire</strong> for each new customer's first order. Goes <em>tring!</em></div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>90</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 6. Cat customer -->
+        <div class="up-card">
+          <div class="up-art-frame" style="background: var(--mint);">
+            <div class="ill-pet" style="position: relative;">🐈‍⬛<span class="small">🍦</span></div>
+          </div>
+          <div class="up-type">♥ new customer</div>
+          <div class="up-name">Macchia, the Cat</div>
+          <div class="up-desc">A black cat with white paws. Always orders <strong>fior di latte</strong>. Patient, but disappears when ignored too long.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>110</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 7. Dog customer -->
+        <div class="up-card locked">
+          <div class="up-art-frame" style="background: var(--yellow);">
+            <div class="ill-pet">🐕</div>
+          </div>
+          <div class="up-type">♥ new customer</div>
+          <div class="up-name">Bruno il Cane</div>
+          <div class="up-desc">A scruffy mutt who loves <strong>cioccolato</strong>. Tail wags faster the more accurate your typing — <strong>+25% tip</strong> on perfect orders.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>160</div>
+            <button class="up-buy-btn disabled">L160 · 🔒</button>
+          </div>
+        </div>
+
+        <!-- 8. Toppings bar -->
+        <div class="up-card locked">
+          <div class="up-art-frame" style="background: var(--cream);">
+            <div class="ill-toppings">
+              <div class="topping-jar" style="background: #ff8fc4;"></div>
+              <div class="topping-jar" style="background: #6b4226;"></div>
+              <div class="topping-jar" style="background: #9be0c8;"></div>
+              <div class="topping-jar" style="background: #ffd23a;"></div>
+              <div class="topping-jar" style="background: #e91e63;"></div>
+              <div class="topping-jar" style="background: #5fb3ff;"></div>
+            </div>
+          </div>
+          <div class="up-type">⚡ boost</div>
+          <div class="up-name">Toppings Bar</div>
+          <div class="up-desc">Customers can ask for sprinkles, panna, nocciole. Adds a <strong>second word</strong> to orders for <strong>2× tips</strong>.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>250</div>
+            <button class="up-buy-btn disabled">need phase 3</button>
+          </div>
+        </div>
+
+        <!-- 9. Double scoop -->
+        <div class="up-card locked">
+          <div class="up-art-frame" style="background: var(--pink-soft);">
+            <div class="ill-cone-double">
+              <div class="ill-cone">
+                <div class="scoop2"></div>
+                <div class="cone2"></div>
+              </div>
+              <div class="ill-cone">
+                <div class="scoop2"></div>
+                <div class="cone2"></div>
+              </div>
+            </div>
+          </div>
+          <div class="up-type">⚡ boost</div>
+          <div class="up-name">Doppio Cono</div>
+          <div class="up-desc">Customers occasionally order <strong>two flavors</strong>. Type both in a row for a <strong>×3 streak multiplier</strong>.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>320</div>
+            <button class="up-buy-btn disabled">need phase 4</button>
+          </div>
+        </div>
+
+        <!-- 10. Pistacchio -->
+        <div class="up-card">
+          <div class="up-art-frame" style="background: linear-gradient(180deg, var(--mint) 0%, var(--mint-deep) 100%);">
+            <div class="ill-tub-set">
+              <div class="ill-tub" style="background: #b8d09a;"></div>
+              <div class="ill-tub" style="background: #7a9a4f;"></div>
+              <div class="ill-tub" style="background: #5dc4a0;"></div>
+            </div>
+          </div>
+          <div class="up-type">★ flavor unlock</div>
+          <div class="up-name">Pistacchio di Bronte</div>
+          <div class="up-desc">Sicilian gold. Hand-ground pistachios from Bronte. The most-requested flavor of <strong>Nonna Rosa</strong>.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>180</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 11. Recipe book -->
+        <div class="up-card">
+          <div class="up-art-frame" style="background: var(--cream);">
+            <div class="ill-recipe">
+              fragola .... 1<br/>
+              cioccolato . 2<br/>
+              limone ..... 3<br/>
+              menta ...... 4
+            </div>
+          </div>
+          <div class="up-type">⚡ boost</div>
+          <div class="up-name">Nonna's Recipe Book</div>
+          <div class="up-desc">Reveals the <strong>next 2 customers</strong>' orders before they arrive. Plan your fingers ahead. (Removes mystery icon.)</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>140</div>
+            <button class="up-buy-btn">Buy →</button>
+          </div>
+        </div>
+
+        <!-- 12. Cherry on top -->
+        <div class="up-card locked">
+          <div class="up-art-frame" style="background: var(--pink-soft);">
+            <div class="ill-cherry">🍒</div>
+          </div>
+          <div class="up-type">⚡ boost</div>
+          <div class="up-name">La Ciliegina</div>
+          <div class="up-desc">"The cherry on top." When you finish a shift with <strong>zero mistakes</strong>, double your tips. Risk it.</div>
+          <div class="up-buy">
+            <div class="up-price"><span class="pre">L</span>500</div>
+            <button class="up-buy-btn disabled">L500 · 🔒</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="anno"><strong>Each upgrade has its own art →</strong> tubs for flavors, marble pattern for the counter, starry wallpaper, cat/dog faces, jars for toppings. No generic "card icons."</div>
+      <div class="anno"><strong>Real descriptions →</strong> each item maps to a real game effect (patience seconds, tip multipliers, customer order shape) rather than vague flavor text.</div>
+      <div class="anno"><strong>Owned / locked / new →</strong> visual states are diegetic: owned cards turn mint with an "installed" tag; locked cards dim; new ones get a hand-stamped tag.</div>
+    </div>
+  </section>
+
+  <!-- ========================= SUMMARY B ========================= -->
+  <section class="screen" id="summary">
+    <div class="topnote">
+      <div>
+        <div class="kicker">05 · summary · hi-fi · storybook</div>
+        <h1>End-of-Shift Story</h1>
+      </div>
+    </div>
+    <div class="frame sum-frame">
+      <div class="sum-bg">
+        <div class="sum-page">
+          <div class="sum-page-head">
+            <div class="day">shift no. 14 · martedì 23 marzo</div>
+            <div class="closed">— chiuso —</div>
+          </div>
+
+          <div class="sum-hero">
+            <div class="lead">Today, Alice…</div>
+            <h2>served <span class="num">8</span> customers</h2>
+            <div class="sum-stats-row">
+              <div class="sum-chip mint">
+                <div class="num">96%</div>
+                <div class="lab">accuracy</div>
+              </div>
+              <div class="sum-chip yellow">
+                <div class="num">×7</div>
+                <div class="lab">best streak</div>
+              </div>
+              <div class="sum-chip pink">
+                <div class="num">38</div>
+                <div class="lab">wpm peak</div>
+              </div>
+              <div class="sum-chip">
+                <div class="num">+86</div>
+                <div class="lab">lire earned</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sum-story">
+            <div class="sum-story-title">— Tre momenti dolci —</div>
+            <div class="moments">
+              <div class="moment tape">
+                <div class="moment-head">
+                  <div class="cust-portrait" style="background: var(--pink-soft);">🤓</div>
+                  <div>
+                    <div class="moment-name">Zoe</div>
+                    <div class="moment-tag">first ×7 streak</div>
+                  </div>
+                </div>
+                <div class="moment-quote">"Vorrei un cono di fragola, per favore!" — typed in 1.4s flat. Glasses fogged with delight.</div>
+                <div class="moment-stat"><span class="good">100% accuracy</span> · +28 lire</div>
+              </div>
+
+              <div class="moment tape">
+                <div class="moment-head">
+                  <div class="cust-portrait" style="background: var(--mint);">👴🏻</div>
+                  <div>
+                    <div class="moment-name">Papa Greg</div>
+                    <div class="moment-tag">flavor unlocked</div>
+                  </div>
+                </div>
+                <div class="moment-quote">Asked for limone three times in a row. You didn't miss a single L. He left a 5-coin tip and a fatherly nod.</div>
+                <div class="moment-stat"><span class="good">3/3 perfect</span> · +35 lire</div>
+              </div>
+
+              <div class="moment tape">
+                <div class="moment-head">
+                  <div class="cust-portrait" style="background: var(--yellow);">👧🏽</div>
+                  <div>
+                    <div class="moment-name">Mira</div>
+                    <div class="moment-tag">close call</div>
+                  </div>
+                </div>
+                <div class="moment-quote">Wanted menta. You hit N instead of M and the cone melted a little. She forgave you. Mostly.</div>
+                <div class="moment-stat"><span class="bad">85% accuracy</span> · +12 lire · ♥♥</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sum-footer">
+            <div class="sum-payout">earned today: <span class="num">L 86</span></div>
+            <div class="sum-actions">
+              <button class="btn btn-secondary" style="font-size: 16px; padding: 10px 20px;">Diary</button>
+              <button class="btn btn-yellow" style="font-size: 16px; padding: 10px 20px;">Upgrades</button>
+              <button class="btn btn-primary" style="font-size: 16px; padding: 10px 24px;">Tomorrow →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="anno"><strong>Story, not stats →</strong> "Today, Alice served 8 customers" is the headline. Big number, italic display type, sentence-shaped — like a children's book.</div>
+      <div class="anno"><strong>Three moments →</strong> taped polaroids of standout interactions, each with a customer's quote, stat, and emotional beat. Specific is sticky.</div>
+      <div class="anno"><strong>Soft close →</strong> "chiuso" tag, mint footer with the day's earnings. CTA hierarchy makes "Tomorrow →" the obvious next step.</div>
+    </div>
+  </section>
+
+  <!-- ========================= PROGRESS A: Diary ========================= -->
+  <section class="screen" id="diary">
+    <div class="topnote">
+      <div>
+        <div class="kicker">06 · progress · direction A · hi-fi</div>
+        <h1>Il Diario del Gelataio</h1>
+      </div>
+    </div>
+    <div class="frame diary-frame">
+      <div class="diary-bg">
+        <div class="diary-book">
+          <div class="diary-page left">
+            <div class="diary-page-head">
+              <div>
+                <div class="diary-pn">page 1 · phases</div>
+                <div class="diary-page-title">Lessons learned</div>
+              </div>
+              <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-soft);">phase 1 / 8</div>
+            </div>
+
+            <div class="speed-card">
+              <div class="speed-row">
+                <div>
+                  <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7;">today's pace</div>
+                  <div class="speed-num">32 <span class="unit">wpm</span></div>
+                </div>
+                <svg class="speed-spark" viewBox="0 0 90 36">
+                  <polyline points="0,28 12,22 24,26 36,18 48,20 60,12 72,14 84,8" fill="none" stroke="#9be0c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="84" cy="8" r="3" fill="#ffd23a" stroke="#fff5e8" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <div style="margin-top: 6px; font-family: var(--mono); font-size: 11px; opacity: 0.85;">+4 wpm this week · 92% accuracy</div>
+            </div>
+
+            <div class="diary-section">
+              <div class="diary-section-label">curriculum</div>
+              <div class="phase-list">
+                <div class="phase-item done">
+                  <div class="num">1</div>
+                  <div class="body">
+                    <div class="name">Home Row</div>
+                    <div class="keys">A S D F · J K L</div>
+                  </div>
+                  <div class="check">✓</div>
+                </div>
+                <div class="phase-item active">
+                  <div class="num">2</div>
+                  <div class="body">
+                    <div class="name">Top Reaches</div>
+                    <div class="keys">E I R U · 18/30</div>
+                  </div>
+                  <div class="pct">62%</div>
+                </div>
+                <div class="phase-item locked">
+                  <div class="num">3</div>
+                  <div class="body">
+                    <div class="name">Bottom Row</div>
+                    <div class="keys">V B N M · locked</div>
+                  </div>
+                  <div style="font-size: 16px;">🔒</div>
+                </div>
+                <div class="phase-item locked">
+                  <div class="num">4</div>
+                  <div class="body">
+                    <div class="name">Pinky Stretch</div>
+                    <div class="keys">Q P Z · locked</div>
+                  </div>
+                  <div style="font-size: 16px;">🔒</div>
+                </div>
+                <div class="phase-item locked">
+                  <div class="num">5</div>
+                  <div class="body">
+                    <div class="name">Capitalization</div>
+                    <div class="keys">Shift · locked</div>
+                  </div>
+                  <div style="font-size: 16px;">🔒</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="diary-page right">
+            <div class="diary-page-head">
+              <div>
+                <div class="diary-pn">page 2 · faces</div>
+                <div class="diary-page-title">Customers met</div>
+              </div>
+              <div style="font-family: var(--mono); font-size: 11px; color: var(--ink-soft);">11 / 25</div>
+            </div>
+
+            <div style="font-family: var(--display); font-style: italic; font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; line-height: 1.4;">
+              Each smudge is a regular. Open the locked ones by playing the phases that bring them in.
+            </div>
+
+            <div class="cust-grid">
+              <div class="cust-cell">
+                <div class="face" style="background: var(--pink-soft);">🤓</div>
+                <div class="nm">Zoe</div>
+                <div class="served">×9</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--mint);">👴🏻</div>
+                <div class="nm">Papa Greg</div>
+                <div class="served">×7</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--yellow);">👧🏽</div>
+                <div class="nm">Mira</div>
+                <div class="served">×5</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--pink-soft);">🧒🏼</div>
+                <div class="nm">Piper</div>
+                <div class="served">×4</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--mint);">👵🏼</div>
+                <div class="nm">Nonna Rosa</div>
+                <div class="served">×8</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--yellow);">👨🏿‍🦱</div>
+                <div class="nm">Hazel</div>
+                <div class="served">×3</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--pink-soft);">🧑🏻‍🦰</div>
+                <div class="nm">Brennan</div>
+                <div class="served">×2</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--mint);">👩🏽</div>
+                <div class="nm">Marisol</div>
+                <div class="served">×6</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--yellow);">👨🏼‍🍳</div>
+                <div class="nm">Theo</div>
+                <div class="served">×1</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--pink-soft);">👧🏻</div>
+                <div class="nm">Bea</div>
+                <div class="served">×3</div>
+              </div>
+              <div class="cust-cell">
+                <div class="face" style="background: var(--mint);">🐈‍⬛</div>
+                <div class="nm">Macchia</div>
+                <div class="served">×2</div>
+              </div>
+              <div class="cust-cell locked">
+                <div class="face">?</div>
+                <div class="nm">phase 2</div>
+              </div>
+              <div class="cust-cell locked">
+                <div class="face">?</div>
+                <div class="nm">phase 2</div>
+              </div>
+              <div class="cust-cell locked">
+                <div class="face">?</div>
+                <div class="nm">phase 3</div>
+              </div>
+              <div class="cust-cell locked">
+                <div class="face">?</div>
+                <div class="nm">phase 3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="anno"><strong>Diary spread →</strong> two pages, gutter down the middle. Lined paper on the left for phase notes; cream paper on the right for the customer book.</div>
+      <div class="anno"><strong>Phases as a curriculum →</strong> each row is a lesson, with the keys it teaches. Active phase glows yellow with a magenta drop-shadow.</div>
+      <div class="anno"><strong>Locked customers as bait →</strong> "?" silhouettes labeled with the phase that unlocks them — creates pull toward the next session.</div>
+    </div>
+  </section>
+
+  <!-- ========================= PROGRESS B: Map ========================= -->
+  <section class="screen" id="map">
+    <div class="topnote">
+      <div>
+        <div class="kicker">07 · progress · direction B · hi-fi</div>
+        <h1>The Block Map</h1>
+      </div>
+    </div>
+    <div class="frame map-frame">
+      <div class="map-bg">
+        <div class="map-head">
+          <div>
+            <div class="kicker" style="color: var(--cream); opacity: 0.6;">la mappa · stagione 1</div>
+            <h2>Through the Phases</h2>
+          </div>
+          <div class="pos">★ stop 4 of 8</div>
+        </div>
+
+        <div class="map-track">
+          <div class="map-line"></div>
+          <div class="map-line-done"></div>
+          <div class="map-stops">
+            <div class="stop done">
+              <div class="stop-dot">✓</div>
+              <div class="stop-label">Home<br/>Row</div>
+            </div>
+            <div class="stop done">
+              <div class="stop-dot">✓</div>
+              <div class="stop-label">Top<br/>Reach</div>
+            </div>
+            <div class="stop done">
+              <div class="stop-dot">✓</div>
+              <div class="stop-label">Bottom<br/>Row</div>
+            </div>
+            <div class="stop active">
+              <div class="stop-dot">4</div>
+              <div class="stop-label">Pinky<br/>Stretch</div>
+              <div class="stop-pop">you are here · 62%</div>
+            </div>
+            <div class="stop locked">
+              <div class="stop-dot">5</div>
+              <div class="stop-label">Capital-<br/>ization</div>
+            </div>
+            <div class="stop locked">
+              <div class="stop-dot">6</div>
+              <div class="stop-label">Numbers</div>
+            </div>
+            <div class="stop locked">
+              <div class="stop-dot">7</div>
+              <div class="stop-label">Punctu-<br/>ation</div>
+            </div>
+            <div class="stop locked">
+              <div class="stop-dot">★</div>
+              <div class="stop-label">Master<br/>Gelataio</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-detail-row">
+          <div class="map-card bright">
+            <div class="map-card-label">current stop</div>
+            <div class="map-card-stat">Pinky Stretch</div>
+            <div class="map-card-sub">Q · A · Z and P · ; · / — the hardest reaches. Unlock 3 customers and the <strong>Notte Stellata</strong> wallpaper.</div>
+            <div class="key-list">
+              <div class="key-tile" style="background: #ff7aab; color: #fff;">Q</div>
+              <div class="key-tile" style="background: #ff7aab; color: #fff;">A</div>
+              <div class="key-tile" style="background: #ff7aab; color: #fff;">Z</div>
+              <div class="key-tile" style="background: #ff7aab; color: #fff;">P</div>
+              <div class="key-tile" style="background: #ff7aab; color: #fff;">;</div>
+              <div class="key-tile" style="background: #ff7aab; color: #fff;">/</div>
+            </div>
+          </div>
+          <div class="map-card">
+            <div class="map-card-label">progress</div>
+            <div class="map-card-stat" style="color: var(--mint);">18 / 30</div>
+            <div class="map-card-sub">customers served in this phase. 12 to go before the next stop.</div>
+            <div style="height: 8px; background: rgba(255,255,255,0.15); border-radius: 999px; margin-top: 10px; overflow: hidden;">
+              <div style="height: 100%; width: 60%; background: var(--mint); box-shadow: 0 0 8px var(--mint);"></div>
+            </div>
+          </div>
+          <div class="map-card">
+            <div class="map-card-label">unlocks at next stop</div>
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 700;">
+                <span style="background: var(--yellow); color: var(--ink); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--display); font-style: italic; font-size: 12px;">★</span>
+                <span>Pistacchio di Bronte</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 700;">
+                <span style="background: var(--mint); color: var(--ink); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px;">⌂</span>
+                <span>Carrara Counter</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 700;">
+                <span style="background: var(--pink-deep); color: var(--cream); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px;">♥</span>
+                <span>Bruno il Cane</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 700;">
+                <span style="background: var(--cream); color: var(--ink); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px;">⚡</span>
+                <span>Toppings Bar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="anno"><strong>Map metaphor →</strong> phases are stops along a candy road. The yellow line is your trail, the pink dot is "you are here," locked stops glow faintly in the distance.</div>
+      <div class="anno"><strong>Current keys highlighted →</strong> the magenta keys for this phase are surfaced at the bottom — a snapshot of what you're learning right now.</div>
+      <div class="anno"><strong>Next-stop reward →</strong> showing the flavor + decor + customer + boost that drop at the next stop is the strongest pull toward another session.</div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

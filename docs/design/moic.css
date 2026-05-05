@@ -1,0 +1,102 @@
+/* Museum of Ice Cream palette — soaked-in pink + candy accents */
+:root {
+  --pink: #ff8fc4;
+  --pink-soft: #ffc6dd;
+  --pink-deep: #e91e63;
+  --yellow: #ffd23a;
+  --yellow-deep: #f5b800;
+  --mint: #9be0c8;
+  --mint-deep: #5dc4a0;
+  --blue: #5fb3ff;
+  --blue-deep: #1f6bff;
+  --cream: #fff5e8;
+  --ink: #2a1a2e;
+  --ink-soft: #6b4f6f;
+  --ink-faint: #a18ba6;
+
+  /* Finger colors — 4 hues, distinct on pink */
+  --f-pinky:  #e91e63; /* magenta */
+  --f-ring:   #1f6bff; /* electric blue */
+  --f-middle: #5dc4a0; /* mint deep */
+  --f-index:  #f5b800; /* sunshine */
+
+  --display: 'Fraunces', serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; font-family: var(--mono); color: var(--ink); }
+body {
+  min-height: 100vh;
+  background: var(--pink);
+  background-image: radial-gradient(ellipse at 50% 110%, var(--pink-soft) 0%, var(--pink) 35%, var(--pink-deep) 100%);
+  padding: 28px;
+  display: flex; align-items: flex-start; justify-content: center;
+}
+.wrap { width: 100%; max-width: 1200px; }
+
+/* === topnote === */
+.topnote { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 18px; color: var(--cream); }
+.kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.85; margin-bottom: 4px; }
+.topnote h1 { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 38px; line-height: 1; margin: 0; letter-spacing: -0.01em; color: var(--cream); text-shadow: 3px 3px 0 var(--pink-deep); }
+
+/* === frame === */
+.frame { background: var(--pink); border: 3px solid var(--ink); border-radius: 24px; overflow: hidden; box-shadow: 6px 6px 0 var(--ink); position: relative; }
+
+/* === Common chrome === */
+.signbar { background: var(--ink); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+.brand { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -0.01em; color: var(--cream); }
+.brand .a { color: var(--yellow); }
+.brand .g { color: var(--mint); }
+.brand .heart { display: inline-block; transform: translateY(-2px); margin: 0 4px; }
+
+.hud { display: flex; gap: 8px; align-items: center; }
+.hud-pill { font-weight: 700; font-size: 12px; padding: 7px 14px; border-radius: 999px; border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); display: inline-flex; align-items: center; gap: 6px; }
+.hud-pill.wpm { background: var(--mint); }
+.hud-pill.coins { background: var(--yellow); }
+.hud-pill.streak { background: var(--pink-deep); color: white; }
+.hud-pill.lives { background: var(--cream); }
+.hud-pill .num { font-size: 14px; }
+
+.awning { height: 22px; background: repeating-linear-gradient(90deg, var(--pink-deep) 0 32px, var(--cream) 32px 64px); border-bottom: 3px solid var(--ink); }
+
+.ceiling { height: 56px; background: linear-gradient(to bottom, var(--pink-soft) 0%, var(--pink) 100%); border-bottom: 3px solid var(--ink); position: relative; overflow: hidden; }
+.dome { position: absolute; top: 8px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--cream) 60%, var(--yellow) 100%); border: 2px solid var(--ink); box-shadow: 0 0 18px rgba(255,210,58,0.6); }
+.dome::after { content:''; position: absolute; top:-10px; left:50%; transform:translateX(-50%); width:2px; height:10px; background: var(--ink); }
+
+/* footer ribbon */
+.ribbon { background: var(--mint); border-top: 3px solid var(--ink); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; }
+.kbd { display: inline-block; padding: 2px 7px; background: var(--cream); border: 2px solid var(--ink); border-bottom-width: 3px; border-radius: 5px; font-size: 11px; font-weight: 700; margin: 0 2px; box-shadow: 1px 1px 0 var(--ink); }
+
+/* panels */
+.panel { background: var(--cream); border: 2.5px solid var(--ink); border-radius: 14px; padding: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.panel.mint { background: var(--mint); }
+.panel.yellow { background: var(--yellow); }
+.panel.pink { background: var(--pink-soft); }
+.panel-label { font-size: 10.5px; font-weight: 700; color: var(--ink); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+
+/* swatches */
+.swatches { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.swatch-row { display: flex; gap: 6px; }
+.swatch { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--ink); box-shadow: 1px 1px 0 var(--ink); }
+.swatch-cap { font-size: 10px; opacity: 0.85; color: var(--cream); }
+
+/* annotations */
+.annotations { margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; color: var(--cream); }
+.anno { padding: 12px 14px; background: rgba(42,26,46,0.65); border: 2px solid var(--ink); border-radius: 10px; font-size: 11px; line-height: 1.5; }
+.anno strong { color: var(--yellow); font-weight: 700; }
+
+/* buttons */
+.btn { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 18px; padding: 12px 26px; border-radius: 999px; border: 3px solid var(--ink); cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.1s; }
+.btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+.btn-primary { background: var(--pink-deep); color: var(--cream); }
+.btn-secondary { background: var(--cream); color: var(--ink); }
+.btn-yellow { background: var(--yellow); color: var(--ink); }
+
+/* common shop nav layout */
+.cust-portrait { width: 46px; height: 46px; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--pink-soft); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; box-shadow: 1px 1px 0 var(--ink); }
+.cust-portrait.alt2 { background: var(--mint); }
+.cust-portrait.alt3 { background: var(--yellow); }
+.cust-portrait.alt4 { background: var(--blue); }
+.cust-portrait.alt5 { background: var(--pink-deep); }
+
+.cust-name { font-family: var(--display); font-style: italic; font-weight: 900; font-size: 17px; line-height: 1; color: var(--ink); }

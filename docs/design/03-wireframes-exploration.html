@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Alice's Gelateria — Wireframe Explorations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Kalam:wght@400;700&family=Special+Elite&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --wf-hand: 'Kalam', 'Caveat', cursive;
+      --wf-mono: 'DM Mono', 'Special Elite', monospace;
+      --wf-sans: 'Inter', system-ui, sans-serif;
+    }
+    html, body { margin: 0; padding: 0; background: #efe6d3; font-family: var(--wf-sans); color: #2a2520; }
+    button { font-family: inherit; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="wireframe-kit.jsx"></script>
+  <script type="text/babel" src="screens.jsx"></script>
+  <script type="text/babel">
+    const Intro = () => (
+      <div style={{
+        padding: 28,
+        background: '#fbf6ec',
+        fontFamily: 'var(--wf-sans)',
+        minHeight: 320,
+      }}>
+        <div style={{ fontFamily: 'var(--wf-mono)', fontSize: 11, color: '#a89a85', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          Wireframe pass · for review
+        </div>
+        <div style={{ fontFamily: 'var(--wf-hand)', fontSize: 38, fontWeight: 800, lineHeight: 1.05, marginTop: 6, color: '#b8324a' }}>
+          Alice's Gelateria
+        </div>
+        <div style={{ fontFamily: 'var(--wf-hand)', fontSize: 24, fontWeight: 700, lineHeight: 1.1, color: '#2a2520' }}>
+          Roman gelateria redesign — wireframe explorations
+        </div>
+        <div style={{ marginTop: 18, maxWidth: 760, lineHeight: 1.55, fontSize: 14 }}>
+          Goal: take the bare-bones MVP and explore what a polished, fun, Roman-gelateria game could look like.
+          <br/><br/>
+          <strong>Direction:</strong> warm cream + terracotta + pistachio + cherry (no pink-on-pink). Hand-painted shop signage, awning stripes, gelato tubs, ticket rails, sticky notes — diegetic UI where possible.
+          <br/><br/>
+          <strong>What's a placeholder:</strong> all character portraits and gelato photography are striped placeholders or emoji stand-ins. Real art (illustrated portraits matching each customer's description, painted shop facade, watercolor flavor tubs) is the next step once we pick a direction.
+        </div>
+        <div style={{
+          marginTop: 18, padding: '10px 14px',
+          background: '#fff7c2',
+          border: '1.5px solid #2a2520',
+          fontFamily: 'var(--wf-hand)', fontSize: 14,
+          display: 'inline-block',
+          transform: 'rotate(-1deg)',
+          boxShadow: '2px 3px 0 rgba(0,0,0,0.15)',
+        }}>
+          Tip: drag any artboard to reorder · double-click a title to rename · click ⤢ to focus full-screen
+        </div>
+        <div style={{ marginTop: 22, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, fontSize: 12 }}>
+          {[
+            ['01 · Setup',     '3 directions — postcard, storefront window, recipe card'],
+            ['02 · Home Hub',  '3 directions — street view, behind-counter, piazza map'],
+            ['03 · Gameplay',  '4 directions — behind counter, ticket rail, focus mode, kid arcade'],
+            ['04 · Upgrades',  '3 directions — display case, decorate room, wishlist lane'],
+            ['05 · Summary',   '2 directions — café receipt, storybook page'],
+            ['06 · Progress',  '2 directions — diary spread, heatmap'],
+          ].map(([t, s]) => (
+            <div key={t} style={{ padding: 12, background: '#f3ead7', border: '1.5px solid #cdbfa6', borderRadius: 6 }}>
+              <div style={{ fontFamily: 'var(--wf-mono)', fontSize: 11, color: '#6b5e4e', letterSpacing: '0.06em' }}>{t}</div>
+              <div style={{ marginTop: 4 }}>{s}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const App = () => (
+      <DesignCanvas
+        title="Alice's Gelateria — Wireframes"
+        subtitle="17 directions across 6 screens · pick favorites and we'll polish"
+      >
+        <DCSection id="intro" title="Brief">
+          <DCArtboard id="intro" label="Read me first" width={900} height={420}>
+            <Intro />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="setup" title="01 · Setup / Welcome">
+          <DCArtboard id="setup-a" label="A · Roman Postcard" width={780} height={640}><SetupA_PostcardSign /></DCArtboard>
+          <DCArtboard id="setup-b" label="B · Storefront Window" width={780} height={640}><SetupB_StorefrontWindow /></DCArtboard>
+          <DCArtboard id="setup-c" label="C · Recipe Card" width={780} height={640}><SetupC_RecipeCard /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="home" title="02 · Home / Shop Hub">
+          <DCArtboard id="home-a" label="A · Street View"     width={780} height={640}><HomeA_StreetView /></DCArtboard>
+          <DCArtboard id="home-b" label="B · Behind Counter"  width={780} height={640}><HomeB_CounterView /></DCArtboard>
+          <DCArtboard id="home-c" label="C · Piazza Map"      width={780} height={640}><HomeC_PiazzaMap /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="game" title="03 · Gameplay">
+          <DCArtboard id="game-a" label="A · Behind the Counter" width={1100} height={760}><GameA_BehindCounter /></DCArtboard>
+          <DCArtboard id="game-b" label="B · Ticket Rail"          width={1100} height={760}><GameB_TicketRail /></DCArtboard>
+          <DCArtboard id="game-c" label="C · Focus Mode"           width={1100} height={760}><GameC_FocusMode /></DCArtboard>
+          <DCArtboard id="game-d" label="D · Kid Arcade"           width={1100} height={760}><GameD_KidArcade /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="upgrades" title="04 · Upgrades · accurate items from data/upgrades.js">
+          <DCArtboard id="up-a" label="A · Display Case Catalog" width={1100} height={780}><UpgradesA_DealCase /></DCArtboard>
+          <DCArtboard id="up-b" label="B · Decorate the Room"    width={1100} height={780}><UpgradesB_ShopRoom /></DCArtboard>
+          <DCArtboard id="up-c" label="C · Wishlist Lane"        width={1100} height={780}><UpgradesC_WishlistLane /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="summary" title="05 · End-of-Shift Summary">
+          <DCArtboard id="sum-a" label="A · Café Receipt"     width={780} height={680}><SummaryA_Receipt /></DCArtboard>
+          <DCArtboard id="sum-b" label="B · Storybook Page"   width={780} height={680}><SummaryB_StorybookPage /></DCArtboard>
+        </DCSection>
+
+        <DCSection id="progress" title="06 · Progress / Stats">
+          <DCArtboard id="prog-a" label="A · Gelataio Diary" width={1100} height={680}><ProgressA_DiarySpread /></DCArtboard>
+          <DCArtboard id="prog-b" label="B · Practice Heatmap" width={1100} height={680}><ProgressB_Heatmap /></DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    );
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

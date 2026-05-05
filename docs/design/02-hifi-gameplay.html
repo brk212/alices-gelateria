@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Alice's Gelateria — Gameplay (Hi-Fi v2)</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,700;1,9..144,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --pink: #ff8fc4;
+    --pink-soft: #ffc6dd;
+    --pink-deep: #e91e63;
+    --pink-shadow: #d96ba1;
+    --yellow: #ffd23a;
+    --yellow-deep: #f5b800;
+    --mint: #9be0c8;
+    --mint-deep: #5dc4a0;
+    --cream: #fff5e8;
+    --ink: #2a1a2e;
+    --ink-soft: #6b4f6f;
+    --ink-faint: #a18ba6;
+    --display: 'Fraunces', serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; font-family: var(--mono); color: var(--ink); }
+  body {
+    min-height: 100vh;
+    background: var(--pink);
+    background-image:
+      radial-gradient(ellipse at 50% 110%, var(--pink-soft) 0%, var(--pink) 35%, var(--pink-deep) 100%);
+    padding: 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 1200px; }
+
+  /* === HEADER STRIP === */
+  .topnote {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+    margin-bottom: 18px; color: var(--cream);
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; opacity: 0.85; margin-bottom: 4px;
+  }
+  .topnote h1 {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 38px; line-height: 1; margin: 0; letter-spacing: -0.01em;
+    color: var(--cream);
+    text-shadow: 3px 3px 0 var(--pink-deep);
+  }
+  .swatches { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .swatch-row { display: flex; gap: 6px; }
+  .swatch {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .swatch-cap { font-size: 10px; opacity: 0.85; }
+
+  /* === MAIN FRAME — the shop interior === */
+  .frame {
+    background: var(--pink);
+    border: 3px solid var(--ink);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 6px 6px 0 var(--ink);
+    position: relative;
+  }
+
+  /* Ceiling — pink with dome lights + bunting */
+  .ceiling {
+    height: 56px;
+    background: linear-gradient(to bottom, var(--pink-soft) 0%, var(--pink) 100%);
+    border-bottom: 3px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .dome {
+    position: absolute; top: 8px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, var(--cream) 60%, var(--yellow) 100%);
+    border: 2px solid var(--ink);
+    box-shadow: 0 0 18px rgba(255,210,58,0.6);
+  }
+  .dome::after {
+    content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 10px; background: var(--ink);
+  }
+  .bunting {
+    position: absolute; top: 18px; left: 0; right: 0; height: 28px;
+    pointer-events: none;
+  }
+  .pennant {
+    position: absolute; width: 20px; height: 24px;
+    border-bottom-left-radius: 50% 80%;
+    border-bottom-right-radius: 50% 80%;
+    border: 1.5px solid var(--ink);
+  }
+
+  /* Sign bar + HUD */
+  .signbar {
+    background: var(--ink);
+    padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 3px solid var(--ink);
+    position: relative;
+  }
+  .signbar::before, .signbar::after {
+    content: ''; position: absolute; bottom: -3px; height: 3px; background: var(--ink);
+  }
+  .brand {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 30px; line-height: 1; letter-spacing: -0.01em;
+    color: var(--cream);
+  }
+  .brand .a { color: var(--yellow); }
+  .brand .g { color: var(--mint); }
+  .brand .heart { display: inline-block; transform: translateY(-2px); margin: 0 4px; }
+  .hud { display: flex; gap: 8px; align-items: center; }
+  .hud-pill {
+    font-family: var(--mono); font-weight: 700; font-size: 12px;
+    padding: 7px 14px; border-radius: 999px;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .hud-pill.wpm    { background: var(--mint);   color: var(--ink); }
+  .hud-pill.coins  { background: var(--yellow); color: var(--ink); }
+  .hud-pill.streak { background: var(--pink-deep); color: white; }
+  .hud-pill.lives  { background: var(--cream);  color: var(--ink); }
+  .hud-pill .num { font-size: 14px; }
+  .heart-icon { font-size: 13px; line-height: 1; }
+  .heart-icon.empty { opacity: 0.25; }
+
+  /* Awning — bold candy stripes */
+  .awning {
+    height: 22px;
+    background: repeating-linear-gradient(90deg,
+      var(--pink-deep) 0 32px,
+      var(--cream) 32px 64px);
+    border-bottom: 3px solid var(--ink);
+    position: relative;
+  }
+  .awning::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 6px;
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0 30px,
+        var(--ink) 30px 32px),
+      var(--pink-deep);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 95% 30%, 90% 100%, 85% 30%, 80% 100%, 75% 30%, 70% 100%, 65% 30%, 60% 100%, 55% 30%, 50% 100%, 45% 30%, 40% 100%, 35% 30%, 30% 100%, 25% 30%, 20% 100%, 15% 30%, 10% 100%, 5% 30%, 0 100%);
+  }
+
+  /* Shop interior */
+  .shop {
+    padding: 22px;
+    background: var(--pink);
+    position: relative;
+  }
+
+  /* Back wall — gelato case set against hex tile wall */
+  .case {
+    position: relative;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    margin-bottom: 22px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .case-wall {
+    background: var(--cream);
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--pink-soft) 30%, transparent 32%),
+      radial-gradient(circle at 0% 0%, var(--pink-soft) 30%, transparent 32%),
+      radial-gradient(circle at 100% 0%, var(--pink-soft) 30%, transparent 32%),
+      radial-gradient(circle at 0% 100%, var(--pink-soft) 30%, transparent 32%),
+      radial-gradient(circle at 100% 100%, var(--pink-soft) 30%, transparent 32%);
+    background-size: 24px 24px;
+    padding: 14px 18px 0;
+  }
+  .case-head {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;
+  }
+  .case-title {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 22px; color: var(--ink);
+  }
+  .case-sub {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700;
+  }
+  .tubs {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: nowrap;
+    padding-bottom: 14px;
+  }
+  .tub {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; max-width: 100px;
+  }
+  .tub-vessel {
+    position: relative;
+    width: 84px; height: 60px;
+    border: 2.5px solid var(--ink);
+    border-bottom-width: 5px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 2px 2px 0 var(--ink);
+    overflow: hidden;
+  }
+  .tub-vessel::after {
+    content: ''; position: absolute;
+    inset: 4px 4px auto 4px; height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    filter: blur(2px);
+  }
+  .tub-vessel::before {
+    /* drip */
+    content: ''; position: absolute; bottom: -8px; left: 8px; right: 8px;
+    height: 16px;
+    background: inherit;
+    border-radius: 50% 50% 8px 8px;
+    border: 2.5px solid var(--ink);
+    border-top: none;
+    z-index: -1;
+  }
+  .tub-label {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    color: var(--ink); text-align: center; letter-spacing: 0.02em;
+  }
+  .tub.locked .tub-vessel {
+    background: repeating-linear-gradient(135deg, var(--cream) 0 6px, var(--pink-soft) 6px 12px) !important;
+    opacity: 0.5;
+  }
+  .tub.locked .tub-label { color: var(--ink-faint); }
+  /* counter ledge under tubs */
+  .case-counter {
+    height: 14px;
+    background: linear-gradient(to bottom, var(--yellow) 0%, var(--yellow-deep) 100%);
+    border-top: 3px solid var(--ink);
+  }
+
+  /* === Play row === */
+  .play-row {
+    display: grid;
+    grid-template-columns: 230px 1fr 220px;
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  /* Queue */
+  .queue { display: flex; flex-direction: column; gap: 12px; }
+  .queue-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--cream); letter-spacing: 0.16em; text-transform: uppercase;
+    background: var(--ink); padding: 6px 10px; border-radius: 6px;
+    align-self: flex-start;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--yellow);
+  }
+  .cust-card {
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 14px;
+    padding: 10px 12px;
+    display: flex; gap: 10px; align-items: center;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.15s;
+  }
+  .cust-card.active {
+    background: var(--yellow);
+    box-shadow: 4px 4px 0 var(--pink-deep), 4px 4px 0 3px var(--ink);
+    transform: translate(-1px, -1px);
+  }
+  .cust-card.dim { opacity: 0.85; background: var(--cream); }
+  .cust-portrait {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 2.5px solid var(--ink);
+    background: var(--pink-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0;
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .cust-portrait.alt2 { background: var(--mint); }
+  .cust-portrait.alt3 { background: var(--yellow); }
+  .cust-portrait.alt4 { background: var(--pink); }
+  .cust-meta { flex: 1; min-width: 0; }
+  .cust-name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 17px; line-height: 1; color: var(--ink);
+  }
+  .cust-want {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--ink-soft); letter-spacing: 0.02em;
+    margin-top: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .patience-track {
+    height: 7px;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .patience-fill { height: 100%; background: var(--mint-deep); }
+  .patience-fill.warn { background: var(--yellow-deep); }
+  .patience-fill.danger { background: var(--pink-deep); }
+
+  /* === Center stage === */
+  .stage { display: flex; flex-direction: column; gap: 16px; }
+
+  /* Order ticket */
+  .order-card {
+    background: var(--cream);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: 5px 5px 0 var(--ink);
+    display: grid;
+    grid-template-columns: 100px 1fr 110px;
+    gap: 18px;
+    align-items: center;
+    position: relative;
+  }
+  /* tape */
+  .order-card::before, .order-card::after {
+    content: ''; position: absolute; width: 60px; height: 18px;
+    background: rgba(155, 224, 200, 0.85);
+    border: 1.5px solid var(--ink);
+    top: -10px;
+  }
+  .order-card::before { left: 28px; transform: rotate(-4deg); }
+  .order-card::after { right: 28px; transform: rotate(3deg); background: rgba(255, 210, 58, 0.85); }
+
+  .order-cust { text-align: center; }
+  .order-cust .cust-portrait {
+    width: 76px; height: 76px; font-size: 42px; margin: 0 auto;
+    border-width: 3px;
+  }
+  .order-cust .cust-name { font-size: 18px; margin-top: 8px; }
+  .order-cust .cust-meta-line {
+    font-family: var(--mono); font-size: 9.5px;
+    color: var(--ink-soft); line-height: 1.25; margin-top: 3px; font-weight: 500;
+  }
+
+  .ticket-area { min-width: 0; }
+  .ticket-quote {
+    font-family: var(--display); font-style: italic; font-weight: 700;
+    font-size: 18px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.2;
+  }
+  .ticket-quote .word {
+    color: var(--pink-deep); font-weight: 900;
+    text-decoration: underline wavy var(--pink-deep);
+    text-underline-offset: 4px;
+  }
+  .letter-row { display: flex; gap: 7px; flex-wrap: wrap; }
+  .letter-box {
+    width: 44px; height: 54px;
+    border: 2.5px solid var(--ink);
+    border-bottom-width: 5px;
+    border-radius: 8px;
+    background: var(--cream);
+    font-family: var(--mono); font-size: 28px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .letter-box.typed { background: var(--mint); color: var(--ink); }
+  .letter-box.current {
+    background: var(--pink-deep); color: var(--cream);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--yellow), 3px 3px 0 3px var(--ink);
+  }
+  .letter-box.pending { background: var(--cream); color: var(--ink-faint); }
+
+  .order-reward {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  /* Cone */
+  .cone {
+    position: relative;
+    width: 70px; height: 110px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .scoop {
+    position: absolute;
+    bottom: 50px;
+    width: 64px; height: 44px;
+    border-radius: 50%;
+    border: 2.5px solid var(--ink);
+    background: var(--pink-deep);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .scoop::after {
+    content: ''; position: absolute; top: 6px; left: 12px;
+    width: 16px; height: 8px;
+    background: rgba(255,255,255,0.5); border-radius: 50%; filter: blur(2px);
+  }
+  .cone-cone {
+    position: absolute; bottom: 0;
+    width: 0; height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-top: 60px solid var(--yellow);
+  }
+  .cone-mesh {
+    position: absolute;
+    bottom: 0;
+    width: 60px; height: 60px;
+    background-image:
+      linear-gradient(45deg, transparent 47%, var(--ink) 47% 53%, transparent 53%),
+      linear-gradient(-45deg, transparent 47%, var(--ink) 47% 53%, transparent 53%);
+    background-size: 12px 12px;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    opacity: 0.35;
+  }
+  .cone-outline {
+    /* hand-drawn cone outline */
+    position: absolute; bottom: 0;
+    width: 60px; height: 60px;
+    border-left: 2.5px solid var(--ink);
+    border-right: 2.5px solid var(--ink);
+    transform: skew(0deg);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  .reward-cap {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+    color: var(--ink-soft); text-align: center; margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  /* === Counter / keyboard === */
+  .counter-wrap {
+    position: relative;
+    margin-top: 0;
+  }
+  .counter {
+    background: var(--yellow);
+    border: 3px solid var(--ink);
+    border-bottom-width: 8px;
+    border-radius: 14px;
+    padding: 16px 18px 14px;
+    box-shadow: 5px 5px 0 var(--ink);
+    /* candy stripe accent on left edge */
+    background-image: linear-gradient(
+      to right,
+      var(--pink-deep) 0%, var(--pink-deep) 18px,
+      var(--cream) 18px, var(--cream) 36px,
+      var(--yellow) 36px, var(--yellow) 100%
+    );
+  }
+  .counter-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+    padding-left: 28px;
+  }
+  .counter-title {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 17px; color: var(--ink);
+  }
+  .counter-hint {
+    font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--ink);
+  }
+  .counter-hint .key-inline {
+    display: inline-block;
+    padding: 3px 8px;
+    background: var(--yellow);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-bottom-width: 3px;
+    border-radius: 5px;
+    font-weight: 700;
+    margin: 0 3px;
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .kb { display: flex; flex-direction: column; gap: 5px; align-items: center; }
+  .kb-row { display: flex; gap: 5px; }
+  .kb-row.r2 { padding-left: 14px; }
+  .kb-row.r3 { padding-left: 28px; }
+  .key {
+    width: 38px; height: 38px;
+    border: 2px solid var(--ink);
+    border-bottom-width: 4px;
+    border-radius: 7px;
+    background: var(--cream);
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  /* Finger-coded keys: pinky=magenta, ring=electric blue, middle=mint, index=sunshine */
+  .key.f-pinky  { background: #ff7aab; color: #fff; }
+  .key.f-ring   { background: #5fb3ff; color: var(--ink); }
+  .key.f-middle { background: var(--mint); color: var(--ink); }
+  .key.f-index  { background: var(--yellow); color: var(--ink); }
+  .key.f-thumb  { background: var(--cream); color: var(--ink); }
+  .key.next {
+    box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--yellow), 0 0 18px rgba(233,30,99,0.7);
+    transform: translate(0, -3px);
+    position: relative; z-index: 2;
+  }
+  .key.next::after {
+    content: '▼'; position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    color: var(--ink); font-size: 11px;
+  }
+
+  /* === Right rail === */
+  .register {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .panel {
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .panel.mint { background: var(--mint); }
+  .panel.yellow { background: var(--yellow); }
+  .panel-label {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    color: var(--ink); letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tip-jar { display: flex; gap: 5px; justify-content: space-between; }
+  .tip-coin {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2.5px solid var(--ink);
+    background: var(--cream);
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-faint);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .tip-coin.filled {
+    background: var(--yellow); color: var(--ink);
+  }
+  .tip-progress {
+    margin-top: 8px;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--ink); opacity: 0.7;
+  }
+  .panel-stat {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 36px; line-height: 1; color: var(--ink);
+  }
+  .panel-stat .unit {
+    font-family: var(--mono); font-style: normal;
+    font-weight: 700; font-size: 11px; color: var(--ink-soft);
+    margin-left: 6px;
+  }
+  .panel-bonus {
+    margin-top: 8px;
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--pink-deep);
+  }
+  .ondeck-mini { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .ondeck-cone {
+    transform: scale(0.7); margin: -16px 0 -10px;
+  }
+  .ondeck-name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 16px; color: var(--ink); text-align: center; line-height: 1;
+  }
+  .ondeck-flavor {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--ink-soft); text-align: center;
+  }
+
+  /* === Footer ribbon === */
+  .ribbon {
+    background: var(--mint);
+    border-top: 3px solid var(--ink);
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+  }
+  .phase { display: flex; align-items: center; gap: 12px; }
+  .phase .name {
+    font-family: var(--display); font-style: italic; font-weight: 900;
+    font-size: 18px; color: var(--ink);
+  }
+  .phase-dots { display: flex; gap: 5px; }
+  .phase-dot {
+    width: 10px; height: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--cream);
+  }
+  .phase-dot.done { background: var(--pink-deep); }
+  .phase-dot.active {
+    background: var(--yellow);
+    box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px var(--ink);
+  }
+  .esc { color: var(--ink); }
+  .kbd {
+    display: inline-block;
+    padding: 2px 7px;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    border-bottom-width: 3px;
+    border-radius: 5px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    margin: 0 2px;
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  /* === annotations === */
+  .annotations {
+    margin-top: 18px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    color: var(--cream);
+  }
+  .anno {
+    padding: 12px 14px;
+    background: rgba(42,26,46,0.65);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    font-family: var(--mono); font-size: 11px; line-height: 1.5;
+    backdrop-filter: blur(4px);
+  }
+  .anno strong { color: var(--yellow); font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Header -->
+    <div class="topnote">
+      <div>
+        <div class="kicker">03 · gameplay · hi-fi · museum-of-ice-cream pass</div>
+        <h1>Behind the Counter</h1>
+      </div>
+      <div class="swatches">
+        <div class="swatch-row">
+          <div class="swatch" style="background:#ff8fc4" title="bubblegum"></div>
+          <div class="swatch" style="background:#ffc6dd" title="sherbet"></div>
+          <div class="swatch" style="background:#e91e63" title="magenta"></div>
+          <div class="swatch" style="background:#ffd23a" title="sunshine"></div>
+          <div class="swatch" style="background:#9be0c8" title="mint"></div>
+          <div class="swatch" style="background:#fff5e8" title="cream"></div>
+          <div class="swatch" style="background:#2a1a2e" title="ink"></div>
+        </div>
+        <div class="swatch-cap">bubblegum · sherbet · magenta · sunshine · mint · cream · ink</div>
+      </div>
+    </div>
+
+    <!-- Frame -->
+    <div class="frame">
+
+      <!-- Ceiling -->
+      <div class="ceiling">
+        <div class="dome" style="left: 8%"></div>
+        <div class="dome" style="left: 24%"></div>
+        <div class="dome" style="left: 40%"></div>
+        <div class="dome" style="left: 56%"></div>
+        <div class="dome" style="left: 72%"></div>
+        <div class="dome" style="left: 88%"></div>
+        <div class="bunting">
+          <div class="pennant" style="left: 14%; background: #ffd23a"></div>
+          <div class="pennant" style="left: 30%; background: #9be0c8"></div>
+          <div class="pennant" style="left: 46%; background: #e91e63"></div>
+          <div class="pennant" style="left: 62%; background: #ffd23a"></div>
+          <div class="pennant" style="left: 78%; background: #9be0c8"></div>
+        </div>
+      </div>
+
+      <!-- Sign bar -->
+      <div class="signbar">
+        <div class="brand"><span class="a">Alice's</span><span class="heart">🍦</span><span class="g">Gelateria</span></div>
+        <div class="hud">
+          <div class="hud-pill wpm">⌨ <span class="num">32</span> wpm</div>
+          <div class="hud-pill coins">🪙 <span class="num">240</span></div>
+          <div class="hud-pill streak">★ <span class="num">×7</span></div>
+          <div class="hud-pill lives">
+            <span class="heart-icon">💖</span><span class="heart-icon">💖</span><span class="heart-icon empty">💖</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Awning -->
+      <div class="awning"></div>
+
+      <!-- Shop -->
+      <div class="shop">
+
+        <!-- Gelato case -->
+        <div class="case">
+          <div class="case-wall">
+            <div class="case-head">
+              <div class="case-title">Il Banco — today's case</div>
+              <div class="case-sub">5 of 12 flavors unlocked</div>
+            </div>
+            <div class="tubs">
+              <div class="tub"><div class="tub-vessel" style="background: #fff0d4"></div><div class="tub-label">fior di latte</div></div>
+              <div class="tub"><div class="tub-vessel" style="background: #ff8fc4"></div><div class="tub-label">fragola ✓</div></div>
+              <div class="tub"><div class="tub-vessel" style="background: #6b4226"></div><div class="tub-label">cioccolato ✓</div></div>
+              <div class="tub"><div class="tub-vessel" style="background: #9be0c8"></div><div class="tub-label">menta chip ✓</div></div>
+              <div class="tub"><div class="tub-vessel" style="background: #ffd23a"></div><div class="tub-label">limone ✓</div></div>
+              <div class="tub locked"><div class="tub-vessel"></div><div class="tub-label">caramello ?</div></div>
+              <div class="tub locked"><div class="tub-vessel"></div><div class="tub-label">stracciatella ?</div></div>
+              <div class="tub locked"><div class="tub-vessel"></div><div class="tub-label">pistacchio ?</div></div>
+            </div>
+          </div>
+          <div class="case-counter"></div>
+        </div>
+
+        <!-- Play row -->
+        <div class="play-row">
+
+          <!-- Queue -->
+          <div class="queue">
+            <div class="queue-label">la fila — up next</div>
+
+            <div class="cust-card active">
+              <div class="cust-portrait">🤓</div>
+              <div class="cust-meta">
+                <div class="cust-name">Zoe</div>
+                <div class="cust-want">→ fragola</div>
+                <div class="patience-track"><div class="patience-fill" style="width:72%"></div></div>
+              </div>
+            </div>
+
+            <div class="cust-card dim">
+              <div class="cust-portrait alt2">👴🏻</div>
+              <div class="cust-meta">
+                <div class="cust-name">Papa Greg</div>
+                <div class="cust-want">→ limone</div>
+                <div class="patience-track"><div class="patience-fill" style="width:88%"></div></div>
+              </div>
+            </div>
+
+            <div class="cust-card dim">
+              <div class="cust-portrait alt3">👧🏽</div>
+              <div class="cust-meta">
+                <div class="cust-name">Mira</div>
+                <div class="cust-want">→ menta</div>
+                <div class="patience-track"><div class="patience-fill warn" style="width:48%"></div></div>
+              </div>
+            </div>
+
+            <div class="cust-card dim">
+              <div class="cust-portrait alt4">🧒🏼</div>
+              <div class="cust-meta">
+                <div class="cust-name">Piper</div>
+                <div class="cust-want">→ ?</div>
+                <div class="patience-track"><div class="patience-fill" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage -->
+          <div class="stage">
+
+            <!-- Order ticket -->
+            <div class="order-card">
+              <div class="order-cust">
+                <div class="cust-portrait">🤓</div>
+                <div class="cust-name">Zoe</div>
+                <div class="cust-meta-line">9 yrs · glasses<br/>curly brown</div>
+              </div>
+              <div class="ticket-area">
+                <div class="ticket-quote">"Vorrei un cono di <span class="word">fragola</span>, per favore!"</div>
+                <div class="letter-row">
+                  <div class="letter-box typed">F</div>
+                  <div class="letter-box typed">R</div>
+                  <div class="letter-box typed">A</div>
+                  <div class="letter-box current">G</div>
+                  <div class="letter-box pending">O</div>
+                  <div class="letter-box pending">L</div>
+                  <div class="letter-box pending">A</div>
+                </div>
+              </div>
+              <div class="order-reward">
+                <div class="cone">
+                  <div class="scoop"></div>
+                  <div class="cone-cone"></div>
+                  <div class="cone-mesh"></div>
+                </div>
+                <div class="reward-cap">building<br/>fragola cone</div>
+              </div>
+            </div>
+
+            <!-- Counter / keyboard -->
+            <div class="counter-wrap">
+              <div class="counter">
+                <div class="counter-head">
+                  <div class="counter-title">Il banco — keyboard</div>
+                  <div class="counter-hint">next: <span class="key-inline">G</span> right index</div>
+                </div>
+                <div class="kb">
+                  <div class="kb-row r1">
+                    <div class="key f-pinky">Q</div><div class="key f-ring">W</div><div class="key f-middle">E</div>
+                    <div class="key f-index">R</div><div class="key f-index">T</div><div class="key f-index">Y</div>
+                    <div class="key f-index">U</div><div class="key f-middle">I</div><div class="key f-ring">O</div>
+                    <div class="key f-pinky">P</div>
+                  </div>
+                  <div class="kb-row r2">
+                    <div class="key f-pinky">A</div><div class="key f-ring">S</div><div class="key f-middle">D</div>
+                    <div class="key f-index">F</div><div class="key f-index next">G</div><div class="key f-index">H</div>
+                    <div class="key f-index">J</div><div class="key f-middle">K</div><div class="key f-ring">L</div>
+                  </div>
+                  <div class="kb-row r3">
+                    <div class="key f-pinky">Z</div><div class="key f-ring">X</div><div class="key f-middle">C</div>
+                    <div class="key f-index">V</div><div class="key f-index">B</div><div class="key f-index">N</div>
+                    <div class="key f-middle">M</div>
+                  </div>
+                  <div style="display: flex; gap: 14px; margin-top: 10px; font-size: 10px; font-weight: 700; color: var(--ink);">
+                    <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:11px;height:11px;border-radius:50%;background:#ff7aab;border:1.5px solid var(--ink);"></span>pinky</span>
+                    <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:11px;height:11px;border-radius:50%;background:#5fb3ff;border:1.5px solid var(--ink);"></span>ring</span>
+                    <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:11px;height:11px;border-radius:50%;background:var(--mint);border:1.5px solid var(--ink);"></span>middle</span>
+                    <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:11px;height:11px;border-radius:50%;background:var(--yellow);border:1.5px solid var(--ink);"></span>index</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Register -->
+          <div class="register">
+            <div class="panel yellow">
+              <div class="panel-label">tip jar — this order</div>
+              <div class="tip-jar">
+                <div class="tip-coin filled">$</div>
+                <div class="tip-coin filled">$</div>
+                <div class="tip-coin filled">$</div>
+                <div class="tip-coin">$</div>
+                <div class="tip-coin">$</div>
+              </div>
+              <div class="tip-progress">3 / 5 · keep typing!</div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-label">streak</div>
+              <div class="panel-stat">×7<span class="unit">in a row</span></div>
+              <div class="panel-bonus">↑ +50% tips!</div>
+            </div>
+
+            <div class="panel mint">
+              <div class="panel-label">on deck</div>
+              <div class="ondeck-mini">
+                <div class="ondeck-cone">
+                  <div class="cone">
+                    <div class="scoop" style="background: #ffd23a"></div>
+                    <div class="cone-cone"></div>
+                    <div class="cone-mesh"></div>
+                  </div>
+                </div>
+                <div class="ondeck-name">Papa Greg</div>
+                <div class="ondeck-flavor">limone cone</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer ribbon -->
+      <div class="ribbon">
+        <div class="phase">
+          <span class="name">Fase 1 · home row</span>
+          <span class="phase-dots">
+            <span class="phase-dot done"></span>
+            <span class="phase-dot done"></span>
+            <span class="phase-dot done"></span>
+            <span class="phase-dot active"></span>
+            <span class="phase-dot"></span>
+            <span class="phase-dot"></span>
+            <span class="phase-dot"></span>
+            <span class="phase-dot"></span>
+          </span>
+          <span style="color: var(--ink-soft);">3 / 8 served</span>
+        </div>
+        <div class="esc">
+          <span class="kbd">Esc</span> pause &nbsp;·&nbsp; <span class="kbd">Tab</span> skip
+        </div>
+      </div>
+    </div>
+
+    <!-- Annotations -->
+    <div class="annotations">
+      <div class="anno">
+        <strong>Soaked-in palette →</strong> bubblegum pink IS the surface. Yellow counters, mint accents, magenta active states. Every UI element lives inside the candy world, not on top of it.
+      </div>
+      <div class="anno">
+        <strong>Diegetic shop →</strong> ceiling w/ dome lights + bunting, hex-tile back wall, candy-stripe awning, yellow display counter, terrazzo accents. Game UI is the shop.
+      </div>
+      <div class="anno">
+        <strong>Still placeholder →</strong> emoji portraits (need real illustrated portraits). Gelato tubs are CSS — could be photos. Approve this palette and I'll roll it across Setup B, Home A, Upgrades A, Progress A&B.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

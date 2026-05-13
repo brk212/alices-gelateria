@@ -98,8 +98,9 @@ var Screens = (function () {
     var tiers = ['easy', 'medium', 'hard'];
     var html = '';
 
+    var frontier = sequencePos(state.phase, state.tier);
     for (var p = 1; p <= 8; p++) {
-      var locked = p > state.phase;
+      var locked = sequencePos(p, 'easy') > frontier;
       var isCurrent = (p === state.phase);
       html += '<div class="ls-card' + (locked ? ' ls-locked' : '') + '">'
         + '<div class="ls-phase-header">'
@@ -115,6 +116,7 @@ var Screens = (function () {
       } else {
         html += '<div class="ls-tiers">';
         tiers.forEach(function (tier) {
+          if (sequencePos(p, tier) > frontier) return;
           var label = tier.charAt(0).toUpperCase() + tier.slice(1);
           var isActiveTier = isCurrent && tier === state.tier;
           html += '<button class="ls-tier-btn' + (isActiveTier ? ' ls-active' : '') + '" '

@@ -82,8 +82,7 @@
               nextBtn.style.display = '';
               nextBtn.onclick = function () {
                 var cs = State.loadState();
-                var TIER_ORDER = { easy: 0, medium: 1, hard: 2 };
-                if (result.phase === cs.phase && TIER_ORDER[result.tier] >= TIER_ORDER[cs.tier]) {
+                if (sequencePos(result.phase, result.tier) >= sequencePos(cs.phase, cs.tier)) {
                   State.updateState({ phase: next.phase, tier: next.tier });
                 }
                 startShift(next.phase, next.tier);

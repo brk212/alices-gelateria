@@ -36,7 +36,7 @@ var Progress = (function () {
     var container = document.getElementById('progress-content');
     if (!container) return;
 
-    var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
+    var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ V M', '+ B N', 'Full Bottom Row', 'Full Keyboard'];
     var tier = state.tier || 'easy';
     var tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
 

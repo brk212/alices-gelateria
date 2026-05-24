@@ -402,7 +402,7 @@ var Gameplay = (function () {
           : 'Phase ' + session.conversationPhase;
         ribbonEl.textContent = 'Conversation Mode  ·  ' + phaseLabel + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' sentences';
       } else {
-        var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
+        var phaseNames = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ V M', '+ B N', 'Full Bottom Row', 'Full Keyboard'];
         ribbonEl.textContent = 'Phase ' + session.phase + ' · ' + (phaseNames[session.phase] || '') + '  ·  ' + session.ordersCompleted + ' / ' + session.ordersToWin + ' orders';
       }
     }

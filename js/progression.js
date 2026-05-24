@@ -1,4 +1,4 @@
-var MAX_PHASE = 8;
+var MAX_PHASE = 10;
 
 function isTierCleared(accuracy, customersLost) {
   return accuracy >= 0.85 && customersLost <= 1;

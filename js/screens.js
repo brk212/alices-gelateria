@@ -1,6 +1,6 @@
 var Screens = (function () {
   var SCREEN_IDS = ['setup', 'home', 'game', 'summary', 'upgrades', 'progress', 'levelselect'];
-  var PHASE_NAMES = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ Bottom Row', 'Full Keyboard'];
+  var PHASE_NAMES = ['', 'Home Row', '+ G H', '+ E I', '+ R U', '+ T Y', '+ Q W O P', '+ V M', '+ B N', 'Full Bottom Row', 'Full Keyboard'];
 
   function showScreen(name) {
     SCREEN_IDS.forEach(function (id) {
@@ -99,7 +99,7 @@ var Screens = (function () {
     var html = '';
 
     var frontier = sequencePos(state.phase, state.tier);
-    for (var p = 1; p <= 8; p++) {
+    for (var p = 1; p <= 10; p++) {
       var locked = sequencePos(p, 'easy') > frontier;
       var isCurrent = (p === state.phase);
       html += '<div class="ls-card' + (locked ? ' ls-locked' : '') + '">'

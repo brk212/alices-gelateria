@@ -26,7 +26,7 @@ var PHASE_WORDS = {
   7: ['move','movie','improve','olive','valve','glove','drive',
       'revive','vivid','motive','warm','swim','trim','strum',
       'moody','slime','mauve','motif','ivory','swarm','yam',
-      'item','stove','ovum','vim'],
+      'item','stove','velvet','vim'],
   8: ['blend','brown','born','bond','brand','grin','burn','bundle',
       'border','wander','robin','narrow','bridge','binder','render',
       'blind','drawn','inform','urban','modern','broken','robe',

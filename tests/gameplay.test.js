@@ -101,8 +101,8 @@ test('no phase word pool contains duplicate words', () => {
   });
 });
 
-test('PHASE_LETTER_LABELS has entries for phases 1 through 7', () => {
-  [1, 2, 3, 4, 5, 6, 7].forEach(p => {
+test('PHASE_LETTER_LABELS has entries for phases 1 through 9', () => {
+  [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(p => {
     expect(PHASE_LETTER_LABELS[p]).toBeDefined();
     expect(typeof PHASE_LETTER_LABELS[p].letters).toBe('string');
     expect(typeof PHASE_LETTER_LABELS[p].label).toBe('string');

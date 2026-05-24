@@ -23,13 +23,21 @@ var PHASE_WORDS = {
       'flower','trowel','stoop','troop','droop','worth',
       'swirls','waffles','trophy','strips','prowl','afford',
       'effort','toffee','worthy','upward','growth'],
-  7: ['sprinkle','vanilla','caramel','rainbow','coconut','blizzard',
+  7: ['move','movie','improve','olive','valve','glove','drive',
+      'revive','vivid','motive','warm','swim','trim','strum',
+      'moody','slime','mauve','motif','ivory','swarm','yam',
+      'item','stove','ovum','vim'],
+  8: ['blend','brown','born','bond','brand','grin','burn','bundle',
+      'border','wander','robin','narrow','bridge','binder','render',
+      'blind','drawn','inform','urban','modern','broken','robe',
+      'mend','bend','turban'],
+  9: ['sprinkle','vanilla','caramel','rainbow','coconut','blizzard',
       'freezing','amazing','brownie','crumble','marshmallow','whipped',
       'cinnamon','banana','delicious','butterscotch','chocolate',
       'sundae','bubbly','vibrant','carnival','zesty'],
-  8: ['flavor','gelato','sorbet','parfait','milkshake','toppings',
-      'delightful','wonderful','exciting','together','favorite',
-      'birthday','alphabet','keyboard','practice','perfect']
+  10: ['flavor','gelato','sorbet','parfait','milkshake','toppings',
+       'delightful','wonderful','exciting','together','favorite',
+       'birthday','alphabet','keyboard','practice','perfect']
 };
 
 if (typeof module !== 'undefined' && module.exports) {

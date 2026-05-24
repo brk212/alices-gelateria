@@ -27,8 +27,10 @@ var Keyboard = (function () {
     4: ['a','s','d','e','f','g','h','i','j','k','l','r','u',';'],
     5: ['a','s','d','e','f','g','h','i','j','k','l','r','t','u','y',';'],
     6: ['a','d','e','f','g','h','i','j','k','l','o','p','q','r','s','t','u','w','y',';'],
-    7: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',';',',','.'],
-    8: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',';',',','.','/']
+    7: ['a','d','e','f','g','h','i','j','k','l','m','o','p','q','r','s','t','u','v','w','y',';'],
+    8: ['a','b','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','y',';'],
+    9: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',';',',','.'],
+    10: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',';',',','.','/']
   };
 
   var ROWS = [
@@ -46,7 +48,9 @@ var Keyboard = (function () {
     var container = document.getElementById('keyboard-hint');
     if (!container) return;
 
-    var unlocked = PHASE_KEYS[currentPhase] || PHASE_KEYS[1];
+    var unlocked = currentPhase === 'full'
+      ? ROWS.reduce(function(a, r) { return a.concat(r); }, [])
+      : (PHASE_KEYS[currentPhase] || PHASE_KEYS[1]);
 
     var html = '<div class="counter">'
       + '<div class="counter-head">'

@@ -146,7 +146,7 @@ var Gameplay = (function () {
     if (session.mode !== 'conversation') {
       Keyboard.render(state.phase);
     } else {
-      var convPhase = session.conversationPhase === 'full' ? 'full' : session.conversationPhase;
+      var convPhase = session.conversationPhase;
       Keyboard.render(convPhase);
       Keyboard.renderToggle();
     }

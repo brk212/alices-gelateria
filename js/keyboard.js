@@ -114,6 +114,8 @@ var Keyboard = (function () {
     btn.className = 'kb-toggle';
     btn.textContent = '▼';
     btn.title = 'Toggle keyboard guide';
+    btn.setAttribute('aria-label', 'Toggle keyboard guide');
+    btn.setAttribute('aria-expanded', 'true');
 
     btn.addEventListener('click', function() {
       var kb = document.querySelector('#keyboard-hint .kb');
@@ -122,6 +124,7 @@ var Keyboard = (function () {
       if (kb) kb.style.display = isVisible ? 'none' : '';
       if (hint) hint.style.display = isVisible ? 'none' : '';
       btn.textContent = isVisible ? '▶' : '▼';
+      btn.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
     });
 
     head.appendChild(btn);

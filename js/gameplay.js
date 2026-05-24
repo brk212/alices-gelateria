@@ -57,7 +57,9 @@ var Gameplay = (function () {
     4: { letters: '+ u r',         label: 'right vowel + reach' },
     5: { letters: '+ t y',         label: 'top row center' },
     6: { letters: '+ w o p',       label: 'outer ring' },
-    7: { letters: '+ n b m c z v', label: 'bottom row' }
+    7: { letters: '+ v m',         label: 'index fingers' },
+    8: { letters: '+ b n',         label: 'outer index' },
+    9: { letters: '+ z x c , .',   label: 'full bottom row' }
   };
 
   function generatePhrase(phase) {

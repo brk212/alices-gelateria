@@ -16,7 +16,8 @@
   --f-pinky:  #ff7aab;
   --f-ring:   #5fb3ff;
   --f-middle: #9be0c8;
-  --f-index:  #ffd23a;
+  --f-index-l: #ffd23a;
+  --f-index-r: #ffb347;
 
   --display: 'Fraunces', serif;
   --mono:    'JetBrains Mono', ui-monospace, monospace;
@@ -1037,7 +1038,8 @@ body {
 .key.f-pinky  { background: var(--f-pinky);  color: #fff; }
 .key.f-ring   { background: var(--f-ring);   color: var(--ink); }
 .key.f-middle { background: var(--f-middle); color: var(--ink); }
-.key.f-index  { background: var(--f-index);  color: var(--ink); }
+.key.f-index-l { background: var(--f-index-l); color: var(--ink); }
+.key.f-index-r { background: var(--f-index-r); color: var(--ink); }
 .key.locked   { background: rgba(255,255,255,0.35); color: var(--ink-faint); opacity: 0.55; }
 
 .key.next {

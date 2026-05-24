@@ -3,13 +3,21 @@ var Keyboard = (function () {
     'q':'pinky','a':'pinky','z':'pinky',
     'w':'ring', 's':'ring', 'x':'ring',
     'e':'middle','d':'middle','c':'middle',
-    'r':'index','f':'index','v':'index',
-    't':'index','g':'index','b':'index',
-    'y':'index','h':'index','n':'index',
-    'u':'index','j':'index','m':'index',
+    'r':'index-l','f':'index-l','v':'index-l',
+    't':'index-l','g':'index-l','b':'index-l',
+    'y':'index-r','h':'index-r','n':'index-r',
+    'u':'index-r','j':'index-r','m':'index-r',
     'i':'middle','k':'middle',',':'middle',
     'o':'ring',  'l':'ring', '.':'ring',
     'p':'pinky', ';':'pinky','/':'pinky'
+  };
+
+  var FINGER_DISPLAY = {
+    'pinky':   'pinky',
+    'ring':    'ring',
+    'middle':  'middle',
+    'index-l': 'left index',
+    'index-r': 'right index'
   };
 
   var PHASE_KEYS = {
@@ -82,7 +90,7 @@ var Keyboard = (function () {
       el.classList.add('next');
       if (hintEl) {
         var finger = KEY_FINGER[key.toLowerCase()] || '';
-        var fingerLabel = finger ? finger + ' finger' : '';
+        var fingerLabel = finger ? (FINGER_DISPLAY[finger] || finger) + ' finger' : '';
         hintEl.innerHTML = 'next: <span class="key-inline">' + key.toUpperCase() + '</span>'
           + (fingerLabel ? ' <span style="opacity:0.7">' + fingerLabel + '</span>' : '');
       }

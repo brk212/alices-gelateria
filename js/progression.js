@@ -5,7 +5,7 @@ function isTierCleared(accuracy, customersLost) {
 }
 
 // Returns a number representing position in the overall progression sequence:
-// (1,easy)=0 … (8,easy)=7, (1,medium)=8 … (8,medium)=15, (1,hard)=16 … (8,hard)=23
+// (1,easy)=0 … (10,easy)=9, (1,medium)=10 … (10,medium)=19, (1,hard)=20 … (10,hard)=29
 function sequencePos(phase, tier) {
   var TIER_ORDER = { easy: 0, medium: 1, hard: 2 };
   return TIER_ORDER[tier] * MAX_PHASE + (phase - 1);

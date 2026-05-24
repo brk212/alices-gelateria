@@ -99,7 +99,7 @@ var Screens = (function () {
     var html = '';
 
     var frontier = sequencePos(state.phase, state.tier);
-    for (var p = 1; p <= 10; p++) {
+    for (var p = 1; p <= MAX_PHASE; p++) {
       var locked = sequencePos(p, 'easy') > frontier;
       var isCurrent = (p === state.phase);
       html += '<div class="ls-card' + (locked ? ' ls-locked' : '') + '">'

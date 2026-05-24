@@ -19,24 +19,24 @@ test('nextTierOrPhase advances phase within a tier', () => {
   expect(nextTierOrPhase(7, 'hard')).toEqual({ phase: 8, tier: 'hard' });
 });
 
-test('nextTierOrPhase advances tier at phase 8', () => {
-  expect(nextTierOrPhase(8, 'easy')).toEqual({ phase: 1, tier: 'medium' });
-  expect(nextTierOrPhase(8, 'medium')).toEqual({ phase: 1, tier: 'hard' });
+test('nextTierOrPhase advances tier at phase 10', () => {
+  expect(nextTierOrPhase(10, 'easy')).toEqual({ phase: 1, tier: 'medium' });
+  expect(nextTierOrPhase(10, 'medium')).toEqual({ phase: 1, tier: 'hard' });
 });
 
-test('nextTierOrPhase stays at phase 8 hard when already at max', () => {
-  expect(nextTierOrPhase(8, 'hard')).toEqual({ phase: 8, tier: 'hard' });
+test('nextTierOrPhase stays at phase 10 hard when already at max', () => {
+  expect(nextTierOrPhase(10, 'hard')).toEqual({ phase: 10, tier: 'hard' });
 });
 
 test('sequencePos orders easy before medium before hard', () => {
   expect(sequencePos(1, 'easy')).toBe(0);
-  expect(sequencePos(8, 'easy')).toBe(7);
-  expect(sequencePos(1, 'medium')).toBe(8);
-  expect(sequencePos(8, 'medium')).toBe(15);
-  expect(sequencePos(1, 'hard')).toBe(16);
-  expect(sequencePos(8, 'hard')).toBe(23);
+  expect(sequencePos(10, 'easy')).toBe(9);
+  expect(sequencePos(1, 'medium')).toBe(10);
+  expect(sequencePos(10, 'medium')).toBe(19);
+  expect(sequencePos(1, 'hard')).toBe(20);
+  expect(sequencePos(10, 'hard')).toBe(29);
 });
 
 test('sequencePos: all easy phases come before any medium phase', () => {
-  expect(sequencePos(8, 'easy')).toBeLessThan(sequencePos(1, 'medium'));
+  expect(sequencePos(10, 'easy')).toBeLessThan(sequencePos(1, 'medium'));
 });

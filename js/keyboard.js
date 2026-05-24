@@ -106,5 +106,26 @@ var Keyboard = (function () {
     return KEY_FINGER[key.toLowerCase()] || null;
   }
 
-  return { render, highlightKey, getFingerForKey, PHASE_KEYS };
+  function renderToggle() {
+    var head = document.querySelector('#keyboard-hint .counter-head');
+    if (!head || head.querySelector('.kb-toggle')) return;
+
+    var btn = document.createElement('button');
+    btn.className = 'kb-toggle';
+    btn.textContent = '▼';
+    btn.title = 'Toggle keyboard guide';
+
+    btn.addEventListener('click', function() {
+      var kb = document.querySelector('#keyboard-hint .kb');
+      var hint = document.getElementById('kb-next-hint');
+      var isVisible = kb && kb.style.display !== 'none';
+      if (kb) kb.style.display = isVisible ? 'none' : '';
+      if (hint) hint.style.display = isVisible ? 'none' : '';
+      btn.textContent = isVisible ? '▶' : '▼';
+    });
+
+    head.appendChild(btn);
+  }
+
+  return { render, highlightKey, getFingerForKey, renderToggle, PHASE_KEYS };
 })();

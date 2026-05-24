@@ -144,10 +144,11 @@ var Gameplay = (function () {
     renderOrderArea();
 
     if (session.mode !== 'conversation') {
-      Keyboard.render(state.phase, true);
+      Keyboard.render(state.phase);
     } else {
-      var kbEl = document.getElementById('keyboard-hint');
-      if (kbEl) kbEl.innerHTML = '';
+      var convPhase = session.conversationPhase === 'full' ? 'full' : session.conversationPhase;
+      Keyboard.render(convPhase);
+      Keyboard.renderToggle();
     }
 
     paused = false;
